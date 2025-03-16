@@ -1,0 +1,8 @@
+networkx==3.4.2
+matplotlib==3.10.1
+pandas==2.2.3
+numpy==2.2.3
+autogen==0.8.1
+langchain==0.3.20
+langgraph==0.3.11
+neo4j==5.28.1
