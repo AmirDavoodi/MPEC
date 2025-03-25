@@ -21,9 +21,26 @@
 
 1. **Install pyenv** on your system. Follow the official [pyenv installation guide](https://github.com/pyenv/pyenv#installation) for your operating system.
 
-2. Set up the local Python package directory at `myenv`. This directory is already added to the `.gitignore` file.
+2. Create a virtual environment in the `.venv` directory using the following command:
+   ```bash
+   python -m venv .venv
+   ```
 
-3. Install the Python dependencies from `requirements.txt` using the following command:
+3. Activate the virtual environment:
+   - **On macOS/Linux**:
+     ```bash
+     source .venv/bin/activate
+     ```
+   - **On Windows** (Command Prompt):
+     ```bash
+     .venv\Scripts\activate
+     ```
+   - **On Windows** (PowerShell):
+     ```bash
+     .\.venv\Scripts\Activate.ps1
+     ```
+
+4. Install the Python dependencies from `requirements.txt` using the following command:
    ```bash
    pip install -r requirements.txt
    ```
