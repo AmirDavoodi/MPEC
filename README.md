@@ -49,3 +49,6 @@
 
 - Ensure that Docker and pyenv are properly installed and configured before proceeding with the setup.
 - For any issues, refer to the official documentation of Docker, Neo4j, and pyenv.
+
+### Cypher Query Language Tutorial
+For a quick guide on using Neo4J's Cypher query language, see [CYPHER_TUTORIAL.md](CYPHER_TUTORIAL.md).
