@@ -1,0 +1,3 @@
+Let $A=\left[a_{i j}\right]$ and $B=\left[b_{i j}\right]$ be upper triangular matrices. Prove that $A B$ is upper triangular with diagonal $a_{11} b_{11}, a_{22} b_{22}, \ldots, a_{n n} b_{n n}$.
+
+Let $A B=\left[c_{i j}\right]$. Then $c_{i j}=\sum_{k=1}^{n} a_{i k} b_{k j}$ and $c_{i i}=\sum_{k=1}^{n} a_{i k} b_{k i}$. Suppose $i>j$. Then, for any $k$, either $i>k$ or $k>j$, so that either $a_{i k}=0$ or $b_{k j}=0$. Thus, $c_{i j}=0$, and $A B$ is upper triangular. Suppose $i=j$. Then, for $k<i$, we have $a_{i k}=0$; and, for $k>i$, we have $b_{k i}=0$. Hence, $c_{i i}=a_{i i} b_{i i}$, as claimed. [This proves one part of Theorem 2.5(i); the statements for $A+B$ and $k A$ are left as exercises.]

@@ -3,6 +3,11 @@ matplotlib==3.10.1
 pandas==2.2.3
 numpy==2.2.3
 autogen==0.8.1
-langchain==0.3.20
-langgraph==0.3.11
+langchain==0.3.21
+langgraph==0.3.20
 neo4j==5.28.1
+openai==1.68.2
+pydantic==2.10.6
+langchain-community==0.3.20
+langchain-core==0.3.48
+langchain-openai==0.3.10
