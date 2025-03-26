@@ -1,0 +1,30 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\section{Question:}
+
+Prove that the product of any two odd integers is always odd.
+
+\section{Answer:}
+
+Assume, for contradiction, that the product of two odd integers is even. That is, assume:
+\begin{equation}
+    a \cdot b = 2k, \quad \text{for some integer } k.
+\end{equation}
+
+Since $a$ and $b$ are odd, we write:
+\begin{equation}
+    a = 2m + 1, \quad b = 2n + 1.
+\end{equation}
+
+Multiplying both values:
+\begin{equation}
+    a \cdot b = (2m + 1)(2n + 1) = 4mn + 2m + 2n + 1 = 2(2mn + m + n) + 1.
+\end{equation}
+
+Since $2(2mn + m + n) + 1$ is odd, this contradicts our assumption that $a \cdot b$ is even. Therefore, $a \cdot b$ must be odd.
+
+\end{document}
+

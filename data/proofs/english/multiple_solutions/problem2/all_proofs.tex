@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage{amsmath}
+\begin{document}
+
+\title{Proof: The Product of Two Odd Integers is Odd}
+\author{}
+\date{}
+\maketitle
+
+\section*{Problem}
+Prove that the product of any two odd integers is always odd.
+
+\section*{Solution 1: Direct Proof Using Definition}
+Let $a$ and $b$ be two odd integers. By definition, an odd integer can be written as:
+\begin{equation}
+    a = 2m + 1, \quad b = 2n + 1, \quad \text{where } m, n \text{ are integers}.
+\end{equation}
+
+The product of $a$ and $b$ is:
+\begin{equation}
+    a \cdot b = (2m + 1)(2n + 1).
+\end{equation}
+
+Expanding the product:
+\begin{equation}
+    a \cdot b = 4mn + 2m + 2n + 1.
+\end{equation}
+
+Factoring out $2$ from the first three terms:
+\begin{equation}
+    a \cdot b = 2(2mn + m + n) + 1.
+\end{equation}
+
+Since $2mn + m + n$ is an integer, $a \cdot b$ is of the form $2k + 1$, which is odd.
+
+\section*{Solution 2: Proof by Contradiction}
+Assume, for contradiction, that the product of two odd integers is even. That is, assume:
+\begin{equation}
+    a \cdot b = 2k, \quad \text{for some integer } k.
+\end{equation}
+
+Since $a$ and $b$ are odd, we write:
+\begin{equation}
+    a = 2m + 1, \quad b = 2n + 1.
+\end{equation}
+
+Multiplying both values:
+\begin{equation}
+    a \cdot b = (2m + 1)(2n + 1) = 4mn + 2m + 2n + 1 = 2(2mn + m + n) + 1.
+\end{equation}
+
+Since $2(2mn + m + n) + 1$ is odd, this contradicts our assumption that $a \cdot b$ is even. Therefore, $a \cdot b$ must be odd.
+
+\section*{Solution 3: Proof Using Parity}
+An integer is odd if it has remainder $1$ when divided by $2$. That is,
+\begin{equation}
+    a \equiv 1 \pmod{2}, \quad b \equiv 1 \pmod{2}.
+\end{equation}
+
+Multiplying both congruences:
+\begin{equation}
+    a \cdot b \equiv 1 \times 1 \equiv 1 \pmod{2}.
+\end{equation}
+
+Since $a \cdot b \equiv 1 \pmod{2}$, it follows that $a \cdot b$ is odd.
+
+\end{document}

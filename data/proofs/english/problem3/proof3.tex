@@ -1,0 +1,26 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\section{Question:}
+
+THEOREM 3.10: A square system $A X=B$ of linear equations has a unique solution if and only if the matrix $A$ is invertible. In such a case, $A^{-1} B$ is the unique solution of the system.
+
+\section{Answer:}
+
+We only prove here that if $A$ is invertible, then $A^{-1} B$ is a unique solution. If $A$ is invertible, then
+
+$$
+    A\left(A^{-1} B\right)=\left(A A^{-1}\right) B=I B=B
+$$
+
+and hence, $A^{-1} B$ is a solution. Now suppose $v$ is any solution, so $A v=B$. Then
+
+$$
+    v=I v=\left(A^{-1} A\right) v=A^{-1}(A v)=A^{-1} B
+$$
+
+Thus, the solution $A^{-1} B$ is unique.
+
+\end{document}

@@ -1,0 +1,24 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\section{Question:}
+
+Prove that $\sqrt{2}$ is an irrational number.
+
+\section{Answer:}
+
+Suppose $\sqrt{2}$ is rational, so $\sqrt{2} = \frac{p}{q}$ in lowest terms. Then:
+\begin{equation}
+    p^2 = 2q^2.
+\end{equation}
+
+Since $p^2$ is even, $p$ is even, so we write $p = 2k$. Substituting:
+\begin{equation}
+    (2k)^2 = 2q^2 \Rightarrow 4k^2 = 2q^2 \Rightarrow q^2 = 2k^2.
+\end{equation}
+
+Thus, $q^2$ is even, meaning $q$ is also even. This creates an infinite descent of smaller and smaller even numbers, contradicting the assumption that $p$ and $q$ are in lowest terms. Hence, $\sqrt{2}$ is irrational.
+
+\end{document}

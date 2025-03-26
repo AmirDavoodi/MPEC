@@ -1,0 +1,46 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\section{Question:}
+
+Prove that $\sqrt{2}$ is an irrational number.
+
+\section{Answer:}
+
+Assume, for contradiction, that $\sqrt{2}$ is rational. This means it can be written as a fraction of two integers in lowest terms:
+\begin{equation}
+    \sqrt{2} = \frac{p}{q}, \quad \text{where } p, q \text{ are integers with } \gcd(p, q) = 1.
+\end{equation}
+
+Squaring both sides:
+\begin{equation}
+    2 = \frac{p^2}{q^2}.
+\end{equation}
+
+Multiplying both sides by $q^2$:
+\begin{equation}
+    2q^2 = p^2.
+\end{equation}
+
+Since $p^2$ is divisible by $2$, it follows that $p$ must also be divisible by $2$ (as squares of odd numbers are odd). So we write:
+\begin{equation}
+    p = 2k \quad \text{for some integer } k.
+\end{equation}
+
+Substituting into the equation:
+\begin{equation}
+    2q^2 = (2k)^2 = 4k^2.
+\end{equation}
+
+Dividing both sides by $2$:
+\begin{equation}
+    q^2 = 2k^2.
+\end{equation}
+
+This implies that $q^2$ is also divisible by $2$, so $q$ must also be divisible by $2$. This contradicts our original assumption that $p$ and $q$ have no common factors. Therefore, $\sqrt{2}$ is irrational.
+
+\end{document}
+
+
