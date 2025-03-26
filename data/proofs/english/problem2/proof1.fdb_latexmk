@@ -1,11 +1,11 @@
 # Fdb version 4
-["xdvipdfmx"] 1742973480.9929 "proof3.xdv" "proof3.pdf" "proof3" 1742973481.22309 0
-  "proof3.xdv" 1742973480.97283 4980 7b2643832baea8cc40825e317ed46a9e "xelatex"
+["xdvipdfmx"] 1742994095.4855 "proof1.xdv" "proof1.pdf" "proof1" 1742994095.71864 0
+  "proof1.xdv" 1742994095.46268 5316 33c9f495ae5afba808979e1e24ec2509 "xelatex"
   (generated)
-  "proof3.pdf"
+  "proof1.pdf"
   (rewritten before read)
-["xelatex"] 1742973480.74484 "/home/ehsan/Documents/Fanavaran/MPEC/data/proofs/english/proof3/proof3.tex" "proof3.xdv" "proof3" 1742973481.22285 0
-  "/home/ehsan/Documents/Fanavaran/MPEC/data/proofs/english/proof3/proof3.tex" 1742973461.33983 677 f14291e0bfc27c9c9e2f23d222906a2e ""
+["xelatex"] 1742994095.20293 "/home/ehsan/Documents/Fanavaran/MPEC/data/proofs/english/problem2/proof1.tex" "proof1.xdv" "proof1" 1742994095.71834 0
+  "/home/ehsan/Documents/Fanavaran/MPEC/data/proofs/english/problem2/proof1.tex" 1742994091.34968 826 8a7cddf06de4cc53feb1876b7a79368b ""
   "/usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2024/texmf-dist/tex/latex/amsmath/amsbsy.sty" 1717359999 2222 2166a1f7827be30ddc30434e5efcee1b ""
@@ -19,10 +19,10 @@
   "/usr/local/texlive/2024/texmf-dist/web2c/texmf.cnf" 1727217670 42021 a58d36c7ede3d2fc9f93da62d691ddff ""
   "/usr/local/texlive/2024/texmf-var/web2c/xetex/xelatex.fmt" 1735920220 5883726 f04a24a2d09b7b0c4dace4292a783706 ""
   "/usr/local/texlive/2024/texmf.cnf" 1735920162.48726 455 5b996dcaa0eb4ef14a83b026bc0a008c ""
-  "proof3.aux" 1742973480.97283 224 bd278d13fc10c1994f98e2918e72f82b "xelatex"
-  "proof3.tex" 1742973461.33983 677 f14291e0bfc27c9c9e2f23d222906a2e ""
+  "proof1.aux" 1742994095.46268 224 bd278d13fc10c1994f98e2918e72f82b "xelatex"
+  "proof1.tex" 1742994091.34968 826 8a7cddf06de4cc53feb1876b7a79368b ""
   (generated)
-  "proof3.aux"
-  "proof3.log"
-  "proof3.xdv"
+  "proof1.aux"
+  "proof1.log"
+  "proof1.xdv"
   (rewritten before read)
