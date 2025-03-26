@@ -1,0 +1,38 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{xepersian}
+\settextfont[Scale=1]{B Nazanin} % Optional font setting
+
+\begin{document}
+
+\section{سوال}
+اثبات کنید که:
+\begin{equation}
+    \sin(a + b) = \sin a \cos b + \cos a \sin b.
+\end{equation}
+
+\section{پاسخ}
+
+یک دایره‌ی واحد را در نظر بگیرید که در آن دو زاویه‌ی $a$ و $b$ قرار دارند. مختصات نقاط کلیدی روی دایره بر اساس توابع مثلثاتی به صورت زیر تعریف می‌شوند. فرض کنید $P$ و $Q$ نقاطی روی دایره‌ی واحد باشند به‌طوری که:
+\begin{equation}
+    P = (\cos a, \sin a), \quad Q = (\cos b, \sin b).
+\end{equation}
+
+اکنون نقطه‌ی $P$ را به اندازه‌ی زاویه‌ی $b$ دوران می‌دهیم. با استفاده از ماتریس دوران داریم:
+\begin{equation}
+    \begin{bmatrix} \cos b & -\sin b \\ \sin b & \cos b \end{bmatrix} \begin{bmatrix} \cos a \\ \sin a \end{bmatrix}.
+\end{equation}
+
+مختصات جدید برابر است با:
+\begin{equation}
+    x = \cos b \cos a - \sin b \sin a, \quad y = \sin b \cos a + \cos b \sin a.
+\end{equation}
+
+از آنجا که مقدار $y$ مولفه‌ی سینوسی نقطه‌ی دوران‌یافته است، نتیجه می‌گیریم:
+\begin{equation}
+    \sin(a + b) = \sin a \cos b + \cos a \sin b.
+\end{equation}
+
+این اثبات کامل است.
+
+\end{document}

@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{xepersian}
+\settextfont[Scale=1]{B Nazanin} % Optional font setting
+
+\begin{document}
+
+\title{اثبات اتحاد مثلثاتی}
+\author{}
+\date{}
+\maketitle
+
+\section*{مسئله}
+اثبات کنید که:
+\begin{equation}
+    \left(\frac{1}{\cos a} + \tan a\right)(1 - \sin a) = \cos a.
+\end{equation}
+
+\section*{اثبات اول: ساده‌سازی جبری}
+
+ابتدا سمت چپ اتحاد (\lr{LHS}) را گسترش می‌دهیم:
+\begin{equation}
+    \left(\frac{1}{\cos a} + \frac{\sin a}{\cos a}\right)(1 - \sin a).
+\end{equation}
+
+عبارت داخل پرانتز را ساده می‌کنیم:
+\begin{equation}
+    \frac{1 + \sin a}{\cos a} (1 - \sin a).
+\end{equation}
+
+حاصل‌ضرب دو جمله را محاسبه می‌کنیم:
+\begin{equation}
+    \frac{(1 + \sin a)(1 - \sin a)}{\cos a}.
+\end{equation}
+
+با استفاده از اتحاد $(a+b)(a-b) = a^2 - b^2$ داریم:
+\begin{equation}
+    1 - \sin^2 a = \cos^2 a.
+\end{equation}
+
+پس می‌توان نوشت:
+\begin{equation}
+    \frac{\cos^2 a}{\cos a} = \cos a.
+\end{equation}
+
+که برابر با سمت راست اتحاد (\lr{RHS}) است. بنابراین اتحاد اثبات شد.
+
+\section*{اثبات دوم: تبدیل به توابع کسری}
+
+با نوشتن تابع تانژانت به‌صورت کسر داریم:
+\begin{equation}
+    \tan a = \frac{\sin a}{\cos a} \Rightarrow \frac{1}{\cos a} + \tan a = \frac{1 + \sin a}{\cos a}.
+\end{equation}
+
+حال ضرب در $(1 - \sin a)$ را انجام می‌دهیم:
+\begin{equation}
+    \frac{(1 + \sin a)(1 - \sin a)}{\cos a}.
+\end{equation}
+
+چون $1 - \sin^2 a = \cos^2 a$، داریم:
+\begin{equation}
+    \frac{\cos^2 a}{\cos a} = \cos a.
+\end{equation}
+
+پس اتحاد برقرار است.
+
+\end{document}
