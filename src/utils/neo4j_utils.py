@@ -62,21 +62,21 @@ class Neo4JUtils:
         Internal method to create a relationship with a step attribute.
         """
         # Ensure the relationship type is valid and enclosed in backticks if necessary
-        relationship_type = relation.type.strip()  # Remove leading/trailing spaces
-        if not relationship_type:
-            raise ValueError("Relationship type cannot be empty.")
-        if " " in relationship_type or not relationship_type.isalnum():
-            relationship_type = f"`{relationship_type}`"  # Enclose in backticks
+        relationship_name = relation.name.strip()  # Remove leading/trailing spaces
+        if not relationship_name:
+            raise ValueError("Relationship name cannot be empty.")
+        if " " in relationship_name or not relationship_name.isalnum():
+            relationship_name = f"`{relationship_name}`"  # Enclose in backticks
 
         query = (
             "MATCH (a {id: $source}), (b {id: $target}) "
-            f"CREATE (a)-[r:{relationship_type} {{name: $name, step: $step}}]->(b)"
+            f"CREATE (a)-[r:{relationship_name} {{type: $type, step: $step}}]->(b)"
         )
         tx.run(
             query,
             source=relation.source,
             target=relation.target,
-            name=relation.name,  # Use the name attribute for the relationship
+            type=relation.type,
             step=step,
         )
 
