@@ -76,7 +76,7 @@ class Neo4JUtils:
             query,
             source=relation.source,
             target=relation.target,
-            name=relation.name,
+            name=relation.name,  # Use the name attribute for the relationship
             step=step,
         )
 

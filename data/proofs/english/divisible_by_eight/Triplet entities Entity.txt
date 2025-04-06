@@ -1,0 +1,25 @@
+Triplet(
+	- entities=[
+		Entity(id='1', name='a', label='Odd Integer', type='Variable'),
+		Entity(id='2', name='b', label='Odd Integer', type='Variable'),
+		Entity(id='3', name='k', label='Integer', type='Variable'),
+		Entity(id='4', name='m', label='Integer', type='Variable'),
+		Entity(id='5', name='n', label='Integer', type='Variable'),
+		Entity(id='6', name='8', label='Integer', type='Constant'),
+		Entity(id='7', name='a^2 - b^2', label='Difference of Squares', type='Expression'),
+		Entity(id='8', name='4(k - m)(k + m + 1)', label='Expression for Difference of Squares', type='Expression'),
+		Entity(id='9', name='8n(k + m + 1)', label='Expression for Case 1', type='Expression'),
+		Entity(id='10', name='8n(k - m)', label='Expression for Case 2', type='Expression')
+	],
+	- relations=[
+		Relation(source='1', target='3', type='represents', name='Representation of a'),
+		Relation(source='2', target='4', type='represents', name='Representation of b'),
+		Relation(source='3', target='5', type='is an element of', name='k and m are integers'),
+		Relation(source='6', target='7', type='divides', name='8 divides the difference of squares'),
+		Relation(source='7', target='8', type='is expressed as', name='Difference of squares expression'),
+		Relation(source='8', target='9', type='is divisible by', name='Case 1 shows divisibility by 8'),
+		Relation(source='8', target='10', type='is divisible by', name='Case 2 shows divisibility by 8'),
+		Relation(source='1', target='2', type='is a pair of', name='a and b are odd integers'),
+		Relation(source='6', target='7', type='concludes', name='Conclusion of the proof')
+	])
+
