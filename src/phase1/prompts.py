@@ -7,3 +7,30 @@ LaTeX Proof:
 
 Entities should include axioms, lemmas, and conclusions. Relations should describe connections between them, such as "grounds" or "explains".
 """
+
+HIGH_LEVEL_TRIPLET_EXTRACTION_PROMPT = """
+Given the following LaTeX proof, extract a very high-level abstract graph as triplets.
+Group detailed steps into broad concepts.
+Output triplets in the form: <Source Entity, Relationship, Target Entity>
+
+Proof:
+{proof}
+"""
+
+MID_LEVEL_TRIPLET_EXTRACTION_PROMPT = """
+Given the following LaTeX proof, extract an intermediate-level graph as triplets.
+Capture key steps and their relations.
+Output triplets in the form: <Source Entity, Relationship, Target Entity>
+
+Proof:
+{proof}
+"""
+
+FINE_GRAINED_TRIPLET_EXTRACTION_PROMPT = """
+Given the following LaTeX proof, extract a detailed graph as triplets.
+Include all relevant entities, equations, and their relations.
+Output triplets in the form: <Source Entity, Relationship, Target Entity>
+
+Proof:
+{proof}
+"""

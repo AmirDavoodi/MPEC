@@ -1,0 +1,28 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+
+\begin{document}
+
+\section{Theorem}
+Proof by Induction: Sum of the First \( n \) Natural Numbers
+
+The sum of the first \( n \) natural numbers is:
+\[
+    1 + 2 + 3 + \dots + n = \frac{n(n+1)}{2}
+\]
+
+\section{Proof by Enumeration}
+Consider the sum of the first $n$ numbers:
+\begin{equation}
+    1+2+ \ldots + n.
+\end{equation}
+Now, let us write the sum from $n$ to $1$:
+\begin{equation}
+    n+n-1+ \ldots + 1.
+\end{equation}
+The sum of both sequences is the same; the only difference is the order of the addition. Next, add the first element of the first sequence to the first element of the second sequence, which is $(1+n)$. Do the same for each of the two elements of both sequences. The result is the following:
+\begin{equation}
+    (1+n), (2+(n-1)), \ldots, (n+1).
+\end{equation}
+
+\end{document}

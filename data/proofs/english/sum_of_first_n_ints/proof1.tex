@@ -1,0 +1,46 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+
+\begin{document}
+
+\section{Theorem}
+Proof by Induction: Sum of the First \( n \) Natural Numbers
+
+The sum of the first \( n \) natural numbers is:
+\[
+    1 + 2 + 3 + \dots + n = \frac{n(n+1)}{2}
+\]
+
+\section{Proof by Induction}
+We proceed by mathematical induction.
+
+\subsection{Base Case (\( n = 1 \))}
+\[
+    \text{LHS} = 1, \quad \text{RHS} = \frac{1(1+1)}{2} = 1
+\]
+Since \(\text{LHS} = \text{RHS}\), the base case holds.
+
+\subsection{Inductive Hypothesis}
+Assume the statement holds for some \( k \geq 1 \):
+\[
+    1 + 2 + \dots + k = \frac{k(k+1)}{2}
+\]
+
+\subsection{Inductive Step (\( n = k + 1 \))}
+We must show:
+\[
+    1 + 2 + \dots + k + (k+1) = \frac{(k+1)(k+2)}{2}
+\]
+Starting from the left-hand side:
+\begin{align}
+    1 + 2 + \dots + k + (k+1) & = \left(1 + 2 + \dots + k\right) + (k+1)                              \\
+                              & = \frac{k(k+1)}{2} + (k+1) \quad \text{(by the inductive hypothesis)} \\
+                              & = \frac{k(k+1) + 2(k+1)}{2}                                           \\
+                              & = \frac{(k+1)(k + 2)}{2}
+\end{align}
+This matches the right-hand side for \( n = k+1 \).
+
+\subsection{Conclusion}
+By the principle of mathematical induction, the formula holds for all \( n \geq 1 \).
+
+\end{document}

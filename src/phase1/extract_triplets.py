@@ -15,7 +15,9 @@ from .schemas import Triplet
 from .prompts import TRIPLET_EXTRACTION_PROMPT
 
 
-def extract_triplets(proof: str) -> Triplet:
+def extract_triplets(
+    proof: str, custom_prompt: str = TRIPLET_EXTRACTION_PROMPT
+) -> Triplet:
     # Initialize the LLM
     llm = init_chat_model(
         model=OPENAI_LLM_MODEL,
@@ -30,7 +32,7 @@ def extract_triplets(proof: str) -> Triplet:
             SystemMessage(
                 content="You are a helpful assistant that extracts entities and relations from mathematical proofs."
             ),
-            HumanMessage(content=TRIPLET_EXTRACTION_PROMPT.format(proof=proof)),
+            HumanMessage(content=custom_prompt.format(proof=proof)),
         ]
     )
 
