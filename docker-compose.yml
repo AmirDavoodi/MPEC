@@ -11,6 +11,12 @@ services:
       NEO4J_AUTH: neo4j/password  # Default username/password
     volumes:
       - neo4j_data:/data  # Persist data
+    build:
+      context: .
+      args:
+        - http_proxy = "http://127.0.0.1:8080",
+        - https_proxy = "https://127.0.0.1:8080",
+        - no_proxy = "178.22.122.100,185.51.200.2,localhost",
     networks:
       - neo4j_network
 
