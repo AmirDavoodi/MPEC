@@ -2,7 +2,7 @@ from neo4j import GraphDatabase
 
 # Connect to Neo4j
 uri = "bolt://localhost:7687"
-driver = GraphDatabase.driver(uri, auth=("neo4j", "password"))
+driver = GraphDatabase.driver(uri, auth=("fanavaran", "fanavaran"))
 
 
 # Example: Create a node

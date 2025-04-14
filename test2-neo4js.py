@@ -12,7 +12,7 @@ graph = lang_graph.process_text(text)
 
 # Connect to Neo4j
 uri = "bolt://localhost:7687"
-driver = GraphDatabase.driver(uri, auth=("neo4j", "password"))
+driver = GraphDatabase.driver(uri, auth=("fanavaran", "fanavaran"))
 
 
 # Store the graph in Neo4j
