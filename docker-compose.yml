@@ -6,7 +6,7 @@ services:
       - "7474:7474"  # Neo4j Browser
       - "7687:7687"  # Bolt Protocol
     environment:
-      NEO4J_AUTH: fanavaran/fanavaran  # Default username/password
+      NEO4J_AUTH: neo4j/password  # Default username/password
     volumes:
       - neo4j_data:/data  # Persist data
     networks:
