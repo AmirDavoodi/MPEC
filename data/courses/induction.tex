@@ -1,0 +1,199 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}  % Add this line to define \mathbb{N}
+
+
+\title{Introduction to Mathematical Induction with Examples}
+\date{\today}
+
+\newtheorem{theorem}{Theorem}
+
+\begin{document}
+
+\maketitle
+
+\section{What is Mathematical Induction?}
+Mathematical induction is a powerful proof technique used in mathematics to prove statements that are asserted to be true for all natural numbers. It is especially useful for proving propositions about:
+\begin{itemize}
+    \item Summations and series
+    \item Divisibility properties
+    \item Inequalities
+    \item Combinatorial identities
+\end{itemize}
+
+\section{The Principle of Mathematical Induction}
+\begin{theorem}[Principle of Mathematical Induction]
+    To prove that a proposition $P(n)$ is true for all natural numbers $n \geq n_0$, it suffices to:
+    \begin{enumerate}
+        \item \textbf{Base Case:} Verify $P(n_0)$ is true
+        \item \textbf{Inductive Step:} Show that if $P(k)$ is true for some arbitrary $k \geq n_0$ (called the induction hypothesis), then $P(k+1)$ must also be true
+    \end{enumerate}
+\end{theorem}
+
+\section{The Domino Analogy}
+Mathematical induction works like falling dominos:
+\begin{itemize}
+    \item The base case is like knocking over the first domino
+    \item The inductive step ensures each domino will knock over the next one
+    \item Together, these guarantee that all dominos will fall
+\end{itemize}
+
+\section{Example: Sum of First n Natural Numbers}
+\begin{theorem}
+    For all natural numbers $n \geq 1$,
+    \[
+        1 + 2 + 3 + \cdots + n = \frac{n(n+1)}{2}
+    \]
+\end{theorem}
+
+\begin{proof}
+    We prove this by mathematical induction.
+
+    \textbf{Base Case ($n = 1$):}
+    Left side: $1$ \\
+    Right side: $\frac{1(1+1)}{2} = 1$ \\
+    Both sides equal. Base case verified.
+
+    \textbf{Inductive Step:} \\
+    Assume the formula holds for some arbitrary $k \geq 1$ (induction hypothesis):
+    \[
+        1 + 2 + 3 + \cdots + k = \frac{k(k+1)}{2}
+    \]
+    We must show it holds for $k + 1$:
+    \begin{align*}
+        1 + 2 + \cdots + k + (k+1) & = \frac{k(k+1)}{2} + (k+1) \quad \text{(by induction hypothesis)} \\
+                                   & = \frac{k(k+1) + 2(k+1)}{2}                                       \\
+                                   & = \frac{(k+1)(k + 2)}{2}                                          \\
+                                   & = \frac{(k+1)((k+1) + 1)}{2}
+    \end{align*}
+    This matches the formula with $n = k+1$. By induction, the formula holds for all natural numbers $n \geq 1$.
+\end{proof}
+
+\section{Key Points to Remember}
+\begin{itemize}
+    \item Always verify both the base case and inductive step
+    \item The induction hypothesis is crucial - you must assume $P(k)$ is true
+    \item Mathematical induction proves statements for \textit{all} natural numbers beyond the base case
+    \item Choose the appropriate base case ($n_0$) for your proposition
+\end{itemize}
+
+
+\section*{Example 1: Sum of the First $n$ Natural Numbers}
+
+\textbf{Claim:} For all $n \in \mathbb{N}$,
+\[
+    1 + 2 + 3 + \cdots + n = \frac{n(n+1)}{2}.
+\]
+
+\textbf{Proof:}
+We proceed by mathematical induction.
+
+\textbf{Base Case:} $n = 1$
+Left-hand side (LHS): $1$
+Right-hand side (RHS): $\frac{1(1+1)}{2} = \frac{2}{2} = 1$
+LHS = RHS, so the base case holds.
+
+\textbf{Inductive Step:}
+Assume the formula holds for some $k \in \mathbb{N}$, i.e.,
+\[
+    1 + 2 + \cdots + k = \frac{k(k+1)}{2}.
+\]
+We must show that
+\[
+    1 + 2 + \cdots + k + (k+1) = \frac{(k+1)(k+2)}{2}.
+\]
+
+Starting from the inductive hypothesis:
+\[
+    1 + 2 + \cdots + k + (k+1) = \frac{k(k+1)}{2} + (k+1)
+    = \frac{k(k+1) + 2(k+1)}{2} = \frac{(k+1)(k + 2)}{2}.
+\]
+
+Thus, the formula holds for $k+1$.
+
+\textbf{Conclusion:} By induction, the formula holds for all $n \in \mathbb{N}$.
+\qed
+
+\section*{Example 2: Sum of the First $n$ Odd Numbers}
+
+\textbf{Claim:} For all $n \in \mathbb{N}$,
+\[
+    1 + 3 + 5 + \cdots + (2n - 1) = n^2.
+\]
+
+\textbf{Proof:}
+
+\textbf{Base Case:} $n = 1$
+LHS: $1$
+RHS: $1^2 = 1$
+So the base case holds.
+
+\textbf{Inductive Step:}
+Assume the formula holds for some $k \in \mathbb{N}$:
+\[
+    1 + 3 + \cdots + (2k - 1) = k^2.
+\]
+We need to show:
+\[
+    1 + 3 + \cdots + (2k - 1) + (2k + 1) = (k + 1)^2.
+\]
+
+Using the inductive hypothesis:
+\[
+    k^2 + (2k + 1) = k^2 + 2k + 1 = (k + 1)^2.
+\]
+
+\textbf{Conclusion:} The formula holds for all $n \in \mathbb{N}$ by induction.
+\qed
+
+\section*{Example 3: Sum of the First $n$ Squares}
+
+\textbf{Claim:} For all $n \in \mathbb{N}$,
+\[
+    1^2 + 2^2 + 3^2 + \cdots + n^2 = \frac{n(n+1)(2n+1)}{6}.
+\]
+
+\textbf{Proof:}
+
+\textbf{Base Case:} $n = 1$
+LHS: $1^2 = 1$
+RHS: $\frac{1 \cdot 2 \cdot 3}{6} = 1$
+So the base case holds.
+
+\textbf{Inductive Step:}
+Assume the formula holds for $n = k$:
+\[
+    1^2 + 2^2 + \cdots + k^2 = \frac{k(k+1)(2k+1)}{6}.
+\]
+
+We need to prove that:
+\[
+    1^2 + 2^2 + \cdots + k^2 + (k+1)^2 = \frac{(k+1)(k+2)(2k+3)}{6}.
+\]
+
+Start with the inductive hypothesis:
+\[
+    \frac{k(k+1)(2k+1)}{6} + (k+1)^2
+    = \frac{k(k+1)(2k+1) + 6(k+1)^2}{6}.
+\]
+
+Factor out $(k+1)$:
+\[
+    = \frac{(k+1)\left[k(2k+1) + 6(k+1)\right]}{6}
+    = \frac{(k+1)\left[2k^2 + k + 6k + 6\right]}{6}
+    = \frac{(k+1)(2k^2 + 7k + 6)}{6}.
+\]
+
+Factor the quadratic:
+\[
+    2k^2 + 7k + 6 = (k+2)(2k+3),
+\]
+so the entire expression becomes:
+\[
+    \frac{(k+1)(k+2)(2k+3)}{6}.
+\]
+
+\textbf{Conclusion:} The formula holds for $k+1$, so by induction it is valid for all $n \in \mathbb{N}$.
+\qed
+\end{document}
