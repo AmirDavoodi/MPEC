@@ -78,16 +78,48 @@ class Neo4JUtils:
     def store_triplets(
         self,
         triplet_obj: Triplet,
-        abstraction_level: Literal["original", "high", "medium", "low"],
+        graph_type: Literal["course_pattern", "proof_example"],
     ) -> None:
+        # First pass: create all nodes with their properties
         for entity in triplet_obj.entities:
-            self.create_node_with_props(
-                entity, {"graph_abstraction_level": abstraction_level}
-            )
+            # Create a properties dictionary that includes all entity properties
+            props = {
+                "id": f"{graph_type}_{entity.id}",
+                "name": f"{graph_type}_{entity.name}",
+                "type": entity.type,
+                "label": entity.label,  # Add entity label as property
+                "graph_type": graph_type,
+                "start": getattr(entity, "start", False),  # Default to False if not set
+                "end": getattr(entity, "end", False),  # Default to False if not set
+            }
+            # Prefix the label with graph type
+            entity_label = f"{graph_type}_{entity.label}"
+            with self.driver.session() as session:
+                session.execute_write(self._create_node_with_props, entity_label, props)
+
+        # Second pass: create all relationships
         for relation in triplet_obj.relations:
-            self.create_relation_with_props(
-                relation, {"graph_abstraction_level": abstraction_level}
-            )
+            props = {
+                "type": relation.type,
+                "name": f"{graph_type}_{relation.name}",
+                "label": relation.name,  # Add relation label as property
+                "graph_type": graph_type,
+            }
+            # Update source and target IDs to match the prefixed node IDs
+            source_id = f"{graph_type}_{relation.source}"
+            target_id = f"{graph_type}_{relation.target}"
+            with self.driver.session() as session:
+                session.execute_write(
+                    self._create_relation_with_props,
+                    relation,
+                    props,
+                    source_id,
+                    target_id,
+                )
+
+        # Third pass: set colors for start and end nodes
+        with self.driver.session() as session:
+            session.execute_write(self._set_node_colors)
 
     @staticmethod
     def _create_node(tx, entity: Entity, step: int) -> None:
@@ -111,7 +143,9 @@ class Neo4JUtils:
         tx.run(query, **props)
 
     @staticmethod
-    def _create_relation_with_props(tx, relation: Relation, props: dict) -> None:
+    def _create_relation_with_props(
+        tx, relation: Relation, props: dict, source_id: str, target_id: str
+    ) -> None:
         """
         Internal method to create a relationship with arbitrary properties.
         """
@@ -124,10 +158,10 @@ class Neo4JUtils:
 
         prop_keys = ", ".join([f"{k}: ${k}" for k in props.keys()])
         query = (
-            "MATCH (a {id: $source}), (b {id: $target}) "
+            "MATCH (a {id: $source_id}), (b {id: $target_id}) "
             f"CREATE (a)-[r:{relationship_name} {{{prop_keys}}}]->(b)"
         )
-        tx.run(query, source=relation.source, target=relation.target, **props)
+        tx.run(query, source_id=source_id, target_id=target_id, **props)
 
     @staticmethod
     def _create_relation(tx, relation: Relation, step: int) -> None:
@@ -165,3 +199,52 @@ class Neo4JUtils:
         else:
             # Delete all nodes and relationships
             tx.run("MATCH (n) DETACH DELETE n")
+
+    @staticmethod
+    def _set_node_colors(tx) -> None:
+        """Set colors for start and end nodes."""
+        # Set green color for start nodes
+        query = """
+        MATCH (n {start: true})
+        SET n.color = '#00ff00'
+        """
+        tx.run(query)
+
+        # Set red color for end nodes
+        query = """
+        MATCH (n {end: true})
+        SET n.color = '#ff0000'
+        """
+        tx.run(query)
+
+    def get_visualization_queries(self) -> str:
+        return """
+## Visualization and Analysis
+
+You can visualize and analyze the graphs in Neo4j Browser using these queries:
+
+### View Course Pattern:
+```cypher
+MATCH p=()-[r]->() 
+WHERE r.graph_type = 'course_pattern' 
+RETURN p
+```
+
+### View Proof Graph:
+```cypher
+MATCH p=()-[r]->() 
+WHERE r.graph_type = 'proof_example' 
+RETURN p
+```
+
+### View Both Graphs Side by Side:
+```cypher
+MATCH pattern=()-[r1]->() 
+WHERE r1.graph_type = 'course_pattern'
+WITH collect(pattern) as patterns
+MATCH proof=()-[r2]->() 
+WHERE r2.graph_type = 'proof_example'
+WITH patterns, collect(proof) as proofs
+RETURN patterns, proofs
+```
+"""

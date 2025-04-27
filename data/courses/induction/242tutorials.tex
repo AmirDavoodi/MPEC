@@ -1,0 +1,2550 @@
+\documentclass[12pt, reqno]{article}
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\numberwithin{equation}{section}
+
+\title{Analysis 1 Tutorial Notes}
+\author{Dana Berman}
+\date{Fall 2018}
+
+\newtheorem{prop}{Problem}[section]
+\newtheorem{lem}[prop]{Lemma}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{def_}{Definition}
+
+\theoremstyle{remark}
+\newtheorem{rem}{Remark}
+
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+
+\renewcommand{\P}{\mathcal{P}}
+\renewcommand{\epsilon}{\varepsilon}
+
+\begin{document}
+\maketitle
+
+This is a compilation of the tutorial notes I typed up while I was the TA for Math 242 (Analysis 1) at McGill university.
+
+\section*{Tutorial 1}
+
+\begin{enumerate}[leftmargin=*]
+	\item Write down the following statement using quantifiers:
+
+	      \emph{For any positive number $a$ we can find a negative number $b$ so that $a+b = 0$}
+	      \[
+		      \forall a > 0, \, \exists b < 0 \text{ such that } a+b = 0
+	      \]
+	\item A number is said to be rational if it can be written as a quotient of integers. For instance, the $\pi, \sqrt{2}$ are not rational while $0.\overline{33} = \frac{1}{3}$ is rational. How would you define a rational number using quantifiers? Note that the set of integers is denoted $\ZZ$.
+
+	      A number $x$ is said to be rational if
+	      \[
+		      \exists p, q \in \ZZ \text{ with } q\neq 0 \text{ such that } x = \frac{p}{q}
+	      \]
+	      The set of rational numbers is therefore
+	      \[
+		      \QQ = \set{\frac{p}{q} \mid p, q \in \ZZ,\, q \neq 0}
+	      \]
+	\item State the negation of the following statement and declare whether it is true or false.
+	      \[
+		      \forall a \in \NN \quad\exists b \in \QQ \quad ab = 1
+	      \]
+	      Negation:
+	      \[
+		      \exists a\in \NN \quad \forall b \in \QQ \quad ab \neq 1
+	      \]
+	      The statement is true.
+	\item State the negation of the following statement and declare whether it is true or false.
+	      \[
+		      \forall a \in \ZZ \quad a< 0 \text{ or } a>0
+	      \]
+	      Negation:
+	      \[
+		      \exists a \in \ZZ \quad a \geq 0 \text{ and } a\leq 0
+	      \]
+	      The statement is false.
+	\item Write a statement which is logically equivalent to ``$x=2$ or $x=-2$''.
+
+	      There are many possible solutions to this, but one example would be;
+	      \[
+		      x^2 = 4
+	      \]
+	\item Show that the sum of two odd numbers is even
+	      \begin{proof}
+		      Let $a,b$ be given odd numbers. Then there exists $x,y\in \ZZ$ such that $a = 2x+1$ and $b = 2y+1$. Ergo,
+		      \[
+			      a+b = 2x+1+2y+1 = 2x+2y+2 = 2(x+y+1)
+		      \]
+		      which shows that $a+b$ is even.
+	      \end{proof}
+
+	\item Given arbitrary sets $A$ and $B$, show that
+	      \[
+		      (A/B)\cup (B/A) = (A\cup B) \setminus (A\cap B)
+	      \]
+	      The above is known as the symmetric difference of $A$ and $B$ and is denoted $A\triangle B$.
+
+	\item When proving an implication, one can instead prove it's contrapositive. Suppose I wanted to prove that \emph{if $x^2$ is even then $x$ is even} by contrapositive, what statement would I be proving.
+
+	      I would prove that if $x$ is not even then $x^2$ is not even. Put otherwise, if $x$ is odd then $x^2$ is also odd. So, the statement \emph{if $x^2$ is even then $x$ is even} is logically equivalent to \emph{if $x$ is odd then $x^2$ is odd}.
+
+	\item What is the contrapositive of \emph{if $n\nmid ab$ then $n\nmid a$ and $n\nmid b$} where $a,b,n \in \NN$?
+
+	      It is \emph{if $n\mid a$ or $n\mid b$ then $n\mid ab$}.
+
+	\item Prove by contrapositive that for every $n\in \NN$, if $n^2 - 1$ is not divisible by 8 then $n$ is even.
+
+	      The contrapositive is: If $n$ is odd then $n^2 - 1$ is divisible by 8.
+	      We will now prove this statement. We will begin with the assumption that $n$ is odd and show that $n^2-1$ is divisible by 8. When writing a proof, we are careful to make sure that every step follows. If a proof is not written in the right order, it may technically be incorrect.
+	      \begin{proof}
+		      We are assuming that $n$ is odd. This means that there exists a non negative integer $k$ such that
+		      \[
+			      n = 2k+1
+		      \]
+		      We now compute $n^2-1$ but substituting $n$ for $2k+1$.
+		      \begin{align*}
+			      n^2 - 1 & = \left(2k+1\right)^2 - 1               \\
+			              & =\left(2k\right)^2 + 2(2k)(1) + 1^2 - 1 \\
+			              & =4k^2 + 4k
+		      \end{align*}
+		      From the above it is clear that $n^2-1$ is divisible by 4 but it is still not clear that it is divisible by 8. Since we are interested in the factors of $n^2-1$, we will try factoring our equation to see if that provides us with any further information.
+
+		      We have
+		      \[
+			      n^2 - 1 = 4k^2 + 4k = 4(k)(k+1)
+		      \]
+		      Since one of $k$ or $k+1$ is even, we see that $n^2 -1$ will be divisible by 8. We rigorously write out this thought process.
+
+		      \textbf{Case 1}: The number $k$ is even. In this case, there exists $\ell \in \ZZ$ such that $k  = 2\ell$. Then
+		      \[
+			      n^2 -1= 4(k)(k+1) = 4(2\ell)(2\ell+1) = 8(\ell)(2\ell+1)
+		      \]
+		      Thus, $n^2-1$ is clearly divisible by 8.
+
+		      \textbf{Case 2}: The number $k$ is odd. (Would someone like to try this on the board?) In this case, there exists $\ell \in \ZZ$ such that $k  = 2\ell + 1$. Then
+		      \[
+			      n^2 -1= 4(k)(k+1) = 4(2\ell + 1)(2\ell+2) = 8(2\ell + 1)(\ell+1)
+		      \]
+		      Thus, $n^2-1$ is clearly divisible by 8.
+	      \end{proof}
+
+	\item\label{evensquare} Recall earlier when we discussed the contrapositive of the statement \emph{if $x^2$ is even then $x$ is even}? Would someone like to come prove it by contrapositive? That is, show that \emph{if $x$ is odd then $x^2$ is odd}?
+	      \begin{proof}
+		      If $x$ is odd then $x = 2k + 1$ for some $k\in \ZZ$. Thus,
+		      \[
+			      x^2 = (2k+1)^2 = 4k^2 + 4k + 1 = 2(2k^2+2k) + 1
+		      \]
+		      Ergo, $x^2$ is odd.
+	      \end{proof}
+	\item Show by contrapositive that \emph{if $n\nmid ab$ then $n\nmid a$ and $n\nmid b$}.
+
+	      \begin{proof}
+		      We will prove that \emph{if $n\mid a$ or $n\mid b$ then $n\mid ab$}. Without loss of generality, we may suppose that $n \mid a$ (otherwise we just relabel $a$ as $b$ or $b$ as $a$, is this clear?).
+
+		      Then there exists $x \in \ZZ$ such that $a = nx$. Thus,
+		      \[
+			      ab = nxb
+		      \]
+		      and it is clear that $n\mid ab$.
+	      \end{proof}
+
+	\item Later on in this course you will be proving the existence of the square root of 2. That is, that there exists a real number denoted $\sqrt{2}$ such that the square of that number is precisely 2. You can find numbers that whose square is very close to 2, but the existence of a precise square root is something you will prove.
+
+	      Since there is a lot of material that you haven't covered yet, we cannot prove it's existence right now. So, we will assume that the square root of 2 exists and prove that it is irrational.
+
+	      \begin{proof}
+		      We will proceed by contradiction. This means that we take the assumptions of the statement and ask: ``what if the conclusion is false?'' From there we will derive a contradiction. This shows that the conclusion cannot be false, i.e. must be true.
+
+		      So, we assume that the square root of 2 is rational. That is, suppose there exists $p, q \in \ZZ$ such that
+		      \[
+			      \sqrt{2} = \frac{p}{q}
+		      \]
+		      After dividing out the common factors, we may suppose that $p$ and $q$ are relatively prime.
+
+		      Now, squaring either side of our equation we see that
+		      \[
+			      2 = \frac{p^2}{q^2} \implies 2q^2 = p^2
+		      \]
+		      In particular, $p^2$ is even. By problem \eqref{evensquare} (where we showed that if $x^2$ is even then $x$ is even) we know that $p$ is even. Thus, there exists $a \in \ZZ$ such that $p = 2a$. Substituting $p$ for $2a$ we have
+		      \[
+			      2q^2 = p^2 = (2a)^2 = 4a^2 \implies q^2 = 2a^2
+		      \]
+		      But then, $q^2$ is also even which implies that $q$ is even. So we see that both $p$ and $q$ are even. But then $p$ and $q$ are not relatively prime which is a contradiction.
+
+		      This shows that the square root of 2 is indeed irrational.
+	      \end{proof}
+
+	\item Next course, you will cover what is known as the \emph{principle of mathematical induction}. While I will not prove this here nor state the principle formally, I want to give you guys an example of how this principle can be used.
+
+	      The idea is that we prove a statement in what is called the \emph{base case}. Then we show that if the statement holds for $n$, then it holds for $n+1$ (\emph{induction hypothesis}). For instance, suppose we want to prove that a statement $P(n)$ is true for all $n\in \NN$. Then we prove that it is true for $n=1$, then we prove that if the statement holds for some $n$, then it also holds for $n+1$. This will show that the statement is true for all $n\in \NN$. Why? Because we have shown that the statement is true for $n=1$, thus it is also true for $1+1=2$. But then it is also true for $2+1=3$ and so on. So we conclude that the statement is true for all $n\in \NN$.
+
+	      For example, show that for all $n\in \NN$, it holds that
+	      \[
+		      \sum_{k=1}^n k := 1+2+\dots + n = \frac{n(n+1)}{2}
+	      \]
+	      \begin{proof}
+		      So, clearly the statement holds for $n=1$;
+		      \[
+			      1 = \frac{1(2)}{2} = \frac{1(1+1)}{2}
+		      \]
+		      This proves the base case. We now do the induction step. Here, we suppose the statement holds for some $n\geq 1$. Then for $n+1$ we have
+		      \begin{align*}
+			      \sum_{k=1}^{n+1} k & := \underbrace{1+2+\dots + n}_{= n(n+1)/2 \text{ by the induction hypothesis}} + (n+1) \\
+			                         & = \frac{n(n+1)}{2} + (n+1)                                                             \\
+			                         & = (n+1)\left(\frac{n}{2} + 1\right)                                                    \\
+			                         & = (n+1)\left(\frac{n+2}{2}\right)                                                      \\
+			                         & =\frac{(n+1)([n+1]+1)}{2}
+		      \end{align*}
+		      This shows that the statement also holds for $n+1$ which concludes the proof.
+	      \end{proof}
+	\item Show that for all integers $n \geq 4$ one has $2^n < n!$.
+
+	      \begin{proof}
+		      We proceed by induction on $n \geq 4$. Since we want to prove a statement for $n \geq 4$, our base case should be verifying the case $n = 4$.\\
+
+		      \noindent\underbar{Base case}. For $n=4$ we manually verify the claim:
+		      \[
+			      2^4 = 16 < 24 = 4!.
+		      \]
+		      \underbar{Inductive step}. Now, we make the induction hypothesis. Suppose that, for $n \geq 4$, we know
+		      \begin{equation}\label{eq:1-5}
+			      2^n < n!.
+		      \end{equation}
+		      We want to show that the statement also holds for $n+1$. More precisely, we want to prove the following inequality: \[2^{n+1} < (n+1)!.\] By the inductive hypothesis \eqref{eq:1-5}, we have
+		      \[
+			      2^{n+1} = 2\cdot 2^n < 2\cdot n!
+		      \]
+		      Because $n \geq 4$, we also get $(n+1) \geq 5 \geq 2$. Using this together with the equation above yields
+		      \[
+			      2^{n+1} < 2\cdot n! < (n+1)\cdot n! = (n+1)!
+		      \]
+		      This completes the inductive step.
+	      \end{proof}
+	\item Show that $5^n - 1$ is divisible by $4$ for all $n \in \NN$.
+	      \begin{proof}
+		      Since we wish to prove a claim for all $n \geq 1$, we should take $n := 1$ as a base case. \\
+
+		      \noindent\underbar{Base case}. Clearly,
+		      $$5^1 - 1 = 4,$$  which is certainly divisible by $4$. Hence, the base case is true.\\
+
+		      \noindent\underbar{Inductive step}. Assume that $5^n -1$ is divisible by $4$ for some $n \geq 1$ (this is the inductive hypothesis). We must show that $5^{n+1} - 1$ is also divisible by $4$. But, this is easily seen by writing
+		      \begin{align*}
+			      5^{n+1} - 1 = 5 \cdot 5^n - 1 & = \underbrace{5^n + 5^n + 5^n + 5^n}_{\text{4 times}} + \left(5^n - 1\right) \\
+			                                    & = 4 \cdot 5^n + (5^n-1).
+		      \end{align*}
+		      Clearly, $4 \cdot 5^n$ is divisible by $4$. By the induction hypothesis, so is $5^n - 1$. Hence, $4$ must be a divisor of their sum, which is equal to $5^{n+1} -1$ by the calculations above.
+	      \end{proof}
+
+
+	\item Show that $2^n \geq 2n+1$ for all integers $n \geq 3$.
+
+	      \begin{proof}
+		      This looks like something we should try to prove with induction.\\
+
+		      \noindent\underbar{Base case}. With $n= 3$, we check directly that
+		      \[
+			      2^3 = 8> 7 = 2(3)+1
+		      \]
+		      This means that the base case is true.\\
+
+		      \noindent\underbar{Inductive step}. Suppose that the statement is true for some $n \geq 3$; we must prove that it is also true for $n+1$. Namely, our induction hypothesis is:
+		      \begin{equation}\label{eq:1-0}
+			      2^n \geq 2n+1.
+		      \end{equation}
+		      We want to show that $2^{n+1}\geq 2(n+1) + 1 $. First, write
+		      \begin{align}\label{eq:1-00}
+			      2^{n+1} = 2\cdot 2^n \overset{\eqref{eq:1-0}}{\geq} 2\cdot (2n+1)
+		      \end{align}
+		      Since $n \geq 3$, it is clear that $2n \geq 1$. So we have
+		      \[
+			      2^{n+1} \geq 2\cdot (2n+1) = 2(n+1) + 2n \geq 2(n+1) + 1
+		      \]
+		      This completes the inductive step and the claim is proven.
+	      \end{proof}
+
+	\item Show that if $n \geq 5$ is an integer, then $2^n > n^2$.
+	      \begin{proof}
+		      Since we are asked to prove an equality involving integers, it is a good idea to try and use mathematical induction.  We start with the base case $n=5$.\\
+
+		      \noindent\underbar{Base case}. With $n= 5$ we check that
+		      \[
+			      2^5 = 32 > 25 = 5^2
+		      \]
+		      Hence, the claim holds for $n = 5$.\\
+
+		      \noindent\underbar{Inductive step}. Suppose the claim is true for $n \geq 5$, we must show that is is also true for $n+1$. Our inductive hypothesis is therefore the following:
+		      \[
+			      2^n > n^2
+		      \]
+		      Using this, we must show that
+		      \[
+			      2^{n+1} > (n+1)^2
+		      \]
+		      Using the induction hypothesis, we calculate
+		      \[
+			      2^{n+1} = 2^n + 2^n > n^2 + 2^n
+		      \]
+		      Because $n \geq 5 \geq 3$, we can apply the previous problem to the above. Doing so gives $2^n > 2n+1$ whence
+		      \[
+			      2^{n+1} > n^2 + 2^n > n^2 + 2n + 1 = (n+1)^2.
+		      \]
+		      This completes the inductive step.
+	      \end{proof}
+
+\end{enumerate}
+
+\section*{Tutorial 2}
+
+\begin{enumerate}[leftmargin=*]
+	\item Conjecture and prove a formula for the sum
+	      \[
+		      \frac{1}{1\cdot 3} +\frac{1}{3\cdot 5} + \frac{1}{5\cdot 7} + \dots + \frac{1}{(2n-1)(2n+1)}
+	      \]
+	      where $n$ is any natural number.\\
+
+	      The solution is that for any $n\in\NN$, we have
+	      \[
+		      \frac{1}{1\cdot 3} +\frac{1}{3\cdot 5} + \dots + \frac{1}{(2n-1)(2n+1)} = \frac{n}{2n+1}
+	      \]
+	      We will now prove this by induction.
+
+	      \noindent\underline{Base case:} In the case $n=1$, we have
+	      \[
+		      \frac{1}{1\cdot 3} = \frac{1}{3}
+	      \]
+	      We therefore see that the claim holds for $n=1$.\\
+	      \underline{Inductive Step:} Suppose that the claim is true for some $n\geq 1$. That is, suppose that equation
+	      \[
+		      \frac{1}{1\cdot 3} +\frac{1}{3\cdot 5} + \dots + \frac{1}{(2n-1)(2n+1)} = \frac{n}{2n+1}
+	      \]
+	      is true.
+
+	      Then for $n+1$ we have
+	      \begin{align*}
+		        & \underbrace{\frac{1}{1\cdot 3} +\frac{1}{3\cdot 5} + \dots + \frac{1}{(2n-1)(2n+1)}}_{\text{induction hypothesis!}} + \frac{1}{(2(n+1)-1)(2(n+1)+1)} \\
+		      = & \frac{n}{2n+1} + \frac{1}{(2(n+1)-1)(2(n+1)+1)}                                                                                                      \\
+		      = & \frac{n+1}{2(n+1)+1}
+	      \end{align*}
+	      where the last equality follows from a series of algebraic manipulations.
+	      \iffalse
+		      \begin{align*}
+			      \frac{n}{2n+1} + \frac{1}{(2(n+1)-1)(2(n+1)+1)}
+			      = & \frac{n}{2n+1} + \frac{1}{(2n+1)(2(n+1)+1)} \\
+			      = & \frac{n(2n+3)+1}{(2n+1)(2(n+1)+1)}          \\
+			      = & \frac{2n^2+3n+1}{(2n+1)(2(n+1)+1)}          \\
+			      = & \frac{2n^2+3n+1}{(2n+1)(2(n+1)+1)}          \\
+			      = & \frac{(2n+1)(n+1)}{(2n+1)(2(n+1)+1)}        \\
+			      = & \frac{n+1}{2(n+1)+1}                        \\
+		      \end{align*}
+	      \fi
+	      The above shows that the statement holds for $n+1$. This concludes the induction step.
+
+	\item Define $x_1 = 1, x_2=2$ and for every $n\geq 1$, $x_n = \frac{1}{2}(x_n+x_{n+1})$. Use the Principle of strong induction to show that $1\leq x_n \leq 2$ for all natural numbers $n$. \\
+
+	      \noindent\underline{Base case:} We see that the statement is true for $n=1$ and $n=2$. Indeed, $1 \leq x_1\leq 2$ since $x_1=1$ and $1\leq x_2\leq 2$ since $x_2=2$.
+
+	      \noindent\underline{Inductive step:} Suppose the statement holds true up to some $n\geq 2$. That is, $1\leq x_k \leq 2$ for all natural numbers $k \leq n$.
+
+	      We want to show that $1\leq x_{n+1} \leq 2$. First, we show $x_{n+1}\geq 1$.
+
+	      By the induction hypothesis, $x_{n-1} \geq 1$ and $x_n \geq 1$. It follows that
+	      \[
+		      x_{n-1} + x_n \geq 2
+	      \]
+	      Dividing either side by 2 yields
+	      \[
+		      \frac{x_{n-1} + x_n}{2}\geq 1
+	      \]
+	      But since $x_{n+1} = \frac{x_{n-1} + x_n}{2}$, the above shows that $x_{n+1}\geq 1$.
+
+	      Now, we show that $x_{n+1} \leq 2$. By the induction hypothesis, $x_{n-1} \leq 2$ and $x_n \leq 2$. It follows that
+	      \[
+		      x_{n-1} + x_n \leq 2 + 2 = 4
+	      \]
+	      Dividing either side by 2 yields
+	      \[
+		      \frac{x_{n-1} + x_n}{2}\leq 2
+	      \]
+	      But since $x_{n+1} = \frac{x_{n-1} + x_n}{2}$, the above shows that $x_{n+1}\leq 2$.
+
+	      We conclude that $1\leq x_{n+1} \leq 2$ as desired.
+
+	\item Simplify the expression representing the following sets;
+	      \begin{enumerate}
+		      \item $A\setminus (B\setminus A)$,
+		      \item $A\setminus (A\setminus B)$,
+		      \item $A\cap (B\setminus A)$.
+	      \end{enumerate}
+
+	      The simplified version are;
+	      \begin{enumerate}
+		      \item $A\setminus (B\setminus A) = A$,
+		      \item $A\setminus (A\setminus B) = A\cap B$,
+		      \item $A\cap (B\setminus A) = \emptyset$.
+	      \end{enumerate}
+
+	\item Show that $A\subseteq B$ if and only if $A\cap B = A$. \\
+
+	      Suppose first that $A\subseteq B$; we will show that $A\cap B = A$.
+
+	      If $x\in A\cap B$, then $x\in A$ and $x\in B$. In particular, $x\in A$. This shows the inclusion $A\cap B\subseteq A$.
+
+	      Conversely, let $x\in A$. Since we assumed that $A\subseteq B$, we also have $x\in B$. But then $x\in A$ and $x\in B$ which means that $x\in A\cap B$. This shows the converse inclusion $A\subseteq A\cap B$.
+
+	      We conclude that $A\cap B = A$.
+
+	      We have therefore showed that if $A\subseteq B$ then $A\cap B = A$.\\
+
+	      We now show that if $A\cap B = A$ then $A\subseteq B$. So, we suppose that $A\cap B = A$. If $x\in A$ then $x\in A\cap B$. In particular, we have $x\in B$. We have thereby shown that if $x\in A$ then $x\in B$, that is $A\subseteq B$.
+
+	      So we have assumed that $A\cap B = A$ and concluded that $A\subseteq B$.
+
+	      This concludes the proof.
+
+	\item Show that $A\cup B = A\cap C$ if and only if $B\subseteq A\subseteq C$.
+
+	\item Define $A_n = \set{(n+1)k : k\in \NN}$ for each $n\in \NN$.
+	      \begin{enumerate}
+		      \item What is $A_1\cap A_2$?
+		      \item Determine the sets $\bigcup_{n\in \NN}A_n$ and $\bigcap_{n\in \NN} A_n$.
+	      \end{enumerate}
+
+	      (a) First, note that the set $A_n$ is the set of all natural numbers divisible by $n+1$. So $A_1$ is all the even positive integers and $A_2$ is all the positive integer divisible by 3. So we claim that
+	      \[
+		      A_1\cap A_2 = \set{\text{positive integers divisble by 6}} = A_5
+	      \]
+	      To prove this equality, suppose first that $x\in A_1\cap A_2$, then there exists $k_1 \in \NN$ such that $x = 2k_1$ and $k_2\in \NN$ such that $x = 3k_2$. So,
+	      \[
+		      x=  2k_1 = 3k_2
+	      \]
+	      In particular, we claim that $k_2$ is even (if this were not the case, then $3k_2$ would be odd since the product of odd numbers is odd; but this is not possible). It follows that $k_2 = 3k$ for some $k\in \NN$. In particular, $x = 6k$. It follows from the definition of $A_5$ that $x\in A_5$. This proves the inclusion
+	      \[
+		      A_2\cap A_3\subseteq A_5
+	      \]
+
+	      Conversely, suppose that $x\in A_5$. Then $x = 6k$ for some $k\in \NN$. Writing $x = 2(3k)$ we see that $x\in A_1$ and writing $x = 3(2k)$ we see that $x\in A_2$. Thus, $x\in A_1\cap A_2$. This proves the inclusion $A_5\subseteq A_1\cap A_2$ whence we conclude that $A_2\cap A_3 = A_5$.
+
+
+	      (b) We claim that
+	      \[
+		      \bigcup_{n\in \NN} A_n = \NN\setminus\set{1}
+	      \]
+	      First we show the inclusion
+	      \[
+		      \bigcup_{n\in \NN} A_n \subseteq \set{2,3, 4, \dots} = \NN\setminus\set{1}
+	      \]
+	      To this end, suppose $x\in\bigcup_{n\in \NN} A_n$. Then $x\in A_n$ for some $n\in \NN$. But then, $x = (n+1)k$ for some $k\in \NN$. Since $n\in \NN$, we have $n\geq 1$ and $n+1\geq 2$. It follows that $x\geq 2$. So, $x$ is a natural number and $x\neq 1$ whence $x\in \NN\setminus \set{1}$.
+
+	      Conversely, consider any number $x\in \NN\setminus \set{1}$. Then since $x\geq 2$, it must be the case that $x-1 \in \NN$. But the, $x = [(x-1)+1]\cdot 1 \in A_{x-1}$. It follows that $x\in\bigcup_{n\in \NN} A_n$. This shows the inclusion
+	      \[
+		      \NN\setminus\set{1} \subseteq \bigcup_{n\in \NN} A_n
+	      \]
+	      and we conclude that equality must hold.
+
+	      For the second part, we claim that
+	      \[
+		      \bigcap_{n\in \NN} A_n = \emptyset
+	      \]
+	      To see this, it suffices to suppose that there exists an element $x\in \bigcap_{n\in \NN} A_n$ and derive a contradiction. Indeed, by deriving a contradiction we show that it is impossible for $\bigcap_{n\in \NN} A_n$ to contain any number which means that $\bigcap_{n\in \NN} A_n = \emptyset$. Without further ado, suppose $x\in \bigcap_{n\in \NN} A_n$. Then $x\in A_n$ for all $n\in \NN$. In particular, it must be the case that $x \in A_{x}$. But then, we must have $x=  (x+1)k$ for some $k\in \NN$. In particular,
+	      \[
+		      x = (x+1)k \geq x+1 > x \implies x>x
+	      \]
+	      which is clearly a contradiction.
+
+	\item Let us now put into practice the concept of the image and pre-image of a function. Define the function $f:\RR\setminus\set{0}\to \RR$ given by $f(x) = 1/x^2$. What is $f(E)$ where
+	      \[
+		      E = \set{x\in \RR : 1\leq x\leq 2} = [1,2]?
+	      \]
+	      What is $f^{-1}(G)$ where
+	      \[
+		      G = \set{x\in \RR :  1\leq x\leq 4} = [1, 4]?
+	      \]
+
+	      We have
+	      \begin{align*}
+		      f(E) & = \set{f(x) : x\in E}              \\
+		           & =\set{1/x^2 : 1\leq x \leq 2}      \\
+		           & =\set{y\in \RR : 1/4\leq y \leq 1} \\
+		           & =[1/4, 1]
+	      \end{align*}
+	      Furthermore,
+	      \begin{align*}
+		      f^{-1}(G) & = \set{x \in \RR\setminus\set{0} :  f(x) \in G}                                      \\
+		                & = \set{x \in \RR\setminus\set{0} :  1\leq f(x) \leq 4}                               \\
+		                & = \set{x \in \RR\setminus\set{0} :  1\leq 1/x^2 \leq 4}                              \\
+		                & = \set{x \in \RR\setminus\set{0} :  1\geq x^2 \geq 1/4}                              \\
+		                & = \set{x \in \RR\setminus\set{0} :  1\geq x \geq 1/2 \text{ or } -1\leq x \leq -1/2} \\
+		                & = [-1, -1/2] \cup [1/2, 1]
+	      \end{align*}
+
+	\item Let $f:A\to B$ and $g:B\to C$ be functions. Show that for every $X\subseteq C$ it holds that
+	      \[
+		      (g\circ f)^{-1}(X) = f^{-1}\left(g^{-1}(X)\right)
+	      \]\\
+
+	      To prove this, we begin by picking an arbitrary subset $X$ of $C$. Now, we have to show that
+	      \[
+		      (g\circ f)^{-1}(X) = f^{-1}\left(g^{-1}(X)\right)
+	      \]
+	      We begin by proving the first inclusion. To this end, consider any point $x\in (g\circ f)^{-1}(X)$. Then
+	      \[
+		      (g\circ f)(x) = g\left(f(x)\right) \in X
+	      \]
+	      But then, $f(x) \in g^{-1}(X)$. It follows that $x\in f^{-1}\left(g^{-1}(X)\right)$ as desired. So we have shown that any point in $(g\circ f)^{-1}(X)$ is also a point in $f^{-1}\left(g^{-1}(X)\right)$. That is,
+	      \[
+		      (g\circ f)^{-1}(X) \subseteq f^{-1}\left(g^{-1}(X)\right)
+	      \]
+
+	      To see that the reverse inclusion holds as well, consider any point $x\in f^{-1}\left(g^{-1}(X)\right)$. By definition, we have $f(x) \in g^{-1}(X)$. But then,
+	      \[
+		      g(f(x)) = (g\circ f )(x) \in X
+	      \]
+	      That is, $x\in (g\circ f)^{-1}(X)$. So we have that every point in $f^{-1}\left(g^{-1}(X)\right)$ is also in $x\in (g\circ f)^{-1}(X)$. Thus, the reverse inclusion
+	      \[
+		      f^{-1}\left(g^{-1}(X)\right) \subseteq (g\circ f)^{-1}(X)
+	      \]
+	      holds as well.
+
+	      Since both inclusions hold, we have
+	      \[
+		      (g\circ f)^{-1}(X) = f^{-1}\left(g^{-1}(X)\right)
+	      \]
+	      Since the choice of $X\subseteq C$ was arbitrary, we see that the above equality holds for all subsets $X$ of $C$.
+
+\end{enumerate}
+
+\section*{Tutorial 3}
+
+\begin{enumerate}[leftmargin=*]
+	\item I wanted to clarify what I mean by the notation ``$:=$''. For instance, if I write $y:= f(x)$ then you can read it as ``define $y$ to be $f(x)$''. So, if you read a proof and you see, for instance, $a:=f\circ g(x)$, you do not have to wonder why the equality is valid. I am simply introducing a new variable and defining it that way.
+	\item Consider the function
+	      \[
+		      f: \NN\to \RR,\quad x\mapsto \frac{1}{x}
+	      \]
+	      Is this function injective? surjective?
+
+	      The function is injective but nor surjective.
+
+	\item Is the function
+	      \[
+		      f: \RR\to\RR, \quad x\mapsto\sin(x)
+	      \]
+	      injective? surjective?
+
+	      The function is not injective nor surjective.
+
+	      How can we restrict the domain to make it injective?
+
+	      Well, note that $f\mid_{[\pi/2, 3\pi/2]}$ which is the function
+	      \[
+		      f\mid_{[\pi/2, 3\pi/2]}: [\pi/2, 3\pi/2]\to\RR, \quad x\mapsto\sin(x)
+	      \]
+	      is injective. Furthermore, changing the image make $f\mid_{[\pi/2, 3\pi/2]}$ a bijection. That is, if we view $f\mid_{[\pi/2, 3\pi/2]}$ as a function from $[\pi/2, 3\pi/2]$ to $[-1,1]$ then it is bijective.
+
+	\item Let $f:A\to B$ be an injective function and let $C, D \subseteq A$. Show that if $f(C)\subseteq f(D)$ then $C\subseteq D$.
+
+	      Suppose that $f:A\to B$ is an injective function and the sets $C, D \subseteq A$ are such that $f(C)\subseteq f(D)$. We wish to show that $C\subseteq D$. To this end, suppose $x \in C$. By definition, we have $y:= f(x) \in f(C)$. Since $f(C)\subseteq f(D)$, it follows that $y\in f(D)$. This means that there exists $x^\prime \in D$ such that $f(x^\prime) = y$.
+
+	      Note that we then have
+	      \[
+		      f(x^\prime) = y = f(x)
+	      \]
+	      Since $f$ is injective, this implies that $x = x^\prime$. In particular, $x\in D$ (since $x^\prime \in D$). We conclude that $C\subseteq D$.
+
+	\item Give an example of a function $f:\RR\to \RR$ and subsets $C, D$ of $\RR$ such that $f(C) \subseteq f(D)$ but $C\not\subseteq D$.
+
+	      Consider for instance the function $f(x)=x^2$ and the set $C = [1,2]$ and $D = [-2, -1]$.
+
+	\item Show that for any function $f : A\to B$ and $C, D\subseteq A$ it holds that $f(C\cap D) \subseteq f(C)\cap f(D)$.
+
+	      Fix an arbitrary element $y\in f(C\cap D)$. By definition, $y = f(x)$ for some $x\in C\cap D$. In particular, $x\in C$ so $y = f(x) \in f(C)$. Similarly, it follows from $x\in D$ that $y = f(x)\in f(D)$. Therefore, $y\in f(C)\cap f(D)$. Since $y$ was an arbitrary element of $f(C\cap D)$,we infer that $f(C\cap D)\subseteq f(C)\cap f(D)$.
+
+	\item Show that if $f : A\to B$ is injective and $C, D\subseteq A$ then $f(C\cap D) = f(C)\cap f(D)$.
+
+	      The inclusion $f(C\cap D)\subseteq f(C)\cap f(D)$ is known by the previous problem. Conversely, fix an arbitrary element $y\in f(C)\cap f(D)$. Since $y\in f(C)$, there exists $x_1\in C$ such that $y = f(x_1)$. Since $y\in f(D)$, there exists $x_2\in D$ such that $y = f(x_2)$. But then we have
+	      \[
+		      f(x_1) = y = f(x_2)
+	      \]
+	      The injectivity of $f$ implies that $x_1 = x_2$. In particular, $x_1 \in C$ and $x_1 = x_2 \in D$. Thus, $x_1 \in C\cap D$. So $y = f(x_1)$ is an element of $f(C\cap D)$. Since $y$ was an arbitrary element of $f(C)\cap f(D)$, this shows the inclusion $f(C)\cap f(D)\subseteq f(C\cap D)$ and completes the proof.
+
+	\item Let $f:A\to B$ be a surjective function and $G, H \subseteq B$. Show that if $f^{-1}(G) \subseteq f^{-1}(H)$ then $G\subseteq H$.
+
+	      Pick an arbitrary element $y\in G$. Since $f$ is surjective, there exists $x\in A$ such that $f(x) = y$. But then we have $x\in f^{1}(G) \subseteq f^{-1}(H)$. Since $x\in f^{-1}(H)$, it must hold that $y = f(x) \in H$. Since $y$ was an arbitrary element of $G$, this proves the inclusion $G\subseteq H$.
+
+	\item Give an example of a function $f:\RR\to \RR$ and $G, H\subseteq \RR$ such that $f^{-1}(G)\subseteq f^{-1}(H)$ but $G\not\subseteq H$.
+
+	      Consider $f(x) = x^2$, $G = (-\infty, 0]$ and $H = [0,1]$.
+
+	\item Suppose $f:A\to B$ is a function. Show that if $f^{-1}(f(E)) = E$ for all $E\subseteq A$ then $f$ is injective.
+
+	      We prove the statement by contrapositive. So, we suppose that $f$ is not injective and wish to show that there exists $E\subseteq A$ for which $f^{-1}(f(E)) \neq E$.
+
+	      Since $f$ is injective, there exist $x_1, x_2 \in A$ with $x_1\neq x_2$ such that $f(x_1) = f(x_2) =: y$. Now, for $E = \set{x_1}$ we have
+	      \[
+		      f^{-1}(f(E)) = f^{-1}(\set{y}) \supseteq \set{x_1, x_2}
+	      \]
+	      In particular, we have $f^{-1}(f(E)) \neq E$. This concludes the proof.
+
+	\item Suppose $f:A\to B$ is a function. Show that if $f\left(f^{-1}(H)\right) = H$ for all $H\subseteq B$ then $f$ is surjective.
+
+	      As in the previous problem, we prove the statement by contrapositive. To this end, suppose that $f$ is not surjective. Then there exists $y\in B$ such that $f(x)\neq y$ for all $x\in A$. Define $H = \set{y}$ and note that
+	      \[
+		      f\left(f^{-1}(H)\right) = f(\emptyset) = \emptyset \neq H
+	      \]
+	      This proves the statement.
+
+	\item Suppose $f:A\to B$ is a function. Show that if $f(A\setminus E) = f(A)\setminus f(E)$ for all $E\subseteq A$ then $f$ is injective.
+
+	      We prove the statement by contrapositive. That is, we suppose that $f$ is not injective and wish to show that there exists $E\subseteq A$ for which $f(A\setminus E) \neq f(A)\setminus f(E)$.
+
+	      Since $f$ is not injective, there exists $x_1, x_2\in A$ with $x_1\neq x_2$ such that $f(x_1) = f(x_2) =:y$. Now, consider $E = \set{x_1}$. Then
+	      \[
+		      f(A\setminus E) =  f(A)
+	      \]
+	      But $f(A) \setminus f(E) \subsetneq f(A)$. This concludes the proof.
+
+	      \begin{rem}
+		      As promised in the tutorial, I will take this opportunity to show why proving equality of sets while maintaining set notation is sometimes ``dangerous''.
+
+		      The set $f(A)\setminus f(E)$ is, by definition, equal to
+		      \[
+			      \set{f(x) :x\in A}\setminus \set{f(x) : x\in E}
+		      \]
+		      Now, it might be tempting to claim that
+		      \[
+			      \set{f(x) :x\in A}\setminus \set{f(x) : x\in E} = \set{f(x) :x\in A,\, x\not\in E}
+		      \]
+		      But
+		      \[
+			      \set{f(x) :x\in A,\, x\not\in E} = f(A\setminus E)
+		      \]
+		      and as seen in the above exercise, the equality $f(A)\setminus f(E) = f(A\setminus E)$ does not necessarily hold.
+	      \end{rem}
+
+	\item Show that if $f:A\to B$ is surjective then there exists a function $g:B\to A$ such that
+	      \[
+		      f\circ g(y) = y \qquad \forall y\in B
+	      \]
+
+	      For each $y\in B$, there exists $x_y\in X$ such that $f(x_y) = y$. Now, define $g(y) = x_y$ for every $y\in B$. Then it is clear that $f\circ g(y) = y$ for every $y\in B$.
+
+	      \begin{rem}
+		      Note that $g$ is not necessarily the inverse function of $f$. For instance, consider the functions $f: \RR\to[0,\infty), \, f(x) = x^2$ and $g:[0, \infty) \to \RR,\, g(x) = \sqrt{x}$. Note that $f$ and $g$ satisfy the conditions of the exercise but $g$ is not the inverse function of $f$.
+	      \end{rem}
+
+	\item Suppose that $f:A\to B$ is a function. Show that if there exists $g:B\to A$ such that
+	      \[
+		      f\circ g(y) = y \qquad \forall y\in B
+	      \]
+	      then $f$ is surjective.
+
+	      Fix an arbitrary element $y\in b$. Then $x:= g(y)$ satisfies $f(x) = y$. Thus, $f$ is surjective.
+
+	\item Show that if $f:A\to B$ is injective then there exists a function $g:B\to A$ such that
+	      \[
+		      g\circ f(x) = x \qquad \forall x\in A
+	      \]
+
+	      Fix \underline{any} element $x_0\in A$ and define the function $g : B\to A$ by
+	      \[
+		      g(y) = \begin{cases}
+			      x\in A \text{ such that } f(x) = y & \text{if }y\in f(A) \\
+			      x_0                                & \text{otherwise}
+		      \end{cases}
+	      \]
+	      Note that $g$ is as desired.
+
+	      \begin{rem}
+		      We note again that $g$ is not necessarily the inverse function of $f$. For instance, consider the functions $f: [0, \infty)\to \RR, \, f(x) = x^2$ and $g:\RR \to [0, \infty)$,
+		      \[
+			      g(x) = \begin{cases}
+				      \sqrt{x} & x\geq 0 \\
+				      1        & x<0
+			      \end{cases}
+		      \]
+		      Note that $f$ and $g$ satisfy the conditions of the exercise but $g$ is not the inverse function of $f$.
+	      \end{rem}
+
+	\item Suppose that $f:A\to B$ is a function. Show that if there exists $g:B\to A$ such that
+	      \[
+		      g\circ f(x) = x \qquad \forall x\in A
+	      \]
+	      then $f$ is injective.
+
+	      To see that $f$ is injective, suppose that $f(x_1) = f(x_2)$ for some $x_1, x_2\in A$. Then
+	      \[
+		      x_1 = g\circ f(x_1) = g(f(x_1)) = g(f(x_2)) = g\circ f(x_2) = x_2
+	      \]
+	      We conclude that $f$ is indeed injective.
+
+	\item Suppose $A$ is an infinite set and $B\subseteq A$ a finite set. Show that $A\setminus B$ must also be infinite.
+
+	      Suppose for a contradiction that $A\setminus B$ is finite. Then note that $A\setminus B$ and $B$ are disjoint finite sets whose union is $A$. By part (1) of exercise 3 in your third assignment, $A$ is finite. But this contradicts the assumption that $A$ is infinite.
+\end{enumerate}
+
+\section*{Tutorial 4}
+
+\begin{enumerate}[leftmargin=*]
+	\item We start with an exercise which isn't particularly difficult, but is a good example of how you have to use definitions. Remember that in order to prove something, you have to either use a theorem or directly use the definition. Sometimes, this makes things seem ``tautological''.
+
+	      \emph{Prove that is non-empty set $T_1$ is finite if and only if there is a bijection from $T_1$ onto a finite set $T_2$.}
+	      \begin{proof} In the proof, we always assume that $T_1$ is non-empty.
+
+		      Suppose first that $T_1$ is finite. Then the identity function $\mathrm{Id}: T_1 \to T_1$ which is given by $x\mapsto x$ is clearly a bijection from $T_1$ onto the finite set $T_1$. This proves the first direction.
+
+		      Conversely, suppose there exists a bijection $f:T_1\to T_2$ where $T_2$ is a finite set. Since $T_2$ is finite, the definition states that, for some $n\in\NN$ there exists a bijection $g:\NN_n \to T_2$. Now, let $f^{-1} : T_2 \to T_1$ denote the inverse function of $f$ (we can indeed find the inverse function since $f$ is bijective). Finally, the function $f^{-1}\circ g : \NN_n \to T_1$ is a bijection. By definition, this means that $T_1$ is a finite set (with $n$ elements).
+	      \end{proof}
+
+	\item \emph{Prove that is non-empty set $T_1$ is countably infinite if and only if there is a bijection from $T_1$ onto a countably infinite set $T_2$.}
+	      \begin{proof} In the proof, we always assume that $T_1$ is non-empty.
+
+		      Suppose first that $T_1$ is countably infinite. Then the identity function $\mathrm{Id}: T_1 \to T_1$ which is given by $x\mapsto x$ is clearly a bijection from $T_1$ onto the countably infinite set $T_1$. This proves the first direction.
+
+		      Conversely, suppose there exists a bijection $f:T_1\to T_2$ where $T_2$ is a countably infinite set. Since $T_2$ is countably infinite, the definition states that there exists a bijection $g:\NN \to T_2$. Now, let $f^{-1} : T_2 \to T_1$ denote the inverse function of $f$ (we can indeed find the inverse function since $f$ is bijective). Finally, the function $f^{-1}\circ g : \NN \to T_1$ is a bijection. By definition, this means that $T_1$ is a countably infinite set.
+	      \end{proof}
+
+	\item Recall the following definitions;
+	      \begin{def_}[Function]
+		      Given sets $A, B$, a function from $A$ to $B$ is a set $f$ of ordered pairs in $A\times B$ such that for each $a\in A$, there exists a unique $b\in B$ with $(a,b)\in f$. The set $A$ is called the domain of $f$.
+	      \end{def_}
+	      \begin{def_}
+		      If $f:A\to B$ is bijective (i.e. injective and surjective) then the function
+		      \[
+			      g:\set{(b,a) \in B\times A :(a,b) \in f}
+		      \]
+		      is called the inverse function of $f$.
+	      \end{def_}
+	      \emph{Show that if $f:A\to B$ is bijective, then the inverse function $g$ of $f$ is indeed a bijective function.}
+	      \begin{proof}
+		      First we show that $g$ is indeed a function. For every $b\in B$, since $f$ is bijective there exists $a\in A$ such that $(a,b) \in f$ whence $(b,a)\in g$. Since $f$ is injective, the choice of $a$ is unique. This shows that $g$ is indeed a function.
+
+		      To see that $g$ is injective, suppose that $g(x_1) = g(x_2) =: a$. Then $(a, x_1), (a,x_2)\in f$ (i.e. $f(a) = x_1$ and $f(a) = x_2$). Since $f$ is a function, it follows that $x_1 = x_2$.
+
+		      To see that $g$ is surjective, consider $a\in A$. Since $f$ is a function, there exists a unique $b\in B$ such that $(a,b)\in f$. In particular, $(b,a) \in g$. We conclude that $g$ is indeed surjective
+	      \end{proof}
+
+	\item Show that if $S$ and $T$ are countable (finite or infinite), then $S\cup T$ is also countable.
+
+	      \begin{proof}
+		      Suppose $S$ and $T$ are countable.
+
+		      If both $S$ and $T$ are finite, then (by your assignment) $S\cup T$ is also finite. If $S$ is infinite but $T$ is finite, then there exist bijective functions $f:\NN\to S$ and $g:\NN_n \to T$. It follows that the function $h: \NN\to S\cup T$ given by
+		      \[
+			      h(x) = \begin{cases}
+				      g(x)   & \text{if } x\leq n \\
+				      f(x-n) & \text{if }x>n
+			      \end{cases}
+		      \]
+		      is a surjection (not necessarily a bijection!). By theorem 1.3.10. in your textbook, $S\cup T$ is countable.
+		      Similarly, if $S$ is finite and $T$ is infinite, we see that $S\cup T$ is countable.
+
+		      Finally, suppose that $S$ and $T$ are both infinite. Then there exist bijective functions $f:\NN\to S$ and $g:\NN\to T$. It follows that the function $h:\NN\to S\cup T$ given by
+		      \[
+			      h(x) = \begin{cases}
+				      g(x/2)     & \text{if $x$ is even} \\
+				      f((x+1)/2) & \text{if $x$ is odd}
+			      \end{cases}
+		      \]
+		      is a surjection (again, not necessarily a bijection). By theorem 1.3.10. in your textbook, $S\cup T$ is countable.
+	      \end{proof}
+	      \begin{proof}
+		      We present an alternate proof in the case where $S$ and $T$ are both countably infinite. Let $f_1:\NN\to S$ and $f_2:\NN\to T$ be bijective functions. Now, consider the function $g: \NN\times \NN \to S\cup T$ given by
+		      \[
+			      g(n, m) = \begin{cases}
+				      f_1(n) & \text{if } m=1   \\
+				      f_2(n) & \text{if } m=2   \\
+				      x_0    & \text{otherwise}
+			      \end{cases}
+		      \]
+		      where $x_0$ is any point in $S\cup T$. Clearly, $g$ is a surjective function. Now, since $\NN\times\NN$ is countable, there exists a bijective function $h : \NN\to\NN\times \NN$. It follows that $g\circ h : \NN\to S\cup T$ is a surjective function. By theorem 1.3.10. in your textbook, $S\cup T$ is countable.
+	      \end{proof}
+
+	\item \emph{Prove that the collection $\mathcal{F}(\NN)$ of finite subsets of $\NN$ is countable.}
+
+	      \begin{proof}
+		      Suppose $S$ is a finite subset of $\NN$, then note that $S\subseteq \NN_m$ for some $m\in \NN$.
+
+		      Now, for each $m\in\NN$ define $A_n$ to be the collection of all subsets of $\NN_{n}$, i.e. $A_n = \P(\NN_{n})$. A previous exercise in the Textbook (which we have not proven) states that $A_n$ is a finite set with $2^n$ elements.
+
+		      Finally, writing
+		      \[
+			      \mathcal{F}(\NN) = \bigcup_{n\in\NN} A_n
+		      \]
+		      we see that $\mathcal{F}(\NN)$ is the countable union of countable sets and thus countable.
+	      \end{proof}
+
+	\item \emph{Prove that the function $f:\NN\to \ZZ$ given by
+		      \[
+			      f(k) = \begin{cases}
+				      k/2      & \text{if $k$ is even} \\
+				      -(k-1)/2 & \text{if $k$ is odd}
+			      \end{cases}
+		      \]
+		      is a bijection.}
+
+	      \begin{proof}
+		      To see that $f$ is injective, suppose that $k_1, k_2\in \NN$ are such that $f(k_1) = f(k_2) =: y$. If $y \geq 1$ then we must have
+		      \[
+			      \frac{k_1}{2} = f(k_1) = y =f(k_2) = \frac{k_2}{2}
+		      \]
+		      It follows that $k_1= k_2$. In the case $y\leq 0$, we see again that $k_1 = k_2$.
+
+		      To see that $f$ is surjective, suppose $n\in\ZZ$. If $n > 1$ then $n = f(2n)$. If $n \leq 0$, then $n = f(-2n+1)$.
+
+		      We conclude that $f$ is bijective.
+	      \end{proof}
+
+	\item \emph{Construct a bijection from $\NN$ to the set $O$ of odd integers.}
+
+	      \begin{proof}
+		      The function $f:\NN \to O$ given by
+		      \[
+			      f(k) = \begin{cases}
+				      -(k-1) & \text{if $k$ is even} \\
+				      k      & \text{if $k$ is odd}
+			      \end{cases}
+		      \]
+		      is a bijection.
+	      \end{proof}
+
+	\item If $a,b\in\RR$, use the Algebraic properties of $\RR$ to show that if $a+b = 0$ then $b = -a$.
+
+	      \begin{proof}
+		      Suppose $a + b = 0$. Then since and $a + (-a) = 0$ we may write
+		      \begin{align*}
+			      b
+			      = & b + 0 \tag{A3 : existence of a zero element} \\
+			      = & b + (a+(-a))                                 \\
+			      = & (b+a) + (-a) \tag{A2 : associativity}        \\
+			      = & (a+b) + (-a) \tag{A1 : commutativity}        \\
+			      = & 0 + (-a)                                     \\
+			      = & -a \tag{A3 : existence of a zero element}
+		      \end{align*}
+		      So we have $b = -a$ and conclude that additive inverses are unique.
+	      \end{proof}
+
+	\item Using the algebraic properties of $\RR$, show that $(-1)\cdot a = -a$.
+
+	      \begin{proof}
+		      We write;
+		      \begin{align*}
+			      (-1)\cdot a
+			      = & (-1)\cdot a + 0\tag{A3 : existence of a zero element}     \\
+			      = & (-1)\cdot a + (a + (-a))                                  \\
+			      = & ((-1)\cdot a + a) + (-a)\tag{A2 : associativity}          \\
+			      = & ((-1)\cdot a + 1\cdot a) + (-a) \tag{M3: existence 1}     \\
+			      = & ((-1) + 1)\cdot a + (-a) \tag{D :  distributive property} \\
+			      = & 0\cdot a + (-a)                                           \\
+			      = & -a \tag{Theorem 2.1.2 (c)}
+		      \end{align*}
+	      \end{proof}
+
+	\item Show that
+	      \[
+		      \left[\frac{1}{2}(a+b)\right]^2 \leq \frac{1}{2}\left(a^2+b^2\right)
+	      \]
+	      \begin{proof}
+		      First notice that for all $a,b \in \RR$ we have
+		      \[
+			      a^2-2ab+b^2 = (a-b)^2  \geq 0
+			      \implies 2ab \leq a^2+b^2
+		      \]
+		      It follows that
+		      \begin{align*}
+			      \left[\frac{1}{2}(a+b)\right]^2
+			       & =\frac{1}{4}\left(a^2+\underbrace{2ab}_{\leq a^2+b^2}+b^2\right) \\
+			       & \leq \frac{1}{4}\left(a^2 + a^2+b^2 + b^2\right)                 \\
+			       & =\frac{1}{2}\left(a^2+b^2\right)
+		      \end{align*}
+	      \end{proof}
+
+	\item Show that if $a_1, \dots a_n$ are real positive numbers such that $a_1\cdots a_n = 1$ then
+	      \[
+		      1 \leq \frac{a_1 + a_2 + \dots + a_n}{n}
+	      \]
+
+	      \begin{proof} Equivalently, we will prove that $a_1+a_2+\dots +a_n \geq n$.
+		      We prove this by induction. The case $n=1$ is clear. Now, suppose the statement holds for some $n\in \NN$ and let $a_1, \dots, a_{n+1}$ be real positive numbers. If $a_1 = a_2 = \dots = a_{n+1} = 1$, then the inequality is clear. Otherwise, we may suppose without loss of generality that $a_{n+1} > 1$ and $a_n < 1$. Now, define $y = a_na_{n+1}$. By the induction hypothesis,
+		      \[
+			      a_1+a_2+\dots +a_{n-1} + y \geq n
+		      \]
+		      On the other hand, notice that $(1-a_n)(a_{n+1} - 1)> 0$ implies that $a_{n+1} + a_n \geq y + 1$. Using this and the above inequality we see that
+		      \begin{align*}
+			      a_1+a_2+\dots +a_{n-1} + a_n + a_{n+1}
+			       & \geq a_1 + a_2 + \dots + a_{n-1} + y + 1 \\
+			       & \geq n+1
+		      \end{align*}
+		      This completes the proof.
+	      \end{proof}
+
+	\item Prove the general Arithmetic-Geometric Mean Inequality. That is, show that for all real positive numbers $a_1, \dots, a_n$ there holds
+	      \[
+		      \left(a_1a_2\cdots a_n\right)^{1/n} \leq \frac{a_1+ a_2 + \dots + a_n}{n}
+	      \]
+	      \begin{proof} We consider two possible cases
+
+		      \underline{Case 1}: Suppose first that $a_1 a_2\cdots a_n = 1$. Then by the previous problem we have
+		      \[
+			      \left(a_1 a_2\cdots a_n\right)^{1/n} = 1 \leq \frac{a_1 + \dots  + a_n}{n}
+		      \]
+		      \underline{Case 1}: If $a_1 a_2\cdots a_n \neq 1$ then define $A = a_1 a_2\cdots a_n$. For each $1\leq k\leq n$ we also define
+		      \[
+			      x_k = \frac{a_k}{A^{1/n}}
+		      \]
+		      Now, notice that
+		      \[
+			      x_1x_2\cdots x_n = \frac{a_1a_1 \cdots a_n}{A} = 1
+		      \]
+		      In particular, $x_1, x_2, \dots, x_n$ are as in Case 1 and we have
+		      \[
+			      \left(x_1x_1\cdots x_n\right)^{1/n} \leq \frac{x_1 + x_2 + \cdots +x_n}{n}
+		      \]
+		      But the above inequality is precisely
+		      \[
+			      1 \leq \frac{a_1 + \dots + a_n}{A^{1/n} n}
+		      \]
+		      Recalling that $A = a_1 a_2\cdots a_n$, we see that
+		      \[
+			      \left( a_1 a_2\cdots a_n\right)^{1/n}\leq \frac{a_1 + \dots + a_n}{n}
+		      \]
+		      as was desired.
+	      \end{proof}
+
+\end{enumerate}
+
+\section*{Tutorial 5}
+
+\begin{enumerate}[leftmargin=*]
+	\item Prove that $\NN\times \NN$ is countable.
+
+	      \begin{proof}
+		      It suffices to show that there exists an injective function from $\NN\times \NN$ to $\NN$. For this, we define the function $f:\NN\times\NN\to\NN$ by
+		      \[
+			      f(n,m) = 2^n3^m
+		      \]
+		      and show that it is injective.
+
+		      Suppose that $f(n_1, m_1) = f(n_2, m_2)$, then we have
+		      \[
+			      2^{n_1}3^{m_1} = 2^{n_2}3^{m_2}
+		      \]
+		      We know consider the 4 possible cases;
+		      \begin{enumerate}
+			      \item If $n_1 \geq n_2$ and $m_1 \geq m_2$ then we obtain
+			            \[
+				            2^{n_1-n_2}3^{m_1 - m_2} = 1
+			            \]
+			            Since both are integers, we must have $2^{n_1-n_2} = 1$ and $3^{m_1-m_2} = 1$. It follows that $n_1=n_2$ and $m_1=m_2$.
+			      \item In the same way as above,we can see that if  $n_1 \leq n_2$ and $m_1 \leq m_2$ then $n_1=n_2$ and $m_1=m_2$.
+			      \item If $n_1\geq n_2$ and $m_1 \leq m_2$ then we have
+			            \[
+				            2^{n_1 - n_2} = 3^{m_2-m_1}
+			            \]
+			            But then, it must be the case that $n_1 - n_2 = m_2-m_1 = 0$. That is, $n_1=n_2$ and $m_1=m_2$.
+			      \item The case $n_1\leq n_2$ and $m_1 \geq m_2$ is handled similarly.
+		      \end{enumerate}
+	      \end{proof}
+
+	\item Prove by induction that
+	      \[
+		      \sum_{k=0}^n \binom{n}{k} = 2^n
+	      \]
+
+	      \begin{proof}
+		      Base case is clear. For the induction step write
+		      \begin{align*}
+			      \sum_{k=0}^{n+1} \binom{n+1}{k}
+			       & =\binom{n+1}{0}+\binom{n+1}{n+1} + \sum_{k=1}^n\binom{n+1}{k} \\
+			       & =1+1+\sum_{k=1}^n\left[\binom{n}{k} + \binom{n}{k-1}\right]   \\
+			       & =\sum_{k=0}^n\binom{n}{k} + 1+\sum_{k=0}^{n-1} \binom{n}{k}   \\
+			       & =2\cdot 2^n = 2^{n+1}
+		      \end{align*}
+	      \end{proof}
+
+	\item Let $f:A\to B$, $E\subseteq A$ and $H\subseteq B$. Show that $E\subseteq f^{-1}f(E)$ and $f(f^{-1}(H))\subseteq H$.
+
+	\item Show that if $f:A\to B$ is injective and $E\subseteq A$ then $E= f^{-1}f(E)$.
+
+	\item Show that if $f:A\to B$ is surjective and $H\subseteq B$ then $f(f^{-1}(H)) = H$.
+
+	\item Show that the countable union of countable sets is countable.
+
+	\item Show that the following are equivalent;
+	      \begin{enumerate}
+		      \item $A$ is countable,
+		      \item There exists a surjection $\NN\to A$,
+		      \item There exists an injection $A\to \NN$.
+	      \end{enumerate}
+
+\end{enumerate}
+
+\section*{Tutorial 6}
+
+\begin{enumerate}[leftmargin=*]
+	\item Fix $a\in \RR$ and $\epsilon > 0$. Show that for any $x,y\in V_\epsilon(a)$ there holds
+	      \[
+		      \abs{x-y} < 2\epsilon
+	      \]
+
+	      \begin{proof}
+		      This is a consequence of the triangle inequality. Recall that
+		      \[
+			      V_\epsilon(a) = \set{z\in \RR : \abs{z-a} < \epsilon}
+		      \]
+		      Thus, if $x, y\in V_\epsilon(a)$ then we have
+		      \[
+			      \abs{x-y}\leq \abs{x-a} + \abs{a-y} < \epsilon + \epsilon = 2\epsilon
+		      \]
+	      \end{proof}
+
+	\item Suppose $a\in \RR$ is such that $a<\epsilon$ for all $\epsilon>0$. Show that $a \leq 0$.
+
+	      \begin{proof}
+		      Suppose for a contradiction that $a > 0$. Then picking $\epsilon = a > 0$ we see that
+		      \[
+			      a < \epsilon = a
+		      \]
+		      which is absurd.
+	      \end{proof}
+
+	\item\label{p4} Show that for all $\epsilon > 0$ there exists $k\in \NN$ such that $\frac{1}{2^k} < \epsilon$.
+
+	      \begin{proof}
+		      First notice that for all $k\in \NN$ there holds
+		      \[
+			      k < 2^k
+		      \]
+		      One can prove this by induction or using Bernoulli's inequality.
+
+		      Now, fix $\epsilon>0$. By the Archimedean property, there exists $k\in\NN$ such that $k >1/\epsilon$. Then
+		      \[
+			      \frac{1}{2^k} <\frac{1}{k} <\epsilon.
+		      \]
+		      Since $\epsilon$ was arbitrary, this concludes the proof.
+	      \end{proof}
+
+	\item Show that the set $S = \set{\frac{n}{2^k} : k,n\in\NN}$ is dense in $[0,\infty)$. That is, show that for all $x,y\in [0,\infty)$ with $x<y$ there exists $s\in S$ such that
+	      \[
+		      x<s<y
+	      \]
+
+	      \begin{proof}
+		      Let $x<y$ be arbitrary points in $[0,\infty)$.
+
+		      By the previous problem, there exists $k\in \NN$ such that
+		      \[
+			      \frac{1}{2^k} < y-x
+		      \]
+		      Consider now the set
+		      \[
+			      A = \set{n \in \NN : \frac{n}{2^k} > x}
+		      \]
+		      By the Archimedean property, there exists $N\in \NN$ such that $N > 2^kx$. It follows that $A$ is non-empty. Thus, the well ordering property of $\NN$ implies that $A$ has a least element $n_0$. We claim that
+		      \[
+			      x < \frac{n_0}{2^k} < y
+		      \]
+		      The first inequality follows from the fact that $n_0 \in A$. If $n_0 = 1$ then we are done since
+		      \[
+			      \frac{n_0}{2^k} = \frac{1}{2^k} < y-x < y
+		      \]
+		      Otherwise, $n_0 \geq 2$ is the least element of $A$. It follows that $n_0 - 1\not\in A$. That is,
+		      \[
+			      \frac{n_0 - 1}{2^k} \leq x
+		      \]
+		      Ergo,
+		      \[
+			      y = x + (y-x) > \frac{n_0 - 1}{2^k}  + \frac{1}{2^k} = \frac{n_0}{2^k}
+		      \]
+	      \end{proof}
+
+	\item Let $A, B\subseteq \RR$ be two non-empty sets. Show that if $A\cap B$ is non-empty then
+	      \[
+		      \inf(A\cap B) \geq \max\set{\inf(A), \inf(B)}
+	      \]
+	      \begin{proof}
+		      It suffices to notice that both $\inf(A)$ and $\inf(B)$ are lower-bounds for $A\cap B$. Therefore, $\inf(A\cap B) \geq \inf(A)$ and $\inf(A\cap B) \geq \inf(B)$. But this implies that
+		      \[
+			      \inf(A) \geq \max\set{\inf(A), \inf(B)}
+		      \]
+	      \end{proof}
+
+	\item Suppose $A\subseteq \RR$ is a non-empty set. Show that if $A$ has a maximum $M$, then it also has a supremum and $\sup A = M$. Similarly, if $A$ has a minimum $m$ then it also has an infimum and $\inf A = m$.
+
+	      \begin{proof}
+		      We will only prove the first part. Suppose $A\subseteq \RR$ has a maximal element $M$. Then by definition, $M\in A$ and $a\leq M$ for all $a\in A$. In particular, the set $A$ is bounded above whence $A$ has a supremum.
+
+		      It remains to show that $\sup A = M$. If $u$ is an upper bound for $A$ then
+		      \[
+			      a\leq u\qquad\forall a\in A
+		      \]
+		      In particular, $M\leq u$ since $M\in A$.
+
+		      We conclude that $M$ is an upper bound which is less than or equal to any other upper bound for $A$. That is, $M$ is the supremum of $A$.
+	      \end{proof}
+
+
+
+	\item What are the infimum and supremum (if they exist) of the set
+	      \[
+		      S = \set{\frac{1}{2^k} : k\in \NN}.
+	      \]
+	      For this problem, you may use the following result; if $A\subseteq \RR$ is a non-empty set then the following are equivalent
+	      \begin{enumerate}
+		      \item $u$ is the infimum of $A$,
+		      \item $u$ is a lower bound for $A$ and for all $\epsilon>0$ there exists $a\in A$ such that $a-\epsilon < u$.
+	      \end{enumerate}
+
+	      \begin{proof}
+		      First, notice that the infimum and supremum exist since $S$ is bounded below by 0 and bounded above by 1. First, we claim that
+		      \[
+			      \sup S = \frac{1}{2}
+		      \]
+		      By the previous problem, it suffices to show that $\frac{1}{2}$ is the maximum of $S$. First, it is clear that $\frac{1}{2} \in S$. Moreover, if $s\in S$ then there exists $k\in\NN$ such that $s = \frac{1}{2^k}$. Since $k \geq 1$, we have
+		      \[
+			      s = \frac{1}{2^k} \leq \frac{1}{2}
+		      \]
+		      We conclude that $\sup S = \frac{1}{2}$.
+
+		      Now, we claim the the infimum of $S$ is 0. Clearly, 0 is a lower bound for $S$. Furthermore, by problem \ref{p4}, for all $\epsilon > 0$, there exist $k\in \NN$ such that
+		      \[
+			      \frac{1}{2^k} <\epsilon
+		      \]
+		      Since $\frac{1}{2^k}\in S$, it follows that $\sup S = 0$.
+	      \end{proof}
+
+	\item What are the infimum and supremum (if they exist) of the set
+	      \[
+		      S = \set{\frac{1}{n} - \frac{1}{m} : n,m\in \NN}.
+	      \]
+
+	      \begin{proof}
+		      First note that all elements in $S$ are bounded above and below. Indeed, given $n,m\in \NN$ we have
+		      \[
+			      -1 \leq \frac{1}{n} - \frac{1}{m} \leq 1
+		      \]
+		      We will prove that $\sup S = 1$. A similar argument shows that $\inf S = -1$.
+
+		      Since we already now that 1 is an upper bound, it suffices to show that for all $\epsilon > 0$, there exists $s\in S$ such that
+		      \[
+			      s > 1-\epsilon
+		      \]
+		      To this end, fix $\epsilon > 0$. By the Archimedean property, there exists $m\in\NN$ such that
+		      \[
+			      \frac{1}{m} < \epsilon
+		      \]
+		      Then
+		      \[
+			      s:= 1 - \frac{1}{m} > 1-\epsilon
+		      \]
+		      Since $s\in S$, this concludes the proof.
+	      \end{proof}
+
+	\item Let $S$ be a non-empty subset of $\RR$. Show that $u$ is an upper bound for $S$ if and only if for all $t>u$, $t\not\in S$.
+
+	      \begin{proof}
+		      Suppose first that $u$ is an upper bound for $S$. The all $s\in S$ satisfy $s\leq u$. In particular, if $t>u$ then $t\not\in S$. Conversely, suppose that for all $t>u$, $t\not\in S$. Then for all $s\in S$, there holds that $s$ is not greater than $u$. That is, $s\leq u$. This shows that $u$ is an upper bound.
+
+		      Note that the statement ``if $t>u$ then $t\not\in S$'' is the contra-positive of (and thus logically equivalent to) the statement ``If $s\in S$ then $s\leq u$''. Since the latter is the definition of an upper bound, we see that  $u$ is an upper bound for $S$ if and only if for all $t>u$, $t\not\in S$.
+	      \end{proof}
+
+\end{enumerate}
+
+\section*{Tutorial 7}
+
+Before beginning the exercises, we recall the following facts about open/closed sets;
+\begin{enumerate}[label=(\alph*)]
+	\item An arbitrary union of open sets is open,
+	\item An arbitrary intersection of closed sets is closed,
+	\item A finite intersection of open sets if open,
+	\item A finite union of closed sets is closed.
+\end{enumerate}
+
+\begin{enumerate}[leftmargin=*]
+	\item Are the following sets open or closed? Explain.
+	      \begin{enumerate}[label=(\alph*)]
+		      \item The set of rational numbers $\QQ$.
+		      \item The set of irrational numbers $\QQ^\prime$.
+		      \item The natural numbers $\NN$.
+		      \item A set of the form $\set{x}$ for some $x\in \RR$.
+		      \item A finite subset of $\RR$.
+		      \item The set $(0,1) \cup [2, 3]$.
+	      \end{enumerate}
+	      \begin{proof}[Solution]$\,$
+
+		      \hspace{0.5cm} (a) The rationals are neither open nor closed. First, to see that the rationals are not open, we suppose for a contradiction that $\QQ$ is open. Since $0\in\QQ$, there exists $\epsilon > 0$ such that $V_\epsilon(0)\subseteq \QQ$. Now, we show two possible ways to obtain a contradiction.
+
+		      First, there exists a bijection
+		      \[
+			      f: [0,1] \to V_\epsilon(0) = (-\epsilon, \epsilon), \qquad
+			      x\mapsto 2x - \epsilon
+		      \]
+		      Since $[0,1]$ is uncountable, it follows that $V_\epsilon(0)$ is also uncountable. On the other hand, since $\QQ$ is countable and $V_\epsilon(0) \subseteq \QQ$, the set $V_\epsilon(0)$ must be countable. This is a contradiction.
+
+		      The second way to obtain a contradiction is to notice that (by density of the irrationals) there must exist an irrational number in $V_\epsilon(0)$. But this contradicts the assumption that $V_\epsilon(0)\subseteq \QQ$.
+
+		      Furthermore, the rationals are not closed. To show this, we must prove that the irrationals $\QQ^\prime$ are not open. Suppose for a contradiction that $\QQ^\prime$ is open and fix $x\in \QQ^\prime$. Since $\QQ^\prime$ is open, there exists $\epsilon > 0$ such that $V_\epsilon(x) \subseteq \QQ^\prime$. But since the rationals are dense, there exists a rational number in $V_\epsilon(x)$. This is a contradiction.
+
+
+		      \hspace{0.5cm}  (b) The irrationals are neither closed nor open. This follows from the fact that $\QQ$ is neither open nor closed.
+
+		      \hspace{0.5cm}  (c) The natural numbers are closed. Indeed, we have
+		      \[
+			      \RR\setminus\NN = (-\infty, 1) \bigcup_{n=1}^\infty (n, n+1)
+		      \]
+		      which is open since the union of open sets is open.
+
+		      \hspace{0.5cm}  (d) For any $x\in \RR$, we have that
+		      \[
+			      \RR\setminus\set{x} = (-\infty, x)\cup (x, \infty)
+		      \]
+		      is open. It follows that $\set{x}$ is closed.
+
+		      \hspace{0.5cm} (e) Any finite set is closed. Indeed, a finite set is a finite union of singletons. As shown in (d), singletons are closed. It follows that finite sets are the finite union of closed sets and therefore closed.
+
+		      \hspace{0.5cm}  (f) The set $(0,1)\cup [2,3]$ is neither open nor closed. Here, we only show that it is not open.
+
+		      Suppose for a contradiction that $(0,1)\cup [2,3]$ is open. Then there exists $\epsilon>0$ such that $V_\epsilon(3) \subseteq (0,1)\cup [2,3]$. But $V_\epsilon(3)$ contains the point $3+\epsilon/2$ which is not in $(0,1)\cup [2,3]$.
+
+	      \end{proof}
+
+
+	\item Show that
+	      \[
+		      A:= \bigcap_{n=1}^\infty \left(-\frac{1}{n}, \frac{1}{n}\right) = \set{0}
+	      \]
+
+	      \begin{proof}
+		      To see this, we first show that $\set{0}\subseteq A$. Indeed, $0\in (-\frac{1}{n}, \frac{1}{n})$ for all $n\in \NN$ whence $0\in A$.
+
+		      Conversely, suppose $a$ is any element of $A$. If $a>0$ then, by the Archimedean property, there exists $k\in \NN$ with $k \geq 1/a$. It follows that $a \geq 1/k$ whence
+		      \[
+			      a\not\in \left(-\frac{1}{k}, \frac{1}{k}\right)
+		      \]
+		      But this contradicts the assumption that $a\in A$. It must therefore hold that $a \leq  0$.
+
+		      Similarly, if $a<0$ then we may find $k\in \NN$ satisfying $k \geq -1/a$. But then $a \leq -1/k$ whence
+		      \[
+			      a\not\in \left(-\frac{1}{k}, \frac{1}{k}\right)
+		      \]
+		      which contradicts the assumption that $a\in A$. We must therefore have $a\geq 0$.
+
+		      So, if $a\in A$ then we see that $a\geq 0$ and $a\leq 0$. That is, $a=0$. This shows that $A\subseteq \set{0}$.
+	      \end{proof}
+
+	\item Show that
+	      \[
+		      A:=\bigcup_{n=1}^\infty\left[-1+\frac{1}{n}, 1-\frac{1}{n}\right] = (-1,1)
+	      \]
+	      \begin{proof}
+		      Suppose first that $a\in A$. Then there exists $k\in \NN$ such that
+		      \[
+			      a\in \left[-1+\frac{1}{k}, 1-\frac{1}{k}\right]
+			      \implies
+			      -1+\frac{1}{k} \leq a \leq 1-\frac{1}{k}
+			      \implies -1 < a < 1
+		      \]
+		      That is, we have $a\in (-1,1)$. This shows that inclusion $A\subseteq (-1,1)$.
+
+		      Conversely, suppose that $a\in (-1,1)$. Define
+		      \[
+			      \epsilon = \min\set{1-a, 1+a}
+		      \]
+		      That is, $\epsilon$ is such that
+		      \[
+			      -1 + \epsilon \leq a \leq 1-\epsilon
+		      \]
+		      By the Archimedean property, there exists $k\in\NN$ such that $k \geq 1/\epsilon$. In particular, $1/k \leq \epsilon$. Ergo,
+		      \[
+			      -1 + \frac{1}{k} \leq a \leq 1-\frac{1}{k} \implies a\in \left[-1+\frac{1}{k}, 1-\frac{1}{k}\right]
+		      \]
+		      We therefore have $a\in A$. This proves the inclusion $(-1,1)\subseteq A$.
+	      \end{proof}
+
+	\item Show that
+	      \[
+		      A:= \bigcup_{n=1}^\infty\left[1-\frac{1}{n}, n\right] = [0, \infty)
+	      \]
+
+	      \begin{proof}
+		      Suppose first that $a\in A$. Then $a\in [1-1/n, n]$ for some $n\in \NN$. In particular,
+		      \[
+			      0 \leq 1-\frac{1}{n} \leq a
+		      \]
+		      That is, $a\in [0, \infty)$. Conversely, suppose that $a\in [0, \infty)$. This means that $a\geq 0$. If $0 \leq a \leq 1$ then we have
+		      \[
+			      a \in [0, 1] = \left[1-\frac{1}{1}, 1\right] \subseteq A
+		      \]
+		      On the other hand, if $a > 1$ then (by the Archimedean property) there exists $n \in \NN$ such that $n \geq a$. Therefore,
+		      \[
+			      1 - \frac{1}{n} < 1 < a \leq n \implies a \in \left[1-\frac{1}{n}, n\right] \subseteq A
+		      \]
+		      In either case, we deduce that $a\in A$.
+	      \end{proof}
+	\item Show that for any $b\in \RR$,
+	      \[
+		      \lim_{n\to\infty}\frac{b}{n} = 0
+	      \]
+
+	      \begin{proof}
+		      Given $\epsilon > 0$, we know (by the Archimedean Property) that there exists $K\in \NN$ such that
+		      \[
+			      K > \frac{\abs{b}}{\epsilon}
+		      \]
+		      Then for all $n\geq K$ there holds
+		      \[
+			      \abs{\frac{b}{n} - 0} = \frac{\abs{b}}{n} \leq \frac{\abs{b}}{K} < \epsilon
+		      \]
+		      Ergo, $\lim_{n\to\infty}\frac{b}{n} = 0$.
+	      \end{proof}
+
+	\item Show that $x_n \to 1$ where
+	      \[
+		      x_1 = 0,
+		      \quad\text{and}\quad
+		      x_n = \frac{n^2}{n^2 - 1} \,\,\,\,\,\forall n \geq 2
+	      \]
+
+	      \begin{proof}
+		      First, notice that for all $n\in\NN, n\geq 2$ there holds
+		      \[
+			      \abs{\frac{n^2}{n^2-1} - 1} = \abs{\frac{n^2 - n^2 + 1}{n^2 - 1}} = \frac{1}{n^2 - 1}
+		      \]
+		      Now, given $\epsilon>0$ we may find $K\in \NN$ such that
+		      \[
+			      K > \frac{1}{\epsilon}
+		      \]
+		      Without loss of generality, we may suppose that $K\geq 2$. Then for all $n\geq K$,
+		      \[
+			      \abs{x_n -1} =  \frac{1}{n^2 - 1} = \frac{1}{(n-1)(n+1)} \leq \frac{1}{n+1} < \frac{1}{K} < \epsilon
+		      \]
+	      \end{proof}
+
+	\item Show that if $x_n \to x$ then $\abs{x_n} \to \abs{x}$.
+
+	      \begin{proof}
+		      Indeed, for $\epsilon > 0$, there exists $K\in \NN$ such that
+		      \[
+			      \abs{x_n - x} < \epsilon \qquad\forall n\geq K
+		      \]
+		      In particular,
+		      \[
+			      \abs{\abs{x_n} - \abs{x}} \leq \abs{x_n - x}< \epsilon \qquad\forall n\geq K
+		      \]
+	      \end{proof}
+
+	      \begin{rem}
+		      Note that the converse is not always true. Indeed, consider the sequence $x_n = (-1)^n$. Then $x_n$ does not converge while $\abs{x_n} \to 1$.
+	      \end{rem}
+
+	\item Show that if $(x_n)$ is a sequence such that $\abs{x_n} \to 0$ then $x_n \to 0$
+
+	      \begin{proof}
+		      Indeed, for all $\epsilon > 0$, there exists $K\in \NN$ such that
+		      \[
+			      \abs{x_n - 0} = \abs{\abs{x_n} - 0} < \epsilon
+		      \]
+		      for all $n\geq K$.
+	      \end{proof}
+\end{enumerate}
+
+\section*{Tutorial 8}
+
+\begin{enumerate}[leftmargin=*]
+	\item Show that
+	      \[
+		      \lim{ \frac{2n}{n+1}} = 2.
+	      \]
+	      \begin{proof}
+		      Let $\epsilon > 0$ be given, we must find $N \in \NN$ such that\[
+			      \abs{ \frac{2n}{n+1} - 2 } < \epsilon, \quad \forall n \geq N.
+		      \]
+		      First, we calculate for all $n \in \NN$:
+		      \begin{align*}
+			      \abs{ \frac{2n}{n+1} - 2 } = \abs{ \frac{2n - 2(n+1)}{n+1} } = \frac{2}{n+1} \leq \frac{2}{n}.
+		      \end{align*}
+		      Here, one could note that $1/n \to 0$ (as demonstrated in the previous tutorial). It then follows from Theorem 1.3.10. in the Textbook that the limit is 2.
+
+		      Alternatively, by the Archimedean property, we can find $N \in \NN$ such that $N > \frac{2}{\epsilon}$. Then, for all $n \geq N$ there holds
+		      \[
+			      \frac{2}{n} \leq \frac{2}{N} < 2 \cdot \frac{\epsilon}{2} = \epsilon.
+		      \]
+		      Hence, if $n \geq N$, we see that
+		      \[
+			      \abs{ \frac{2n}{n+1} - 2 } \leq  \frac{2}{n} < \epsilon,
+		      \]
+		      which is what had to be shown.
+	      \end{proof}
+	\item Prove that\[
+		      \lim\frac{3n+1}{2n+5} = \frac{3}{2}.
+	      \]
+	      \begin{proof}
+		      Let $\epsilon > 0$ be given, we seek $N \in \NN$ such that\[
+			      \abs{ \frac{3n+1}{2n+5} - \frac{3}{2} } < \epsilon
+		      \]
+		      for all $n \geq N$. Naturally, for each $n \in \NN$, we have the following estimate:
+		      \begin{align*}
+			      \abs{ \frac{3n+1}{2n+5} - \frac{3}{2} } = \abs{ \frac{2(3n+1) - 3(2n+5)}{2(2n+5)}}
+			       & = \abs{ \frac{2-15}{2(2n+5)} } \\
+			       & = \frac{13}{2(2n+5)}           \\
+			       & \leq \frac{4}{n}.
+		      \end{align*}
+		      Here, we can again apply Theorem 1.3.10. to conclude the result. Otherwise, choose $N \in \NN$ so large that $\frac{1}{N} < \frac{\epsilon}{4}$, if $n \geq N$ the above implies that
+		      \begin{align*}
+			      \abs{ \frac{3n+1}{2n+5} - \frac{3}{2} }  \leq \frac{4}{n} \leq \frac{4}{N} < 4 \cdot \frac{\epsilon}{4} = \epsilon.
+		      \end{align*}
+		      By definition, this means that
+		      \[
+			      \frac{3n+1}{2n+5}\xrightarrow{ n \to \infty} \frac{3}{2}.
+		      \]
+	      \end{proof}
+	\item Show that\[
+		      \lim{ \frac{n^2-1}{2n^2 + 3}}=  \frac{1}{2}.
+	      \]
+	      \begin{proof}
+		      Following the outline in the remark, let $\epsilon > 0$ and consider the expression:
+		      \begin{align*}
+			      \abs{ \frac{n^2-1}{2n^2 + 3} - \frac{1}{2}} & = \abs{ \frac{2(n^2 - 1) - (2n^2+3)}{2(2n^2+3)} } \\
+			                                                  & = \abs{ \frac{5}{2(2n^2 + 3)} }                   \\
+			                                                  & \leq \frac{4}{n^2}.
+		      \end{align*}
+		      Now, it will be easier to find our candidate for $N$. Let $N \in \NN$ be such that $$N > \frac{2}{\sqrt{\epsilon}},$$ which we know to exist by the Archimedean property. If $n \geq N$, then our estimate above tells us that
+		      \begin{align*}
+			      \abs{ \frac{n^2-1}{2n^2 + 3} - \frac{1}{2}}  \leq \frac{4}{n^2} \leq \frac{4}{N^2} < 4 \cdot \frac{\epsilon}{4} = \epsilon.
+		      \end{align*}
+		      This is what had to be shown.
+	      \end{proof}
+	\item Let us prove that
+	      \begin{equation}\label{eq:lim4-1}
+		      \lim{\frac{2^n}{n!}} = 0.
+	      \end{equation}
+	      \begin{proof}
+		      To do this, we will show that
+		      \[
+			      0 < \frac{2^n}{n!} \leq 2\left(\frac{2}{3}\right)^{n-2}, \quad \forall n \geq 2.
+		      \]
+		      If this indeed true, then the squeeze theorem would imply that
+		      \[
+			      \lim{\frac{2^n}{n!}} = 0.
+		      \]
+		      Thus, we are reduced to verifying the aforementioned inequality. For this, we shall argue by induction. As a base case, let us check the inequality for $n=2$:
+		      \[
+			      0 < \frac{2^2}{2!} = 2 \quad \text{and} \quad 2\left(\frac{2}{3}\right)^{0} = 2.
+		      \]
+		      Our base case is thence satisfied. Now, for the inductive step. Assume that
+		      \[0 < \frac{2^n}{n!} \leq 2\left(\frac{2}{3}\right)^{n-2}\]
+		      for some $n \geq 2$. Clearly, by the inductive hypothesis:
+		      \begin{align*}
+			      0 < \frac{2^{n+1}}{(n+1)!} = \frac{2}{(n+1)} \cdot \frac{2^n}{n!} & \leq \frac{2 \cdot 2}{(n+1)} \left(\frac{2}{3}\right)^{n-2} \\
+			                                                                        & \leq 2 \left(\frac{2}{3}\right)^{n-2 + 1}                   \\
+			                                                                        & =2 \left(\frac{2}{3}\right)^{(n + 1) - 2}.
+		      \end{align*}
+		      Here, we have used that $n\geq 2$ implies $n+1 \geq 3$ and, consequently, $\frac{1}{n+1} \leq \frac{1}{3}$. By our earlier remarks (where we discussed the application of the squeeze theorem), we see that \eqref{eq:lim4-1} holds.
+	      \end{proof}
+	\item 	Let $x_1 \geq 2$ be given and define for $n \geq 1$:
+	      \begin{equation}\label{eq:4}
+		      x_{n+1} := 1 + \sqrt{x_n - 1}.
+	      \end{equation}
+	      Prove that the recursive sequence $(x_n)$ converges and calculate its limit.
+	      \begin{proof}
+		      First, let us show (by induction) that $x_{n} \geq 2$ for all $n \in \NN$. The base case $n=1$ is trivial. Assuming that $x_n \geq 2$, we then have
+		      \[
+			      x_{n+1} = 1 + \sqrt{x_n - 1} \geq 1+ \sqrt{2-1} = 2.
+		      \]
+		      Here, we have used that the function $f(x) := \sqrt{x}$ is monotone increasing on $[0,\infty)$.\footnote{To see why this is true, suppose that $0 \leq x < y$. Then, we calculate
+		      \begin{align*}
+			      \sqrt{y} - \sqrt{x} = \frac{(\sqrt{y}-\sqrt{x})(\sqrt{y} + \sqrt{x})}{\sqrt{y} + \sqrt{x}}
+			      = \frac{y - x}{\sqrt{x} + \sqrt{y}} \geq 0.
+		      \end{align*}
+		      Thus, $\sqrt{x} \leq \sqrt{y}$ whenever $0 \leq x < y$. Since this also holds for $0 \leq x= y$, we see that $f(x) = \sqrt{x}$ is monotone increasing on $[0,\infty)$.
+		      } We conclude that $x_n \geq 2$ for all $n \in \NN$. In particular, $x_n - 1 \geq 1$ for all $n \in \NN$. Thus, given $n \in \NN$, we have
+		      \[
+			      x_{n+1} = 1 + \sqrt{x_n - 1} \leq 1 + (x_n - 1) = x_n.
+		      \]
+		      In this last step, we have used that $\sqrt{t} \leq t$ for all $t \geq 1$.\footnote{To justify this inequality, let $t \geq 1$ and note that \[
+				      t - \sqrt{t} = \sqrt{t}(\sqrt{t}-1) \geq \sqrt{t} - 1 \geq 0.
+			      \]}
+		      Hence, $(x_n)$ is a monotone decreasing sequence that is bounded below by $2$. It therefore converges to some point $x \geq 2$. Using the limit laws and \eqref{eq:4}, this point $x$ must satisfy
+		      \[
+			      x = 1 + \sqrt{x-1}.
+		      \]
+		      It follows that $(x-1) = \sqrt{x-1}$, where $x-1 \geq 1$. Hence, $\sqrt{x-1}  = 1$ whence $x = 2$. We conclude that $\lim{x_n} = 2$.
+	      \end{proof}
+	\item Let $a > 0$ and define $x_1 := a$. For $n \geq 1$, let us put
+	      \[
+		      x_{n+1} := x_n + \frac{1}{x_n}.
+	      \]
+	      Prove that the sequence $(x_n)$ does not converge.
+	      \begin{proof}
+		      By induction, we will first show that $x_n \geq a > 0$, for all $n \in \NN$. The base case ($n=1$) is given to us. If $x_n \geq a$, then we automatically have\[
+			      x_{n+1} = x_n + \frac{1}{x_n} > x_n \geq a.
+		      \]
+		      Thus, by the principle of induction, we see that $x_n \geq a$ for all $n \in \NN$. If $x_n$ converges to some point $x \in \RR$, we must then have $x \geq a$ (since $x_n \geq a$ for all $n \in \NN$). In particular, $x > 0$. Thus, by the limit laws, one has
+		      \[
+			      x = x + \frac{1}{x}.
+		      \]
+		      But this equation forces $0 = \frac{1}{x}$, which is a contradiction. Hence, $(x_n)$ cannot converge.
+	      \end{proof}
+	\item Let $(x_n)$ be a sequence in $\RR$ converging to $x \in \RR$. For $n \in \NN$, define a new sequence by setting
+	      \[
+		      y_n := \frac{x_1 + \cdots + x_n}{n}.
+	      \]
+	      Prove that $\lim{y_n} = \lim{x_n} = x$.
+	      \begin{proof}
+		      This one is tricky so let's try to be clear in our justification. Let $\epsilon > 0$ be given; we must show that there exists $N \in \NN$ with the property that
+		      \begin{align}\label{eq-a}
+			      \abs{ y_n - x } = \abs{ \frac{x_1 + \cdots + x_n}{n}  - x} = \abs{ \frac{(x_1-x) + \cdots + (x_n - x)}{n} } < \epsilon
+		      \end{align}
+		      for \emph{every} $n \geq N$. Now, since $\lim{x_n} = x$, we can find $K_1 \in \NN$ such that
+		      \[
+			      \abs{ x_n - x } < \frac{\epsilon}{2}, \quad \forall n \geq K_1.
+		      \]
+		      Using \eqref{eq-a}, we see that for all $n \geq K_1$:
+		      \begin{align*}
+			      \abs{ y_n - x } & \leq \abs{ \frac{(x_1-x) + \cdots + (x_n - x)}{n} }         \\
+			                      & \leq \abs{\frac{ (x_1 - x) + \cdots + (x_{K_1} - x) }{n}}   \\
+			                      & + \abs{\frac{ (x_{K_1 +1} - x)  + \cdots + (x_n - x) }{n}}.
+		      \end{align*}
+		      Note that the constant $$C := (x_1 - x) + \cdots + (x_{K_1} - x) $$ is independent of $n$. Returning to the above, we see that for all $n \geq K_1$:
+		      \begin{align}\label{eq:b}
+			      \abs{ y_n - x } & \leq \frac{\abs{C}}{n} + \abs{\frac{ (x_{K_1 +1} - x)  + \cdots + (x_n - x) }{n}}                  \\
+			                      & \leq \frac{\abs{C}}{n} + {\frac{ \abs{x_{K_1 +1} - x}  + \cdots + \abs{x_n - x} }{n}}.\label{eq:c}
+		      \end{align}
+		      By the limit laws, it is obvious that
+		      \[
+			      \lim \frac{\abs{C}}{n} = 0.
+		      \]
+		      Hence, we can find $K_2 \in \NN$ such that
+		      \[
+			      \abs{ \frac{\abs{C}}{n}  - 0} = \frac{\abs{C}}{n} < \frac{\epsilon}{2}
+		      \]
+		      for all $n \geq K_2$. Define $N := \max(K_1,K_2) \in \NN$. Then, if $n \geq N$ we have both $n \geq K_1$ and $n \geq K_2$. Thus, for all $n \geq N$ \eqref{eq:c} shows that
+		      \begin{align*}
+			      \abs{ y_n - x } & \leq \frac{\abs{C}}{n} + {\frac{ \abs{x_{K_1 +1} - x}  + \cdots + \abs{x_n - x} }{n}}                                     \\
+			                      & < \frac{\epsilon}{2}  + \frac{ \overbrace{\frac{\epsilon}{2} + \cdots + \frac{\epsilon}{2}}^{\text{($n-K_1$)-times} }}{n} \\
+			                      & \leq \frac{\epsilon}{2} + \frac{n \cdot \frac{\epsilon}{2}}{n}                                                            \\
+			                      & = \epsilon.
+		      \end{align*}
+	      \end{proof}
+\end{enumerate}
+
+\section*{Tutorial 9}
+
+\begin{enumerate}[leftmargin=*]
+	\item Suppose $D\subseteq \RR$ is a non-empty set and $f, g : D \to \RR$. Show that if $f(x) \leq g(y)$ for all $x, y\in D$ then
+	      \[
+		      \sup f(D) \leq \inf g(D)
+	      \]
+	      \begin{proof}
+		      We first show that $f(D)$ is bounded above. Indeed, fix a point $y_0\in D$ and notice that $f(x) \leq g(y_0)$ for all $x\in D$. In particular, $z\leq g(y_0)$ for all $z\in f(D)$. We conclude that $f(D)$ is bounded above whence the supremum exists.
+		      Similarly, show that $g(D)$ is bounded below.
+
+		      Now, let $z$ be an arbitrary point in $f(D)$. Then $z = f(x_0)$ for some $x_0 \in D$. By assumption, $f(x_0) \leq g(y)$ for all $y\in D$. That is, $z = f(x_0)$ is a lower bound for $g(D)$. By definition of the infimum, it follows that $z \leq \inf g(D)$. Since this inequality holds for all $z\in f(D)$, this means that $\inf g(D)$ is an upper bound for $f(D)$. But then, by definition of the supremum, $\sup f(D) \leq \inf g(D)$.
+	      \end{proof}
+
+	\item Show that
+	      \[
+		      \frac{n!}{n^n} \to 0
+	      \]
+	      and
+	      \[
+		      \frac{n^2}{n!} \to 0
+	      \]
+
+	\item Suppose $x_n \geq 0$ converges to $x$. Show that $\sqrt{x_n} \to \sqrt{x}$.
+
+	      \begin{proof} Two cases:
+
+		      \textbf{Case 1}: $x = 0$. Given $\epsilon > 0$, let $N \in \NN$ be such that for all $n\geq N$ there holds
+		      \[
+			      \abs{x_n - 0} = x_n < \epsilon^2
+		      \]
+		      \[
+			      \abs{\sqrt{x_n} -0} = \sqrt{x_n} < \sqrt{\epsilon^2} = \epsilon
+		      \]
+
+		      \textbf{Case 2}: $x>0$. Let $\epsilon > 0$ be given. First, we compute
+		      \[
+			      \abs{\sqrt{x_n} - \sqrt{x}}
+			      =\frac{\abs{\sqrt{x_n} - \sqrt{x}}}{\sqrt{x_n} + \sqrt{x}}
+			      \leq \frac{\abs{{x_n} - {x}}}{\sqrt{x}}
+		      \]
+		      So, let $N$ be sufficiently large so that $\abs{x_n - x} < \sqrt{x}\epsilon$ for all $n\geq N$.
+
+		      Then for all $n\geq N$ we have
+		      \[
+			      \abs{\sqrt{x_n} - \sqrt{x}} \leq \frac{\abs{{x_n} - {x}}}{\sqrt{x}} < \epsilon.
+		      \]
+	      \end{proof}
+
+	\item Archimedean property, Nested Intervals property, Monotone convergence theorem.
+
+	\item Show that $\inf S = -\sup(-S)$.
+
+\end{enumerate}
+
+\section*{Tutorial 10}
+
+\subsection*{Cauchy sequences}
+This section is meant to make sense of Cauchy sequences, but it is not course material. So feel free to ignore what is written here if it only confuses you.\\
+
+We wish to clarify why one bothers to define Cauchy sequences. In $\RR$, Cauchy sequences are just convergent sequences, so what's the point in introducing a new definition?
+
+We begin by noting that there exists a sequence $(x_n) \subseteq \QQ$ which converges to an irrational number.
+Now, suppose we do not yet have a concept of real (and in particular irrational) numbers. That is, suppose that we are familiar with the space $\QQ$ but have not defined $\RR$. Then what can we say about the sequence $(x_n)$? Well, it is certainly not convergent in $\QQ$! On the other hand, we can say that $x_n$ is Cauchy. In fact, one way of defining the real numbers is let the reals be all the ''limit points'' of Cauchy sequences in $\QQ$. Such a process is what a \emph{completion}. That is, we say that $\RR$ is the \emph{completion} of $\QQ$.
+
+\begin{rem}
+	We claimed above that there exists a sequence of rational numbers converging to an irrational number. For the sake of completeness, we show how to construct such a sequence. To this end, fix an irrational number $x$. For every $n\in\NN$ there exists (by the density of $\QQ$) a rational number $x_n$ such that
+	\[
+		x < x_n < x + \frac{1}{n}
+	\]
+	We then see by the Squeeze theorem that $(x_n) \to x$. Since $(x_n)$ is a sequence of rational numbers, this is what had to be shown.
+\end{rem}
+
+
+\subsection*{Exercises}
+
+\begin{enumerate}[leftmargin=*]
+	\item Bounded sequences are not necessarily convergent. e.g. $(-1)^n$. The Bolzano Weierstrass theorem guarantees the existence of a bounded Sub-sequence.
+
+	\item $x_n \to 0$ and $y_n$ bounded then $x_ny_n \to 0$.
+
+	\item Prove that
+	      \[
+		      \frac{(-1)^n}{n} + \frac{1}{n^2} - \cos\left(\pi n\right)
+	      \]
+	      diverges.
+	      \begin{proof}
+		      Suppose for a contradiction that the above sequence converges. Then since
+		      \[
+			      \frac{(-1)^n}{n} \quad\text{and}\quad\frac{1}{n^2}
+		      \]
+		      converge, we see by the limit laws that
+		      \[
+			      \frac{(-1)^n}{n} + \frac{1}{n^2} - \left(\frac{(-1)^n}{n} + \frac{1}{n^2} - \cos\left(\pi n\right)\right) = \cos(\pi n)
+		      \]
+		      converges. So, let $x$ denote the limit of $\cos(\pi n)$. Then any subsequence of $\cos(\pi n)$ converges to $x$. In particular
+		      \[
+			      \cos(\pi \cdot (2n)) = 1
+			      \quad\text{and}\quad
+			      \cos(\pi \cdot (2n+1)) = -1
+		      \]
+		      tend to $x$. So, $x=1$ and $x=-1$ which is absurd.
+	      \end{proof}
+	\item Let $(x_n)$ be an unbounded sequence. Show that there exists a subsequence $(x_{n_k})$ of $x_n$ such that
+	      \[
+		      \lim_{k\to\infty} \frac{1}{x_{n_k}} = 0
+	      \]
+	      \begin{proof}
+		      Let $x_{n_1}$ be such that $\abs{x_{n_1}} > 1$ (note that we may indeed find such an element since $(x_n)$ is unbounded sequence). Now, for every $k\in \NN$, suppose that we have already defined $x_{n_k} > k$.
+
+		      Suppose also, for a contradiction, that
+		      \[
+			      \abs{x_n} \leq k+1 \qquad\forall n > n_k
+		      \]
+		      Then, the sequence $(x_n)$ would be bounded above by
+		      \[
+			      \max\set{k+1, \abs{x_1}, \abs{x_2}, \dots, \abs{x_{n_k}}}
+		      \]
+		      Similarly, we see that $(x_n)$ is bounded below. But this contradicts the assumption that $(x_n)$ is unbounded. Therefore, we can find $x_{n_{k+1}}$ such that $\abs{x_{n_{k+1}}} > k+1$.
+
+		      By this process, we have constructed a subsequence $(x_{n_k})$ of $(x_n)$ such that
+		      \[
+			      \abs{x_{n_k}} > k \quad\forall k\in\NN
+		      \]
+		      It remains to prove that
+		      \[
+			      \frac{1}{x_{n_k}} \to 0.
+		      \]
+		      For this, we begin by fixing $\epsilon > 0$. By the Archimedean property, there exists $K_\epsilon\in\NN$ such that $K_\epsilon > \frac{1}{\epsilon}$. Ergo, for all $k\geq K_\epsilon$ we see that
+		      \[
+			      \abs{\frac{1}{x_{n_k}} - 0} = \frac{1}{\abs{x_{n_k}}} < \frac{1}{k} \leq \frac{1}{K_\epsilon} < \epsilon
+		      \]
+		      This conclude the problem.
+	      \end{proof}
+
+	\item Let $(x_n)$ be a sequence of non-negative numbers and suppose that $\lim (-1)^n x_n$ exists. Then show that $(x_n)$ converges and determine it's limit.
+
+	      \begin{proof}
+		      Since $(-1)^nx_n$ converges to some $x\in \RR$, so do it's sub-sequences. In particular,
+		      \[
+			      (-1)^{2n}x_{2n} = x_{2n} \to x
+			      \quad\text{and}\quad
+			      (-1)^{2n+1}x_{2n+1} = -x_{2n+} \to x
+		      \]
+		      Since $(x_{2n})$ is a sequence of non-negative numbers, we se that $x\geq 0$. On the other hand, since $(-x_{2n+1})$ is a sequence of non-positive numbers, we also have $x \leq 0$. Combining the two inequalities, we see that $x=0$.
+
+		      We are now ready to show that $x_n \to 0$. To this end, pick $\epsilon > 0$. Since $(-1)^nx_n \to x = 0$, there exists $n\in \NN$ such that
+		      \[
+			      \abs{(-1)^nx_n - 0} < \epsilon\qquad\forall n\geq N
+		      \]
+		      Therefore, we see that
+		      \[
+			      \abs{x_n -  0} = \abs{(-1)^nx_n - 0} < \epsilon \qquad\forall n\geq N
+		      \]
+		      By definition, this means that $x_n \to 0$.
+	      \end{proof}
+
+	      \iffalse
+	\item Let $(x_n)$ be a sequence of real numbers and suppose there exists $r\in (0,1)$ such that
+	      \[
+		      \abs{x_{n+1} - x_{n}} < r^n
+	      \]
+	      for all $n\in\NN$. Show that the sequence $(x_n)$ converges.
+
+	      \begin{proof}
+		      It suffices to show that the sequence $(x_n)$ is Cauchy. Fix natural numbers $n > m$ and notice that
+		      \begin{align*}
+			      \abs{x_n - x_m}
+			       & =\abs{x_n - x_{n-1} + x_{n-1} - \dots - x_{m+1} + x_{m+1} - x_m} \\
+			       & \leq \sum_{k=0}^{n-m-1}\abs{x_{m+k+1} - x_{m+k}}                 \\
+			       & < \sum_{k=0}^{n-m-1} r^{m+k}                                     \\
+			       & =r^m \frac{1 - r^{n-m}}{1-r}
+			      \leq \frac{1}{1-r}r^m
+		      \end{align*}
+		      Since $r^m \to 0$ as $m \to \infty$ and $\frac{1}{1-r}$ is constant, we know from class results that
+		      \[
+			      \frac{1}{1-r}r^m \to 0
+		      \]
+		      So, given $\epsilon > 0$, we may find $N \in \NN$ such that
+		      \[
+			      \frac{1}{1-r}r^m < \epsilon\qquad \forall n \geq N
+		      \]
+		      But then, our above inequalities show that for all $n, m \geq M$ there holds
+		      \[
+			      \abs{x_n - x_m} \leq \frac{1}{1-r}r^{\min\set{n, m}} < \epsilon.
+		      \]
+		      We conclude that $(x_n)$ is indeed Cauchy and therefore converges.
+	      \end{proof}
+	      \fi
+
+	\item Show directly from the definition that
+	      \[
+		      \frac{n}{n+1}
+	      \]
+	      is a Cauchy sequence.
+
+	      \begin{proof}
+		      Given natural numbers $n, m$, notice that
+		      \begin{align*}
+			      \abs{\frac{n}{n+1} - \frac{m}{m+1}}
+			       & =\abs{\frac{n(m+1) - m(n+1)}{(n+1)(m+1)}}     \\
+			       & \leq \abs{\frac{n-m}{(n+1)(m+1)}}             \\
+			       & \leq \frac{n+m}{(n+1)(m+1)}                   \\
+			       & = \frac{n}{(n+1)(m+1)} + \frac{m}{(n+1)(m+1)} \\
+			       & \leq \frac{1}{m+1} +\frac{1}{n+1}
+		      \end{align*}
+		      Now, fix $\epsilon > 0$ and let $N\in\NN$ be such that $N > \frac{2}{\epsilon}$. Then for all $n,m \geq N$ we have
+		      \[
+			      \abs{\frac{n}{n+1} - \frac{m}{m+1}} \leq \frac{1}{n+1} +\frac{1}{m+1} < \frac{1}{N} + \frac{1}{N} = \frac{2}{N} < \epsilon.
+		      \]
+	      \end{proof}
+
+	\item Show directly from the definition that $(-1)^n$ is not a Cauchy sequence.
+
+	      \begin{proof}
+		      A sequence $(x_n)$ is said to be Cauchy if
+		      \[
+			      (\forall \epsilon > 0)(\exists N\in \NN)(\forall n, m \geq N)(\abs{x_n - x_m} < \epsilon).
+		      \]
+		      Therefore, a sequence in \textbf{not} Cauchy if
+		      \[
+			      (\exists \epsilon > 0)(\forall N\in \NN)(\exists n, m \geq N)(\abs{x_n - x_m} \geq \epsilon).
+		      \]
+		      We pick $\epsilon = 1$. For all $N\in \NN$, there exists $n, m \geq N$ such that $n$ is even and $m$ are odd. In this case, we have
+		      \[
+			      \abs{(-1)^n - (-1)^m} = \abs{1 - (-1)} = 2 \geq 1 = \epsilon.
+		      \]
+		      Therefore, $(-1)^n$ is not Cauchy.
+	      \end{proof}
+
+	\item Let $p$ be a fixed natural number. Establish a sequence $(x_n)$ that is not Cauchy but such that
+	      \[
+		      \lim_{n\to\infty}\abs{x_{n+p} - x_n} = 0.
+	      \]
+	      \begin{proof}
+		      For every $n\in\NN$, define
+		      \[
+			      x_n = \sum_{k=1}^n \frac{1}{k}
+		      \]
+		      Then notice that
+		      \[
+			      \abs{x_{n+p} - x_n} = \sum_{k=1}^p \frac{1}{n + k} \leq \sum_{k=1}^p \frac{1}{n} = \frac{p}{n} \xrightarrow{n\to\infty} 0
+		      \]
+		      Therefore,
+		      \[
+			      \lim_{n\to\infty}\abs{x_{n+p} - x_n} = 0.
+		      \]
+		      It remains to show that $(x_n)$ is not Cauchy. To this end, fix $m, n \in \NN$ such that $n > m$. Then we see that
+		      \[
+			      \abs{x_n - x_m} = \sum_{k={m+1}}^n\frac{1}{k}
+			      \geq \sum_{k={m+1}}^n\frac{1}{n}
+			      = \frac{n-m}{n}
+		      \]
+		      So, for all $N\in \NN$, picking $m = N$ and $n = 2N$ yields
+		      \[
+			      \abs{x_n - x_m} \geq \frac{2N - N}{2N} = \frac{1}{2}
+		      \]
+		      Therefore, we see that $(x_n)$ is not Cauchy.
+	      \end{proof}
+
+	\item Let $x_1>0$ and define
+	      \[
+		      x_{n+1} = \frac{1}{2+x_n}
+	      \]
+	      for each $n\in\NN$.
+	      \begin{enumerate}
+		      \item Show that $x_n > 0$ for all $n\in\NN$,
+		      \item Show that the sequence is contractive,
+		      \item Determine the limit of the sequence.
+	      \end{enumerate}
+
+	      \begin{proof}
+		      We prove (a) by induction. The base case $x_1>0$ is given. Now, if $x_n > 0$, then $x_n + 2 > 0$. Therefore,
+		      \[
+			      x_{n+1} = \frac{1}{2+x_n} > 0.
+		      \]
+		      We move on to part (b). Recall that the sequence is said to be contractive if there exists a constant $0<C<1$ such that
+		      \[
+			      \abs{x_{n+2} - x_{n+1}} \leq C\abs{x_{n+1} - x_n}
+		      \]
+		      for all $n\in \NN$. To prove the above inequality, fix $n\in \NN$ and notice that
+		      \begin{align*}
+			      \abs{x_{n+2} - x_{n+1}}
+			      =\abs{\frac{1}{2+x_{n+1}} - \frac{1}{2+x_n}}
+			       & =\abs{\frac{2+x_n - (2+x_{n+1})}{(2+x_n)(2+x_{n+1})}}              \\
+			       & = \abs{x_{n+1} - x_n}\cdot \frac{1}{2+x_n}\cdot\frac{1}{2+x_{n+1}} \\
+			       & \leq \frac{1}{4}\abs{x_{n+1} - x_n}
+		      \end{align*}
+		      Therefore, we see that $(x_n)$ is a contractive sequence with $1/4$ as the constant of the contractive sequence.
+
+		      (c) Since contractive sequences converge, we deduce that $x_n \to x$ for some $x\in \RR$. Recalling that
+		      \[
+			      x_{n+1} = \frac{1}{2+x_n},
+			      \quad\text{and}\quad
+			      x_n > 0
+		      \]
+		      for all $n\in\NN$, we may apply the limit laws (Theorem 3.23) in the textbook to deduce that
+		      \[
+			      x = \frac{1}{2+x} \implies x^2 + 2x -1 = 0
+		      \]
+		      Therefore, the only possible values for $x$ are $\sqrt{2} - 1$ and $-\sqrt{2} - 1$. Finally, since $x_n >0$ for all $n\in\NN$, we see that $x$ must be equal to $\sqrt{2} - 1$.
+	      \end{proof}
+
+	\item Let $x_1 < x_2$ and for each $n \in \NN$, define
+	      \[
+		      x_{n+2} = \frac{x_n + x_{n+1}}{2}
+	      \]
+	      Does this sequence converge? If so, what is it's limit.
+
+	      \begin{proof}
+		      To see that the sequence converges, we will show that it is contractive. Indeed, fix $n\in \NN$ and notice that
+		      \[
+			      \abs{x_{n+2} - x_{n+1}} = \abs{\frac{x_n + x_{n+1}}{2} - x_{n+1}} = \frac{1}{2} \abs{x_{n+1} - x_n}.
+		      \]
+		      So, $(x_n)$ is converges to some $x\in \RR$. Now, for all $n\in \NN$ there holds
+		      \[
+			      2x_{n+2} + x_{n+1} = 2\frac{x_n + x_{n+1}}{2} + x_{n+1} = 2x_{n+1} + x_n
+		      \]
+		      Therefore, we see that
+		      \[
+			      2x_{n+1} + x_n = 2x_2+x_1
+		      \]
+		      Applying the appropriate limit laws, we conclude that
+		      \[
+			      3x = 2{x_2} + x_1
+			      \implies x = \frac{2x_2 + x_1}{3}.
+		      \]
+	      \end{proof}
+
+	\item We present a similar exercise. Let $x_1 < x_2$ and for each $n \in \NN$, define
+	      \[
+		      x_{n+2} = \frac{2x_n + x_{n+1}}{3}
+	      \]
+	      Does this sequence converge? If so, what is it's limit.
+
+	      \begin{proof}
+		      As in the previous exercise, we will show that the sequence converges by proving that it is contractive. To this end, fix $n\in \NN$ and notice that
+		      \[
+			      \abs{x_{n+2} - x_{n+1}} = \abs{\frac{2x_n + x_{n+1}}{3} - x_{n+1}} = \frac{2}{3} \abs{x_{n+1} - x_n}.
+		      \]
+		      So, $(x_n)$ is converges to some $x\in \RR$. Now, for all $n\in \NN$ there holds
+		      \[
+			      3x_{n+2} + 2x_{n+1} = 2x_n + x_{n+1} + 2x_{n+1} = 3x_{n+1} + 2x_n
+		      \]
+		      Therefore, we see that
+		      \[
+			      3x_{n+1} + 2x_n = 3x_2+2x_1
+		      \]
+		      We conclude that
+		      \[
+			      5x = 3{x_2} + 2x_1
+			      \implies x = \frac{3x_2 + 2x_1}{5}.
+		      \]
+	      \end{proof}
+
+\end{enumerate}
+
+\section*{Tutorial 11}
+
+\subsection*{Midterm Review}
+
+\subsubsection*{Exercise 2} Given $a>0$, suppose $S \subseteq (a, \infty)$ is a non-empty set and define
+\[
+	T = \set{\frac{1}{s} :  s\in S}
+\]
+Justify why $\sup T$ and $\inf S$ exists. Show that $\sup T = 1/\inf(S)$.
+
+\begin{proof} I will prove the statement directly from the definition.
+
+	Clearly, $S$ is bounded below by $a$ and $T$ is bounded above by $1/a$. Therefore, the infimum of $S$ and the supremum of $T$ exist. For the second part of the problem, let $u:=\inf(S)$. We first show that $1/u$ is an upper bound of $T$. Indeed, any element $t\in T$ can be written as $t = 1/s$ for some $s\in S$.  Since $u$ is a lower bound for $S$, we know that $s \geq u$. It follows that
+	\[
+		t = \frac{1}{s} \leq \frac{1}{u}
+	\]
+	Since $t$ was an arbitrary element of $T$, we conclude that $1/u$ is indeed an upper bound for $T$. It remains to show that $1/u$ is the least upper bound. For this, suppose $v$ is another upper bound for $T$. Then we claim that $v > 0$ and that $1/v$ is a lower bound for $S$. It is clear that $v>0$. Now, for any $s\in S$, the element $1/s$ is in $T$. Therefore, $1/s\leq v$.  It follows that $s \geq 1/v$. Since $s$ was an arbitrary element of $S$, it follows that $1/v$ is a lower bound for $S$. Since $u$ is the greatest lower bound for $S$, there holds that
+	\[
+		\frac{1}{v} \leq u \implies v \geq \frac{1}{u}
+	\]
+	So, we have shown that any other upper bound for $T$ is greater or equal to $1/u$. Thus, $1/u$ is the least lower bound of $T$.
+\end{proof}
+
+\subsubsection*{Exercise 3} Show that if $(y_n)$ is a bounded sequence and $x_n \to 0$ then the sequence $y_nx_n$ also converges to 0.
+\begin{proof}
+	If $y_n$ is bounded, then there exists some $M>0$ such that $\abs{y_n} \leq M$ for all $n\in \NN$. Now, given $\epsilon>0$ there exists $N\in \NN$ such that $\abs{x_n} < \frac{\epsilon}{M}$ for all $n\geq N$. It follows that
+	\[
+		\abs{y_nx_n} = \abs{y_n}\cdot\abs{x_n} \leq M \abs{x_n} < M\frac{\epsilon}{M} = \epsilon
+	\]
+	for all $n\geq N$. By definition, this means that $y_nx_n \to 0$.
+\end{proof}
+
+The above statement is not necessarily true if $y_n$ is not bounded. Consider for instance the sequences $x_n = \frac{1}{n}$ and $y_n = -n$.
+
+\subsubsection*{Exercise 5} (Bonus Question) Let $y_1 = 2$ and $y_{n+1} = y_n +\frac{n}{y_n}$ for all $n\geq 1$. Does the sequence $(y_n)$ converge?
+
+\begin{proof}
+	First, notice that $y_n \geq 2$ for all $n\in\NN$ hence the sequence is well-defined. Suppose now that $(y_n)$ converges. For each $n\in\NN$, there holds
+	\[
+		y_{n+1}y_n - y_n^2 = n
+	\]
+	Since $(y_n)$ converges, we see that the left hand side of the above is a convergent sequence. Therefore, the sequence $(n)$ converges. Since convergent sequences are bounded, there exists $x \in \RR$ such that
+	\[
+		n \leq x
+	\]
+	for all $n\in \NN$. But this contradicts the Archimedean property. Therefore, $(y_n)$ cannot converge.
+\end{proof}
+\begin{rem}
+	Actually, one can show that $(y_n)$ tends to positive infinity. To see this, notice first that $(y_n)$ is an increasing sequence. If it were bounded above, then the monotone convergence theorem would imply that $(y_n)$ converges. But as we have shown above, $(y_n)$ does not converge. We deduce that the sequence $(y_n)$ is increasing and unbounded. Ergo, $y_n \to +\infty$.
+\end{rem}
+
+\subsection*{Exercises}
+
+\begin{enumerate}[leftmargin=*]
+	\item Show that the follows sequences are properly divergent
+	      \[
+		      \frac{n^2-2}{n+2}
+		      \quad\text{and}\quad
+		      n + 2 - n^2
+	      \]
+	      \begin{proof}
+		      For the first sequence, we first notice that
+		      \[
+			      \frac{n^2-2}{n+2} \geq \frac{n^2-4}{n+2} = \frac{(n-2)(n+2)}{n+2} = n-2
+		      \]
+		      So, for any $a\in \RR$, we may pick (by the Archimedean property) $N\in \NN$ such that $N > a+2$. Then for all $n\geq N$ there holds
+		      \[
+			      \frac{n^2-2}{n+2} = n - 2 \geq N-2 > (a+2)-2 = a
+		      \]
+		      By definition, this implies that
+		      \[
+			      \frac{n^2-2}{n+2} \to + \infty
+		      \]
+		      Now, for the second sequence we first notice that
+		      \[
+			      n + 2 - n^2 = n(1-n) + 2 \leq 1-n+2 = 3-n
+		      \]
+		      for all $n\in \NN$. Indeed, the above inequality is true since
+		      \[
+			      n(1-n) \leq 1-n \iff n-n^2 \leq 1-n \iff 0 \leq n^2-2n+1 = (n-1)^2
+		      \]
+		      So, given $a\in \RR$ we may pick $N\in \NN$ such that $N > a+3$. Then for all $n\geq N$ we have
+		      \[
+			      n + 2 - n^2 \leq 3 - n < 3 - (a+3) = a
+		      \]
+		      Once again, it follows from the definition that $n+2-n^2 \to - \infty$.
+	      \end{proof}
+
+	\item Show that the sequence
+	      \[
+		      x_n = \sum_{k=1}^{n}\frac{1}{k^2}
+	      \]
+	      converges.
+
+	      \begin{proof}
+		      By the monotone convergence theorem, it suffices to show that $(x_n)$ is increasing and bounded above. First, it is clear that $(x_n)$ is an increasing sequence. To see that $(x_n)$ is bounded above, we fix $n\in \NN$ an proceed as follows;
+		      \begin{align*}
+			      x_n = \sum_{k=1}^{n}\frac{1}{k^2}
+			      = 1 + \sum_{k=2}^{n}\frac{1}{k^2}
+			       & \leq 1 + \sum_{k=2}^{n}\frac{1}{k(k-1)}                      \\
+			       & = 1 + \sum_{k=2}^{n}\left[\frac{1}{k-1} - \frac{1}{k}\right] \\
+			       & = 1+ \left[1 - \frac{1}{n}\right] \leq 2
+		      \end{align*}
+		      This concludes the proof.
+	      \end{proof}
+
+	\item Suppose $(x_n)$ be a sequence of positive numbers (i.e. $x_n>0$ for all $n\in \NN$). Show that $x_n \to +\infty$ if and only if $\frac{1}{x_n} \to 0$.
+	      \begin{proof}
+		      Suppose first that $x_n \to +\infty$. Fix $\epsilon > 0$ and notice that, by definition, there exists $N\in \NN$ such that
+		      \[
+			      x_n > \frac{1}{\epsilon} \qquad \forall n\geq N
+		      \]
+		      It follows that
+		      \[
+			      \abs{\frac{1}{x_n} - 0} = \frac{1}{x_n} < \epsilon
+		      \]
+		      for all $n\geq \NN$. That is, $x_n \to 0$.
+
+		      Conversely, suppose that $1/x_n \to 0$ and let $a\in \RR$ be given. If $a\leq 0$, then $x_n \geq 0 > a$ for all $n \geq 1$. Otherwise, we may pick $N\in \NN$ such that
+		      \[
+			      \frac{1}{x_n} = \abs{\frac{1}{x_n} - 0} < \frac{1}{a}
+		      \]
+		      for all $n\geq N$. It follows that
+		      \[
+			      x_n > a
+		      \]
+		      for all $n\geq N$. Since the choice of $a\in \RR$ was arbitrary, we see that $x_n \to +\infty$.
+	      \end{proof}
+
+	\item Let $(x_n)$ and $(y_n)$ be positive sequences. Suppose that $x_n \to +\infty$ and $(x_ny_n)$ is bounded. Then show that $y_n \to 0$.
+
+	      \begin{proof}
+		      Since $(x_ny_n)$ is positive bounded, there exists $M>0$ such that
+		      \[
+			      0 < x_ny_n < M
+		      \]
+		      for all $n\in \NN$. Now, fix $\epsilon > 0$ and let $N\in \NN$ be such that
+		      \[
+			      x_n > \frac{M}{\epsilon}\iff \frac{1}{x_n} < \frac{\epsilon}{M}
+		      \]
+		      for all $n\geq N$. Then
+		      \[
+			      \abs{y_n - 0} = y_n = y_n x_n\cdot\frac{1}{x_n} < M\cdot\frac{\epsilon}{M} = \epsilon
+		      \]
+		      By definition, this means that $y_n \to 0$.
+	      \end{proof}
+
+	\item Suppose $f:\RR\to\RR$ is a function and $c\in \RR$. Show that $\lim_{x\to c}f(x) = L$ if and only if $\lim_{x\to 0} f(x+c) = L$.
+
+	      \begin{proof}
+		      Suppose first that $\lim_{x\to c}f(x) = L$. The for all $\epsilon > 0$, there exists $\delta>0$ such that
+		      \[
+			      \abs{f(x) - L} < \epsilon
+		      \]
+		      whenever $0<\abs{x-c} < \delta$. But then, whenever $0<\abs{x-0} < \delta$ we see that $0<\abs{(x+c) - c} < \delta$. By the above,
+		      \[
+			      \abs{f(x+c) - L} <\epsilon
+		      \]
+		      That is, $\lim_{x\to 0} f(x+c) = L$. We leave the converse as an exercise.
+	      \end{proof}
+
+	\item Show directly from the definition that $\lim_{x\to c}x^2 = c^2$. Show also how to prove this by using the sequential criterion.
+
+	      \begin{proof}
+		      We first notice that, for all $x$ such that $\abs{x-c}\leq1$, there holds
+		      \begin{align*}
+			      \abs{x^2 - c^2} = \abs{x-c}\abs{x+c}
+			       & =\abs{x-c}\left(\abs{x-c+2c}\right)               \\
+			       & \leq \abs{x-c}\left(\abs{x - c} + \abs{2c}\right) \\
+			       & \leq \abs{x-c}\left(1 + 2\abs{c}\right)
+		      \end{align*}
+		      So, given $\epsilon > 0$ let
+		      \[
+			      \delta = \min\set{1, \frac{\epsilon}{1+2\abs{c}}}
+		      \]
+		      Then for all $x$ satisfying $0<\abs{x-c} < \delta$ we see that
+		      \[
+			      \abs{x^2 - c^2} \leq \abs{x-c}\left(1 + 2\abs{c}\right) < \delta\left(1 + 2\abs{c}\right) \leq \epsilon
+		      \]
+		      By definition, this means that $x^2 \to c^2$.
+
+		      We know prove the same result with the sequential criterion. To this end, let $(x_n)$ be an arbitrary sequence converging to $c$. By class results, we know that $x_n^2 = x_n \cdot x_n \to c^2$. This concludes the proof.
+	      \end{proof}
+
+	\item Use the definition of the limit to show that
+	      \[
+		      \lim_{x\to 6}\frac{x^2-3x}{x+3} = 2.
+	      \]
+
+	      \begin{proof}
+		      We begin with some computations;
+		      \begin{align*}
+			      \abs{\frac{x^2-3x}{x+3} - 2}
+			      =\abs{\frac{x^2-3x - 2(x+3)}{x+3}}
+			       & =\abs{\frac{x^2-5x-6}{x+3}}     \\
+			       & =\abs{\frac{(x-6)(x+1)}{x+3}}   \\
+			       & =\abs{x-6}\abs{\frac{x+1}{x+3}}
+		      \end{align*}
+		      Now, notice that whenever $\abs{x-6} < 1$, we have
+		      \[
+			      \abs{x+1} = \abs{x-6 + 7} \leq \abs{x-6} + 7 \leq 8
+		      \]
+		      and
+		      \[
+			      \abs{x+3} = \abs{9+x-6}\geq 9 -\abs{x-6} \geq 8
+		      \]
+		      Combining the above inequalities we see that if $\abs{x-6} < 1$ then
+		      \[
+			      \abs{x-6}\frac{x+1}{x+3} \leq \abs{x-6}
+		      \]
+		      So, given $\epsilon>0$ let
+		      \[
+			      \delta = \min\set{\epsilon, 1}
+		      \]
+		      Then whenever $0<\abs{x-6}<\delta$ we see that
+		      \[
+			      \abs{\frac{x^2-3x}{x+3} - 2} \leq \abs{x-6} < \delta \leq \epsilon
+		      \]
+		      This concludes the proof.
+	      \end{proof}
+
+	\item Show that the following limits do not exist:
+	      \[
+		      \lim_{x\to 0} \frac{1}{x^2}
+		      \quad\text{and}\quad
+		      \lim_{x\to 0} x+\operatorname{sgn}(x)
+	      \]
+	      \begin{proof}
+		      Suppose for a contradiction that
+		      \[
+			      \lim_{x\to 0} \frac{1}{x^2}
+		      \]
+		      exists. Then for any sequence $(x_n)$ such that $x_n \to 0$ and $x_n\neq 0$ for all $n\in \NN$, $\frac{1}{x_n^2}$ also converges. In particular, since $1/n \to 0$, the sequence
+		      \[
+			      \frac{1}{(1/n)^2} = n^2
+		      \]
+		      converges. But this is impossible since convergent sequences are bounded while $(n^2)$ is unbounded.
+
+		      Similarly, suppose for a contradiction that
+		      \[
+			      \lim_{x\to 0} x+\operatorname{sgn}(x)
+		      \]
+		      exists and is equal to $L$. Then since $1/n \to 0$, we must have that
+		      \[
+			      L = \lim_{n\to\infty}\left[\left(\frac{1}{n}\right) + \operatorname{sgn}\left(\frac{1}{n}\right)\right]
+			      = \lim_{n\to\infty} \frac{1}{n} + 1 = 1
+		      \]
+		      On the other hand, since $-1/n \to 0$ we also have
+		      \[
+			      L = \lim_{n\to\infty}\left[\left(-\frac{1}{n}\right) + \operatorname{sgn}\left(-\frac{1}{n}\right)\right]
+			      = \lim_{n\to\infty} \frac{1}{n} - 1 = -1.
+		      \]
+	      \end{proof}
+
+	\item Suppose $f:\RR\to\RR$ is a function such that $\lim_{x\to 0} f(x) = L$. Show that if $g(x): = f(ax)$ for some constant $a>0$ then $\lim_{x\to 0} g(x) = L$.
+
+	      \begin{proof}
+		      Fix $\epsilon>0$ and let $\delta>0$ be such that
+		      \[
+			      \abs{f(x) - L} < \epsilon
+		      \]
+		      whenever $0<\abs{x} < \delta$. But then for all $x$ such that $0 < \abs{x} < \delta/a$ we have
+		      \[
+			      \abs{g(x) - L} = \abs{f(ax) - L} < \epsilon
+		      \]
+		      where the last inequality holds since
+		      \[
+			      0 < \abs{ax} = a\abs{x} < a\frac{\delta}{a} = \delta.
+		      \]
+	      \end{proof}
+
+\end{enumerate}
+
+\section*{Tutorial 12}
+
+\begin{enumerate}[leftmargin=*]
+	\item Let $A$ be a subset of the reals and suppose that $c$ is a cluster point of $A$. Show that $-c$ is a cluster point of
+	      \[
+		      -A = \set{-a \mid a\in A}
+	      \]
+	      If $0\not\in A$ and $c\neq 0$, then is $1/c$ a cluster point of
+	      \[
+		      B = \set{\frac{1}{a} \mid a\in A}
+	      \]
+	      \begin{proof}
+		      The first part follows immediately from the definition. Indeed, for any $\delta>0$, there exists a point $x\in A\setminus\set{c}$ such that $\abs{x-c} < \delta$. It then follows that the point $-x \neq -c$ is in $-A$ and
+		      \[
+			      \abs{-x-(-c)} = \abs{x-c}  <\delta
+		      \]
+		      For the second part of the problem, we prove that $1/c$ is a cluster point of $B$. To this end, fix $\delta>0$. By assumption, for any $\delta^\prime>0$ we may find $x\in A, x\neq c$ such that $\abs{x-c} < \delta^\prime$. If $x$ is as such then
+		      \begin{equation}\label{eq:1}
+			      \abs{\frac{1}{x} - \frac{1}{c}} = \abs{\frac{x-c}{xc}} <\frac{\delta^\prime}{\abs{xc}}
+		      \end{equation}
+		      Since $c \neq 0$, we know that $\abs{c} > 0$. Furthermore, if $\delta^\prime \leq \abs{c}/2$ then
+		      \[
+			      \abs{x} \geq \abs{c} -  \abs{x-c} \geq \abs{c} - \delta^\prime \geq \frac{\abs{c}}{2}
+		      \]
+		      In particular, equation \eqref{eq:1} may be bounded by
+		      \[
+			      \abs{\frac{1}{x} - \frac{1}{c}} <\frac{\delta^\prime}{\abs{x}\cdot\abs{c}} \leq \frac{\delta^\prime}{\abs{c}^2/2}
+		      \]
+		      Finally, if we pick
+		      \[
+			      \delta^\prime = \min\set{\frac{\abs{c}}{2}, \frac{\abs{c}^2}{2}\delta}
+		      \]
+		      Then there exists $x\in A, x\neq c$ such that $\abs{x-c} < \delta$ whence
+		      \[
+			      \abs{\frac{1}{x} - \frac{1}{c}} < \frac{\delta^\prime}{\abs{c}^2/2} < \delta.
+		      \]
+		      Since $1/x$ is an element of $B$ not equal to $1/c$, we are done.
+	      \end{proof}
+
+	\item Let $f, g$ be defined on a subset $A\subseteq \RR$ and suppose $c$ is a cluster point of $A$. Suppose $f$ is bounded on a neighbourhood of $c$ and $\lim_{x\to c} g(x) = 0$. Show that
+	      \[
+		      \lim_{x\to c} (fg)(x) = 0
+	      \]
+	      \begin{proof}
+		      Since $f$ is bounded on a neighbourhood of $c$, there exist $\eta>0$ and $M > 0$ such that for all $x\in A$ with $\abs{x-c} < \eta$ there holds $\abs{f(x)} \leq M$. Given $\epsilon > 0$, since $\lim_{x\to c} g(x) = 0$, there exists $\delta > 0$ such that for all $x\in A$ satisfying $0<\abs{x-c} < \delta$ there holds
+		      \[
+			      \abs{g(x)} = \abs{g(x) - 0} < \frac{\epsilon}{M}
+		      \]
+		      But then, for all $x\in A$ satisfying $0 < \abs{x-c} < \min\set{\delta, \eta}$ there holds
+		      \[
+			      \abs{f(x)g(x)} = \abs{f(x)} \cdot\abs{g(x)} \leq M\abs{g(x)} < M\frac{\epsilon}{M} = \epsilon
+		      \]
+		      By definition of the limit, we conclude that $\lim_{x\to c} (fg)(x) = 0$.
+	      \end{proof}
+
+	\item Determine the limit
+	      \[
+		      \lim_{x\to 2}\abs{\frac{x^2 - 4}{x-2}}\qquad (x>0)
+	      \]
+	      \begin{proof}
+		      We show that the limit is $4$. For this, fix $\epsilon > 0$ and let $\delta = \epsilon$. Then for all $x > 0$ such that $0<\abs{x-2} < \delta$, we have
+		      \[
+			      \abs{\frac{x^2-4}{x-2} - 4} = \abs{x+2 - 4} = \abs{x-2} < \delta = \epsilon.
+		      \]
+	      \end{proof}
+
+	\item Find examples of function $f, g :\RR\to \RR$ which do not have a limit at a point $c$ but such that $f+g$ and $fg$ have a limit at $c$.
+
+	      \begin{proof}
+		      Define
+		      \[
+			      f(x) = \begin{cases}
+				      1  & x\in \QQ     \\
+				      -1 & x\not\in \QQ
+			      \end{cases}
+		      \]
+		      and
+		      \[
+			      g(x) = \begin{cases}
+				      -1 & x\in \QQ      \\
+				      1  & x\not\in \QQ.
+			      \end{cases}
+		      \]
+		      One can show that $f$ and $g$ do not have a limit at any point $c\in \RR$. On the other hand, $f+g \equiv 0$ and $fg \equiv -1$ have well-defined limits at all points in $\RR$.
+	      \end{proof}
+
+	\item Suppose $f:\RR\to \RR$ is such that $f(x+y) = f(x) + f(y)$ for all $x,y\in \RR$. Show that if $\lim_{x\to 9}f(x)$ exists then
+	      \[
+		      \lim_{x\to c} f(x) = f(c)
+	      \]
+	      for every point $c\in \RR$.\footnote{This implies that the function is everywhere continuous.}
+
+	      \begin{proof}
+		      By assumption, we know that
+		      \[
+			      \lim_{x\to 0}f(x) = L.
+		      \]
+		      for some $L \in \RR$. Then
+		      \[
+			      2L = \lim_{x\to 0}\left(f(x) + f(x)\right) = \lim_{x\to 0} f(2x) = L.
+		      \]
+		      Notice that the last equality follows from problem 9 on the last tutorial. So, we have found that $2L = L$ which implies that $L = 0$.
+
+		      Now, given $c\in \RR$, we know (by problem 5 in the last tutorial) that
+		      \[
+			      0 = \lim_{x\to 0} f(x) = \lim_{x\to c} f(x-c).
+		      \]
+		      Furthermore, since $f(c)$ is a constant function there holds
+		      \[
+			      \lim_{x\to c} f(c) = f(c).
+		      \]
+		      We conclude that the limit as $x$ tends to $c$ of $f(x-c) + f(c)$ exists and is equal to $f(c)$. Ergo,
+		      \[
+			      f(x) = \lim_{x\to c} \left[f(x-c) + f(c)\right] = \lim_{x\to c} f(x).
+		      \]
+	      \end{proof}
+
+
+	\item Fix $a>0$ and let $f > 0$ be defined on $(a, \infty)$. Given $c \geq a$, show that $\lim_{x\to c}f(x) = \infty$ if and only if $\lim_{x\to c} 1/f(x) = 0$.
+
+	      \begin{proof}
+		      This result easily follows from the Sequential criterion for the limit. Suppose first that $\lim_{x\to c}f(x) = \infty$. Then for any sequence $(x_n) \subseteq (a, \infty)\setminus\set{c}$ such that $x_n \to c$, the sequence $f(x_n)$ tends to positive infinity. From results in a previous tutorial, it follows that
+		      \[
+			      \lim_{n\to\infty}\frac{1}{f(x_n)} = 0.
+		      \]
+		      We conclude that $\lim_{x\to c} 1/f(x) = 0$. The converse is handled similarly.
+	      \end{proof}
+\end{enumerate}
+
+\section*{Tutorial 13}
+
+\subsection*{Thomae's Function} We present here an example of a function which might defy our initial intuition regrading continuity. Thomae's function is given by
+\[
+	f(x) = \begin{cases}
+		1           & x=0                                                                     \\
+		\frac{1}{q} & \text{if } x= \frac{p}{q} \text{ for some coprime } p \in \ZZ, q\in \NN \\
+		0           & \text{otherwise}
+	\end{cases}
+\]
+We sill show that this function is discontinuous at all rational points but continuous at all irrational points.
+
+We begin by proving that $f$ is discontinuous at all rational points. To this end, fix a point $c\in \QQ$ and write
+\[
+	c = \frac{p}{q}
+\]
+for some $p\in \ZZ$ and $q\in \NN$ such that $p$ and $q$ are co-prime (if $c=0$ then we write $c=0/1$). To show that $f$ is discontinuous at $c$, we have to show that
+\[
+	(\exists \epsilon > 0)(\forall \delta > 0)(\exists x\text{ such that } \abs{x-c} < \delta \text{ and } \abs{f(x) - f(c)} \geq \epsilon).
+\]
+We claim that $\epsilon = \frac{1}{q}$ will do. Indeed, for any $\delta > 0$ there exists (by density of the irrationals) a number $x\not\in\QQ$ such that
+\[
+	c < x < c+\delta
+\]
+Then $\abs{x-c} < \delta$ and
+\[
+	\abs{f(x) - f(c)} = \abs{0 - \frac{1}{q}} = \frac{1}{q} \geq \epsilon.
+\]
+
+We now prove that the function is continuous at any given rational.
+To this end, pick an arbitrary point $c\in\RR\setminus\QQ$ and fix $\epsilon>0$. By the Archimedean property, there exists $n\in \NN$ such that
+\[
+	n > \frac{1}{\epsilon} \iff \frac{1}{n} < \epsilon
+\]
+Furthermore, for each $1\leq k\leq n$ there exists a natural number $m_k$ such that
+\[
+	\frac{m_k}{k} < c < \frac{m_k+1}{k}
+\]
+Indeed, we pick $m_k = \lfloor ck \rfloor$. Now, we define
+\[
+	\delta = \min_{1\leq k \leq n}\set{\abs{\frac{m_k}{k} - c}, \abs{\frac{m_k+1}{k} - c}}
+\]
+Finally, suppose that $\abs{x-c} < \delta$. If $x\not\in\QQ$ then
+\[
+	\abs{f(x) - f(c)} = \abs{0} = 0
+\]
+On the other hand, if $x\in \QQ$ then we may write
+\[
+	x = \frac{p}{q}
+\]
+for some $p\in\ZZ$ and $q\in\NN$ such that $p$ and $q$ are co-prime.
+
+We claim that $q\geq n$ whence
+\[
+	\abs{f(x) - f(c)} = \frac{1}{q} \leq \frac{1}{n} < \epsilon
+\]
+in which case we would be done.
+
+Suppose for a contradiction that $q<n$. Then one of the following must hold;
+\[
+	\frac{p}{q} \leq \frac{m_q}{q}
+	\quad\text{or}\quad
+	\frac{p}{q} \geq \frac{m_q+1}{q}.
+\]
+In either case, we see that
+\[
+	\abs{x-c}
+	= \abs{\frac{p}{q} - x}
+	\geq \min\set{\abs{\frac{m_q}{q} - c}, \abs{\frac{m_q+1}{q} - c}} \geq \delta
+\]
+which contradicts the assumption that $\abs{x-c} < \delta$.
+
+\subsection*{Exercises}
+
+\begin{enumerate}[leftmargin=*]
+	\item Let $a<b<c$ and suppose $f$ is continuous on $[a,b]$ and $g$ is continuous on $[b,c]$. If $f(b) = g(b)$, then is the function
+	      \[
+		      h(x) = \begin{cases}
+			      f(x) & x\in [a,b] \\
+			      g(x) & x\in [b,c]
+		      \end{cases}
+	      \]
+	      continuous on $[a,c]$.
+	      \begin{proof}
+		      We show that $h$ is indeed continuous. To this end, pick an arbitrary point in $p \in [a,c]$ and fix $\epsilon > 0$. If $a \leq p < b$, then we know that there exists $\delta > 0$ such that if $x\in [a,b]$ satisfies $\abs{x-p} < \delta$ then
+		      \[
+			      \abs{h(x) - h(p)} = \abs{f(x) - f(p)} < \epsilon
+		      \]
+		      Therefore, for all $x\in [a,c]$ such that $\abs{x-p} < \min\set{\delta, b-p}$ we have $\abs{h(x) - h(p)} < \epsilon$. We deduce that if $a\leq p < b$ the $h$ is continuous at $p$. A similar argument shows that $h$ is continuous on $(b, c]$. It remains to prove that $h$ is continuous at $b$. To this end, let $\delta_1$ be such that
+		      \[
+			      \abs{f(x) - f(b)} < \epsilon
+		      \]
+		      whenever $x\in [a,b]$ satisfies $\abs{x-b} < \delta_1$. Similarly, let $\delta_2$ be such that
+		      \[
+			      \abs{g(x) - g(b)} < \epsilon
+		      \]
+		      whenever $x\in [b,c]$ satisfies $\abs{x-b} < \delta_2$. Finally, define $\delta = \min\set{\delta_1, \delta_2}$ and notice that whenever $x\in [a,c]$ satisfies $\abs{x-b} < \delta$ there holds
+		      \begin{align*}
+			      \abs{h(x) - h(b)} & = \begin{cases}
+				                            \abs{f(x) - f(b)} & x\in [a,b] \\
+				                            \abs{g(x) - g(b)} & x\in [b,c]
+			                            \end{cases} \\
+			                        & <\epsilon.
+		      \end{align*}
+	      \end{proof}
+
+	\item Let $A\subseteq\RR$ and suppose $f:A\to\RR$ is continuous at a point $c\in A$. Show that for all $\epsilon > 0$ there exists $\delta > 0$ such that for all $x,y\in A\cap V_\delta(c)$ there holds $\abs{f(x) - f(y)} < \epsilon$.
+
+	      \begin{proof}
+		      Fix $\epsilon > 0$ and let ${\delta}$ be such that $\abs{f(x) - f(c)} < \epsilon/2$ for all $x\in A$ such that $\abs{x-c} < {\delta}$. Now, suppose $x,y\in A\cap V_\delta(c)$ and notice that
+		      \[
+			      \abs{f(x) - f(y)} \leq \abs{f(x) - f(c)} + \abs{f(c) - f(y)} \leq \frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon.
+		      \]
+	      \end{proof}
+
+	\item Suppose $f:\RR\to\RR$ is continuous at a point $c\in A$. Show that if $f(c) > 0$ then there exists a neighbourhood of $c$ on which $f$ is strictly positive. In particular, the set $\set{x \in \RR : f(x) > 0}$ is open.
+
+	      \begin{proof}
+		      Pick $\epsilon := {f(c)}/2$ and let $\delta > 0$ be such that $\abs{f(x) - f(c)} < \epsilon$ for all $x$ such that $\abs{x-c} < \delta$. Then for any $x$ in the neighbourhood $V_\delta(c)$, we see that
+		      \[
+			      \abs{f(x)} \geq \abs{f(c)} - \abs{f(x) - f(c)} > \frac{f(c)}{2} > 0.
+		      \]
+	      \end{proof}
+
+	      \begin{rem}
+		      Similarly, one can show that $\set{x \in \RR :  f(x) < 0}$ is open. Notice that it immediately follows that $\set{x\in \RR : f(x) = 0}$ is closed.
+	      \end{rem}
+
+	\item Suppose $A\subseteq B\subseteq \RR$ and let $g:B\to \RR$ be a function. Suppose furthermore that $f$ is the restriction of $g$ to the set $A$. If $g$ is continuous at a point $a\in A$, then so is $f$. Show by way of counter-example that the converse is not necessarily true.
+
+	      \begin{proof}
+		      We show only that the converse might not hold. To this end, define $A = [0,1]$ and $B = [-1,1]$. Consider furthermore the function
+		      \[
+			      g(x) = \begin{cases}
+				      0 & -1 \leq x < 0   \\
+				      1 & 0 \leq x \leq 1
+			      \end{cases}
+		      \]
+		      The notice that the function $f$ which is the restriction of $g$ to $A=[0,1]$ is continuous at $0$. On the other hand, $g$ is clearly not continuous at $0$.
+	      \end{proof}
+
+	\item Show that Lipschitz continuous functions are continuous. That is, show that if for $f:\RR\to \RR$ there exists a constant $C>0$ such that
+	      \[
+		      \abs{f(x) - f(y)} \leq C\abs{x-y}
+	      \]
+	      for all $x,y\in\RR$ then $f$ is continuous.
+
+	      \begin{proof}
+		      Let $c$ be an arbitrary point on the real line and let $\epsilon>0$ be given. Define $\delta = \epsilon/C$ and notice that whenever $\abs{x-c} < \delta$ there holds
+		      \[
+			      \abs{f(x) - f(x)} \leq C\abs{x-c} < C\delta = \epsilon.
+		      \]
+	      \end{proof}
+
+
+	\item Suppose $f:\RR\to\RR$ is a continuous function such that $f(q) = 0$ for all $q\in \QQ$. Show that $f\equiv 0$.
+
+	      \begin{proof}
+		      Let $x$ be an arbitrary point in $\RR$. For each $n\in\NN$, there exists $x_n \in \QQ$ such that
+		      \[
+			      x < x_n < x+ \frac{1}{n}.
+		      \]
+		      By the Squeeze theorem, $x_n \to x$. Since $f$ is continuous, there must hold
+		      \[
+			      f(x) = \lim_{n\to\infty}f(x_n) = \lim_{n\to\infty} 0 = 0.
+		      \]
+		      Since $x$ was an arbitrary point in $\RR$, we conclude that $f\equiv 0$.
+	      \end{proof}
+
+	\item Let $f:(0,1)\to\RR$ be a bounded function such that $\lim_{x\to 0} f(x)$ does not exist. Show that there are sequence $(x_n)$ and $(y_n)$ converging to $0$ such that $f(x_n)$ and $f(y_n)$ exist but are not equal.
+
+	      \begin{proof}
+		      We prove this statement by contrapositive. That is, suppose that there exists $L \in \RR$ such that if $x_n\to 0$ and $\lim_{n\to\infty}f(x_n)$ exists then
+		      \[
+			      \lim_{n\to\infty} f(x_n) = L.
+		      \]
+		      We will show that $\lim_{x\to 0} f(x)$ exists. More specifically, we prove that $\lim_{x\to 0}f(x) = L$.
+
+		      Suppose for a contradiction that this is not the case, i.e. $\lim_{x\to 0}f(x)$ does not exist or is not equal to $L$. Then
+		      \[
+			      (\exists \epsilon > 0)(\forall\delta>0)(\exists x\in (0,1),\, \abs{x}<\delta \text{ such that } \abs{f(x) - L} \geq \epsilon)
+		      \]
+		      Then for each $n\in \NN$, there exists $x_n$ satisfying $0<x_n<1/n$ and $\abs{f(x_n) - L} \geq \epsilon$.
+
+		      On the other hand, since $f$ is bounded, the Bolzano-Weierstrass theorem implies that $f(x_n)$ has a convergent subsequence $f(x_{n_k})$. By assumption,
+		      \[
+			      \lim_{n\to\infty} f(x_{n_k}) = L.
+		      \]
+		      But this contradicts the fact that $\abs{f(x_{n_k}) - L} \geq \epsilon$ for all $k\in\NN$.
+	      \end{proof}
+
+	\item Suppose $f, g :\RR\to\RR$ are continuous functions that agree on the rationals. Then is it true that $f \equiv g$?
+
+	      \begin{proof}
+		      If $f$ and $g$ are both continuous then so is $f-g$. But then $f-g$ is $0$ on the rationals. By a previous problem, it follows that $f - g\equiv 0$ whence $f\equiv g$.
+	      \end{proof}
+
+	\item The above result implies that if we want to show that two functions are equal on all of $\RR$, it suffices to prove that they are equal on the rationals (actually, any dense set will do!). Use this fact to show that if $f:\RR\to\RR$ is continuous and satisfies $f(x+y) = f(x) + f(y)$ for all $x,y\in\RR$ then $f(x) = cx$ where $c = f(1)$.
+
+	      \begin{proof}
+		      First, notice that
+		      \[
+			      f(0) = f(0+0) = f(0) + f(0)
+		      \]
+		      whence $f(0) = 0 = c\cdot 0$.
+		      Now, if $p,q \in \NN$ then
+		      \[
+			      qf\left(\frac{p}{q}\right) = q\cdot \left[pf\left(\frac{1}{q}\right)\right] = p\cdot\left[qf\left(\frac{1}{q}\right)\right] = pf(1) = p\cdot c
+		      \]
+		      and dividing by $q$ on either side yields
+		      \[
+			      f\left(\frac{p}{q}\right) = c\frac{p}{q}.
+		      \]
+		      This shows that $f(x) = cx$ whenever $x$ is a non-negative rational number. Finally, if $x\in \QQ$ is negative then
+		      \[
+			      f(x) + f(-x) = f(x+(-x)) = f(0) = 0
+		      \]
+		      whence
+		      \[
+			      f(x) = -f(-x)  =-\left(c(-x)\right) = cx
+		      \]
+		      where the second equality holds since $-x$ is a positive rational number. So, $f(x) = cx$ for all $x\in \QQ$ and since both $f$ and $x\mapsto cx$ are continuous on $\RR$, we conclude that $f(x) = cx$ on all of $\RR$.
+	      \end{proof}
+
+	\item Suppose $f:[a,b] \to\RR$ is continuous an strictly positive. Show that there exists $\alpha > 0$ such that $f(x) \geq \alpha$ for all $x\in [a,b]$.
+
+	      \begin{proof}
+		      Since $f$ is continuous on a closed and bounded interval, there exists $c\in [a,b]$ such that $f(c)$ is the minimum of $\set{f(x) : x\in [a,b]}$. Therefore, picking $\alpha = f(c)$ concludes the proof.
+	      \end{proof}
+
+	\item Suppose $f:\RR\to\RR$ is such that
+	      \[
+		      \lim_{x\to \infty} f(x) = 0 = \lim_{x\to -\infty} f(x).
+	      \]
+	      Then show that $f$ achieves a global maximum or a global minimum on $\RR$.
+
+	      \begin{proof}
+		      If $f \equiv 0$ then we are done. Otherwise, let $x_0 \in \RR$ be such that $f(x) \neq 0$. We will only consider the case $f(x_0) > 0$ (the case $f(x_0) < 0$ is handled similarly). Since $f(x) \to 0$ as $x \to -\infty$, we may find $a \in \RR$ such that $\abs{f(x)} < f(x_0)$ for all $x < a$. Notice that we must have $a<x_0$. Similarly, we may find $b>x_0$ such that $\abs{f(x)} < f(x_0)$ for all $x > b$.
+
+		      Let now $c$ be such that $f(c)$ is the maximum of $f$ on $[a,b]$. Then $f(c)$ is also the global maximum of $f$ on $\RR$.
+	      \end{proof}
+
+	\item Show that the only continuous functions from $\RR$ to $\QQ$ are the constant functions.
+
+	      \begin{proof}
+		      Suppose for a contradiction that $f:\RR\to\QQ$ is not constant. Then we may find $a < b$ such that $f(a) \neq f(b)$. By density of the irrationals, we may find a number $y \not\in \QQ$ between $f(a)$ and $f(b)$. Then applying the intermediate value theorem on the restriction of $f$ to $[a,b]$, we see that there exists $c\in [a,b]$ such that $f(c) = y \not\in \QQ$. But this contradicts the assumption that $f$ maps to the rationals.
+	      \end{proof}
+
+\end{enumerate}
+
+
+\end{document}

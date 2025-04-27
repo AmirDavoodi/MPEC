@@ -1,0 +1,611 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,graphicx,latexsym,pslatex,soul,color}
+
+
+\setlength{\textwidth}{17 cm} \setlength{\topmargin}{-0.5in}
+\setlength{\textheight}{23 cm} \setlength{\oddsidemargin}{0in}
+\newcommand{\makemark}{\parbox{0pt}{\hspace{-2cm}$\rightarrow$}}
+\newcommand{\ind}{\phantom{a}\quad}
+\newcommand{\inds}{\phantom{a}\,\,\,}
+
+\providecommand{\hl}[1]{#1}
+\newcommand{\commentbase}[1]{\textbf{#1}}
+\newcommand{\plusminus}[0]{\stackrel{+}{-}}
+\newtheorem{algorithm}{Algorithm}
+\newtheorem{problem}{Problem}
+\renewcommand{\theproblem}{\Roman{problem}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{example}{Example}
+\newtheorem{remark}{Remark}
+
+\def\cA{{\cal A}} \def\cB{{\cal B}} \def\cC{{\cal C}} \def\cD{{\cal D}}
+\def\cE{{\cal E}} \def\cF{{\cal F}} \def\cH{{\cal H}} \def\cL{{\cal L}}
+\def\cM{{\cal M}} \def\cP{{\cal P}} \def\cQ{{\cal Q}} \def\cR{{\cal R}}
+\def\cS{{\cal S}} \def\cX{{\cal X}} \def\cY{{\cal Y}} \def\cO{{\cal O}}
+\def\cW{{\cal W}} \def\cZ{{\cal Z}} \def\cT{{\cal T}} \def\cU{{\cal U}}
+
+\def\er{{\overline r}}
+\def\Pr{\mathbb{P}}
+
+\def\eop{\hfill{$\Box$}\medskip}
+
+\newenvironment{proof}{\textbf{Proof}}{\eop}
+\newenvironment{detail}{\noindent\textbf{Detail.}~}{\phantom{a}\eop}
+
+\newcommand{\prog}[1]{\par\noindent\begin{quote}#1\end{quote}\par\noindent}
+
+\newcommand{\new}[1]{\textbf{#1}}
+\newcommand{\newdel}[1]{\textbf{#1}}
+
+\providecommand{\commentbase}[1]{}
+\newcommand{\comment}[1]{\commentbase{#1}}
+\newcommand{\commenti}[1]{\commentbase{(#1)}}
+
+\title{{\bf Isabelle Primer for Mathematicians}}
+\author{B. Grechuk}
+
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+    This is a quick introduction to the Isabelle/HOL proof assistant, aimed for mathematicians who would like to use it for formalization of mathematical results.
+\end{abstract}
+
+\section{Introduction}
+
+Interactive proof assistants are special programs, which make it possible to check mathematical results up to a nearly absolute level of certainty. Clearly, computers cannot read and understand usual human language, and even if they could, a typical textbook proof usually omits some details and cannot be treated as absolutely rigorous. To check the proof in an automated proof assistant, you need to write it using special language, understandable by computer. This "translation" to computer language is called the formalization of the proof.
+
+There are many proof assistants with different languages and underlying logics, and the first step is to choose a particular one. Suppose that you chose the Isabelle/HOL proof assistant and want to learn how to perform formalization using it. The obvious first step is to download the tutorial \cite{tutorial}, and this should certainly be done. However, not everyone will want to read a 218-page tutorial before formalizing the first simple lemma. In contrast to the tutorial, this primer is aimed to help you start formalization immediately, and learn the Isabelle language (called Isar) in the process, based on examples. Sometimes, however, we will still refer to the tutorial.
+
+You can work with Isabelle directly, or use a graphical user interface. It is highly advised to use a graphical user interface, and the recommended interface is the Emacs-based Proof General. From now on I will assume that you use this interface.
+
+First, you need to install Isabelle with Proof-General on your computer. The installation process depends on the computer platform you use. All the programs and instructions can be found on the Isabelle website http://isabelle.in.tum.de/ and in the tutorial. Supposing you have installed the program correctly, you are ready to work. Let us start!
+
+\section{A First Lemma}
+
+If you open Proof General, you see an empty window where it is possible to enter text. This file is automatically called Scratch.thy. The whole Isabelle library consists of files with the extension "thy", which are called theories. A theory in Isabelle is just a collection of definitions, lemmas and theorems, like chapters in a book. Dozens of theories are installed with Isabelle on your computer, and you can use any lemma from these theories to derive your results. More important at this stage is that you can use these theories to study Isar - the language of Isabelle. Instead of reading hundreds pages of tutorial, let's just open some theory and see how it looks.
+
+To open an existing theory, you use the File $>$ Open File command in the menu, then choose the folder where you installed Isabelle, then $>$ src $>$ HOL, and here is a huge theory collection. Let us, for example, open theory Fun.thy, in which basic notions about functions are introduced. The theory starts with some comments and explanations of what is done here, embraced by open parenthesis-star and star-closed parenthesis, like this:
+\prog{\tt (*comment*)}%
+As you have probably guessed, in such comments you can write whatever you want, and this will not affect your proofs. Other possible syntax for comments are {\tt text\{*comment*\}}, {\tt --\{*comment*\}}, {\tt --"comment"}. Because large formal proofs are sometimes hard to understand, it is desirable to write such comments, but for now we can omit them together with the optional {\tt header} command and look further, where the theory actually starts.
+\prog{\tt theory Fun}%
+Ok, this is easy. So, every theory should start with keyword {\tt theory} followed by the theory name. We can open Isabelle in a new window, and write similarly:
+\prog{\tt theory MyFirst}%
+The next lines in Fun.thy are
+\prog{\tt imports Complete$\_$Lattice\\
+    begin}%
+Clearly, the command {\tt begin} just starts the theory. The command {\tt imports} requires a little bit more explanation. Theories in Isabelle form a huge directed graph - some theories "import" other ones to refer to their results and definitions. You will need to import at least one theory, otherwise you will have to prove everything from scratch. You can import several theories using a command like
+\prog{\tt imports $<$theoryName1$>$ $<$theoryName2$>$ $<$theoryName3$>$}%
+but importing a theory obviously means importing the whole hierarchy behind it, therefore it is usually enough to import just one theory with a rich enough parent hierarchy. For a start, it may be a good choice to import Main.thy, which accumulates all the basic theories in arithmetic. So, let us write
+\prog{\tt imports Main\\
+    begin}%
+and look at the example Fun.thy again. After the command {\tt begin}, we can see some comment of the form {\tt text \{* ... *\} }, which we will ignore, and then finally we see the first lemma of the theory
+\prog{\tt lemma expand$\_$fund$\_$eq:  "$f = g \Leftrightarrow (\forall x. f x = g x)$"}%
+From this example we see, that every lemma starts with keyword {\tt lemma} followed by the lemma's name, a colon {\tt :}, and the lemma formulation in quotes. Clearly, the name of the lemma is given for future references. Let us ignore this lemma for now, and start with something which seems to be easier to prove, and write
+\prog{\tt lemma two$\_$two: "$2+2=4$"}%
+Now, we want to prove this lemma. The statement which we want to prove is called a goal. If we look at Fun.thy, we can guess that text following every lemma is the proof. First lemma expand$\_$fund$\_$eq has a 4-line proof, which looks like
+\prog{\tt
+    apply(...) \\
+    ...\\
+    apply(...) \\
+    done}%
+This is one of the general proof strategies in Isabelle. Command {\tt apply} means that we want to apply some method to prove our goal. After this, the goal is usually simplified, and we use another method to proceed. When the goal is proved, we write command {\tt done}. But for our simple lemma we do not expect a long proof, we would prefer to prove such a statements in one step. So, let us look at the second lemma in Fun.thy
+
+\prog{\tt lemma apply$\_$inverse: \\
+    "f x = u $\rightarrow$ ($\forall$ x. P x $\rightarrow$ g (f x) = x) $\rightarrow$ P x $\rightarrow$ x = g u" \\
+    by auto}% 
+%  
+%\prog{\tt lemma apply$\_$inverse: "$f x = u \rightarrow (\forall x. P x \rightarrow g (f x) = x) \rightarrow P x \Rightarrow x = g u$" by auto}%
+
+You can see, that the whole proof here is just the phrase {\tt by auto}. {\tt auto} is a method which tries to prove the statement automatically. This method combines logical reasoning and arithmetic transformations to simplify the goal and ideally prove it completely. Command {\tt by} is just a replacement for two commands {\tt apply} and {\tt done}, namely {\tt by(method)} is the same as {\tt apply(method) done}. It requires the method to solve a goal completely, and will fail otherwise. Also, from this example we can see, that {\tt by auto} can be written without parentheses. Ok, let us try to prove our simple lemma similarly:
+
+\prog{\tt lemma two$\_$two: "2+2=4" by auto}%
+
+Next step is to check in Isabelle that the proof is correct. We can click on Proof-General $>$ Next Step in the menu. This is the same as clicking on the right arrow on the tool-bar panel just below the menu. If you click once, you see that the start of your theory has a different color, which means that this part is checked and no misprints found. We will call this checking process "execution". If you click second time, the lemma formulation is accepted, and if you click the third time, you will see the message {\tt Failed to finish proof At command by} in the window below, which is called the Proof General response buffer.
+
+The usual strategy in this case is to replace {\tt by} by {\tt apply} and see how far {\tt auto} can proceed. But in this case we will see the message {\tt empty result sequence -- proof command failed At command "apply"}. This message indicates that method cannot make any progress in solving the goal and hence cannot be applied here at all.
+
+So, does it mean that we cannot prove even such a simple lemma automatically in Isabelle? Clearly, in this case formalizing serious mathematical results would be completely impossible in Isabelle. Fortunately, this is not the case. To see the problem, let us go back (left arrow on the tool-bar panel), then try again, but execute only the lemma formulation and look at the response buffer (window below).
+
+\prog{\tt proof (prove): step 0\\
+    goal (1 subgoal):\\
+    1. (2::'a)+(2::'a)=(4::'a)}%
+
+The line {\tt proof (prove):~step 0} just indicates that proof starts, then Isabelle shows us how it understands our lemma. Symbol {\tt ::} indicates type of the object. The point is that we often use the same symbols in mathematics to indicate formally different notions. Of course, this is completely unacceptable in formal proof system, and therefore every constant or variable has a type, which clearly indicates what we mean. For example, we use symbol "2" in mathematical text to indicate natural number, real number, complex number, or even 2 in a non-decimal system, in which 2+2 may not be 4. Symbol {\tt 'a} denotes a \emph{type variable}, meaning that the system understands that 2, 2, and 4 are meant to have the same type, but it has no idea what this type is. Sometimes this works: for example, if we write the lemma {\tt 2=2}, we can easily prove it by auto, because this lemma is true for every type. So, formally, we wanted to state our lemma about natural numbers, but we stated a much more general lemma, which in general is incorrect, and this was the reason that we could not prove it.
+
+The type for natural numbers is {\tt nat}, and we can correct the lemma as follows
+
+\prog{\tt lemma two$\_$two: "(2::nat)+2=4" apply auto}%
+
+Notice that we need to specify the type only once, and Isabelle automatically understands that the second 2 and the 4 are also natural numbers. Now, if we execute the lemma formulation, it shows the correct goal {\tt 2+2=4},\footnote{Now no types are indicated in the goal {\tt 2+2=4}. The type-related error described above is very typical when working in Isabelle, so if you have error and do not know what is the reason, choose Isabelle $>$ Settings $>$ Show types in the menu, and try to execute again. Now you will see all the types in the response buffer, in particular, in our case, the goal will be {\tt (2::nat)+(2::nat)=(4::nat)}} and after executing {\tt apply auto} we get a message {\tt No subgoals!} which means that the proof is finished, and we can either type {\tt done} or replace {\tt apply} with {\tt by}, finally getting
+
+\prog{\tt lemma two$\_$two: "(2::nat)+2=4" by auto}%      
+
+Now, we can write {\tt end} at the end of file, and save the file choosing File $>$ Save as. There is a special condition that theory name is the same as file name, so we should save our theory with name "MyFirst.thy".
+
+\subsection{Summary}
+
+\begin{itemize}
+
+    \item Mathematical knowledge formalized by Isabelle consists of theory files *.thy, which form a theory hierarchy by importing each other using the command {\tt imports}. Syntax: each theory starts with keyword {\tt theory} followed by theory name, the command {\tt imports}, then {\tt begin}, followed by the body of the theory, ending with {\tt end}.
+
+    \item The body of a theory is a collection of definitions, lemmas and theorems. Every lemma consists of its statement and proof. Syntax: keyword {\tt lemma}, then lemma name, then {\tt :}, then the lemma's statement in quotes, then the proof.
+
+    \item The proof may look like {\tt apply($<$method$\_$1$>$) ... apply($<$method$\_$n$>$) done}. As we incrementally execute such a proof we can see what is left to prove in the response buffer. Syntax: the last expression {\tt apply($<$method$\_$n$>$) done'} can be replaced by {\tt by($<$method$\_$n$>$)}.
+
+    \item {\tt auto} is a method which tries to prove the statement automatically.
+
+    \item Every constant or variable in Isabelle has a type. {\tt nat} is the type used for natural numbers (syntax example: {\tt (2::nat)}). We can use Isabelle $>$ Settings $>$ Show types in the menu to see all the types in the response buffer.
+
+\end{itemize}
+
+\section{Main Notations}
+
+Now, let us have a closer look at lemmas in Fun.thy to learn the main notations of the Isabelle language. Let us start with the first lemma expand$\_$fun$\_$eq:
+
+\prog{\tt lemma expand$\_$fun$\_$eq: "$f = g \leftrightarrow (\forall x. f x = g x)$"}%
+
+First of all, you can see that the lemma's statement uses some mathematical symbols which you cannot see on your keyboard. You can type such symbols using the Math menu, but I would not say that this is convenient. In the appendix of the tutorial there is a very useful table which shows the way to write most symbols using the keyboard in natural way. For example, the arrow {\tt $\Longrightarrow$} can be written as {\tt $==>$}, or even {\tt $\backslash$$<$Longrightarrow$>$}. Notations like {\tt $==>$}, which is called ASCII notation, are more convenient, and will be used in the rest of the primer.
+If menu option Proof-General $>$ Options $>$ Unicode Tokens is turned on, "$==>$" will be automatically transformed to "$\Longrightarrow$" each time you type it.\footnote{This is your choice, but I personally prefer to see on the screen exactly what I typed, therefore I usually turn off Unicode Tokens in the menu, and just use ASCII notations}. You will get used to such notation very quickly and it will be absolutely no problem to understand mathematical text in this form.
+I would recommend to print the table with ASCII notation from the tutorial appendix now, and have it available until you get used to it.
+
+In this notation {\tt $\leftrightarrow$} is written as {\tt $<$-$>$}, {\tt $\forall$} is denoted {\tt ALL}. So, the lemma expand$\_$fun$\_$eq can be written as
+
+\prog{\tt lemma expand$\_$fun$\_$eq: "f=g $<$-$>$ (ALL x. f x = g x)"}%
+
+Now all the symbols are present on the keyboard and it is easy to type this lemma in. The meaning of the lemma is obvious: two functions f and g are equal if and only if $f(x)=g(x)$ for every argument $x$. Notice that $f(x)$ can be written without parenthesis. More complicated expressions with functions can also be written without parenthesis, but you should be careful here: for example, expression {\tt f t u} means {\tt (f t) u} (and not {\tt f (t u)}), and this expression can be used to denote a function of two variables f(t,u). Also, you should know the priorities of different operations: expression f x + y means (f x) + y and not f(x+y); equality has a high priority and {\tt A $\&$ B = B $\&$ A} (symbol {\tt $\&$} means "and") means {\tt A $\&$ (B=B) $\&$ A}, not {\tt (A $\&$ B) = (B $\&$ A)}. In general, the priorities of the main logical binary connectives in decreasing order are {\tt  $\&$}, {\tt $|$} ("or"), {\tt --$>$}, and they are associative to the right: {\tt A --$>$ B --$>$ C} means {\tt A --$>$ (B --$>$ C)}. You can find all these and many more rules and examples of this kind in the Isabelle tutorial, but I would recommend you to use parenthesis when you are not sure. If you write {\tt (A $\&$ B) = (B $\&$ A)} this clearly indicates what you mean, and moreover looks nice.
+
+Let us return to the lemma's statement. The phrase "for all x, we have f(x)=g(x)" is written as {\tt ALL x.~f x = g x}, where the full stop "{\tt .}" replaces "we have". Full stop is always used after any quantifier, although we can write {\tt ALL x y z.~x+(y+z)=(x+y)+z} instead of {\tt ALL x.~ALL y.~ALL z.~x+(y+z)=(x+y)+z}. Another important use of full stop is in function definitions. For example, to define function $f(x)=x+1$ we can write {\tt f=($\%$x.~x+1)}. It is important to always leave a space after the full stop, or expressions like {\tt ALL x.x} or {\tt $\%$x.x} will be understood incorrectly. Moreover, to be safe, I would recommend leaving a space after every special character. For example, the existential quantifier, $\exists$, denoted\footnote{Recommended ASCII notation of $\exists$ is {\tt EX}} as {\tt ?} should be followed by a space "{\tt ?~x}" because the expression "{\tt ?x}" has a completely different meaning. It is used for \emph{schematic variables}, or free variables, which can be instantiated arbitrarily. For example, the mathematical theorem {\tt x=x} is represented in Isabelle as {\tt ?x=?x}, which means that you can instantiate this variable to any term of the given type.
+
+Now we understand all of the notation in the statement of the lemma expand$\_$fun$\_$eq, so let us move to the next lemma in the Fun.thy theory, the lemma apply$\_$inverse, which in ASCII notation takes the form
+
+\prog{\tt lemma apply$\_$inverse: \\
+    "f x = u --$>$ (ALL x. P x --$>$ g (f x) = x) --$>$ P x --$>$ x = g u"}% 
+
+This formulation is a little bit less intuitive.
+%, first of all because of expression {\tt !!x. P x ==$>$ g (f x) = x}. This is a replacement of the expression {\tt !x. P x --$>$ g (f x) = x}, but is written in so-called \emph{meta-level syntax}. It is recommended to use this syntax, because Isabelle understands it better, and it will be easier to use this lemma to prove other results. In particular, Isabelle automatic proof methods (like auto) will work better with this syntax. It is easy to replace one syntax by the other one - just replace {\tt !} by {\tt !!}, {\tt $-->$} by {\tt ==$>$}, and {\tt =} by {\tt ==}. 
+Expression {\tt P x} here can be understood as a predicate, i.e. for every $x$ expression {\tt P x} is either true or false. Formally, this can be a function with Boolean values, or equivalently just a set, and in this case the notation {\tt P x} is equivalent to {\tt x:P}, which is the ASCII abbreviation for {\tt x$\in$P}. In Isabelle there is a special \emph{type constructor}, called {\tt set}, which can be used to define relevant types: for example, any set of natural numbers has the type {\tt nat set}. To define a set explicitly, we can use notation of the form "$\{$x. x is such that...$\}$", or even of the form "$\{$f(x,y) $|$ x y. x and y are such that...$\}$". For example, strings {\tt P::nat set} and {\tt P = $\{$x.~x$>$10$\}$} define the set of all natural numbers greater than 10.
+
+Now all the symbols are understandable, but it may still be not obvious how to read this lemma, which has the form of a long logical formula. The point is that expression {\tt A --$>$ B --$>$ C} is logically equivalent to {\tt (A $\&$ B) $-->$ C}, and the same is true for longer expressions. Thus, lemmas with assumptions $A_1$, $A_2$, ..., $A_n$ which proves $B$ can be written as {\tt $A_1 --> A_2 --> ... --> A_n --> B$}. Now we can easily read the above lemma as follows: assume that (1) f(x)=u, (2) for every $x\in P$ we have g(f(x))=x, and (3) $x\in P$. Then g(u)=x. Now we can see that lemma is obvious, and it is not a surprise that it is proved automatically.
+
+After two auxiliary lemmas, theory Fun.thy contains some definitions, the first of which looks like
+
+\prog{\tt definition id :: "$\,\,\,$'a $\Rightarrow$ 'a$\,\,\,$" where "id = ($\lambda$x.~x)"}% 
+
+This defines an identity function f(x)=x where x is a variable of any type. In ACSII notation {\tt $\Rightarrow$} becomes {\tt $=>$} and {\tt $\lambda$} becomes {\tt $\%$}. We can see, that the keyword {\tt definition} is followed by the name of an object we want to define, then after {\tt ::} we indicate the type of this object, and then after {\tt where} we list the defining equation of this object. We already know that arbitrary type is denoted by {\tt 'a}, thus the function from {\tt 'a} to {\tt 'a} has a type {\tt 'a $=>$ 'a}\footnote{Please notice that implication is denoted as $==>$, and the function type generator is $=>$, with a single equality sign.}. Then, after {\tt where} we specify that id(x)=x by writing {\tt id = ($\%$x.~x)}.
+
+Let us use this example to construct our own definition, for example, to define a function from real to real, which is nondecreasing on some interval S. First, we need to understand that this is actually a Boolean functional, which for every function f and set S will have value "True" or "False". The Boolean type in Isabelle is one of the base types and is denoted by {\tt bool}. The formal definition of real numbers is somewhat complicated, so we will not discuss it here, but the corresponding type is called {\tt real}. Now S has the type {\tt real set}, {\tt f} has the type {\tt (real =$>$ real)}, so the type of our functional will be {\tt real set =$>$ (real =$>$ real) =$>$ bool}. Let us give it the name {\tt nondecreasing$\_$on}. Now, {\tt nondecreasing$\_$on(S,f)} has a value "True" if and only if for all $x,y\in S$ such that $x\leq y$ we have $f(x)\leq f(y)$. We already know all the necessary notation from the previous examples, and can write this as
+
+\prog{\tt definition nondecreasing$\_$on :: "real set =$>$ (real =$>$ real) =$>$ bool" \\
+    \inds where "nondecreasing$\_$on S f $<$-$>$ (ALL x:S. ALL y:S. x$<=$y --$>$ f x $<=$ f y)"}%
+
+However, if we try to execute this definition, we will obtain an error: {\tt Undeclared type constructor: "real" At command "definition"}. The obvious guess after such an error would be that the type of real number is not denoted {\tt real} in Isabelle. To check this, we can go to the directory with Isabelle's theory files (the folder you installed Isabelle in), then $>$ src $>$ HOL, and look for the corresponding theory. Fortunately, this is easy in this case, because there is a theory with name RealDef.thy, which is obviously what we want. If we look inside this theory, we will see that the type name is indeed {\tt real}. Usually, if you see a definition or lemma in some theory, you can use it. Then if the system does not recognize it, it may be that you did not import the corresponding theory. Indeed it turns out that real numbers are not included by Main.thy, and one option is to add RealDef.thy to {\tt imports} command at the beginning of your theory. But, to avoid similar problems with a next lemma, it is desirable to import the "latest" theory, accumulating as much of the library as possible. However, I cannot tell you the name of such a theory once and for all, because the library is growing continuously. The current theory dependencies graph can be found on Isabelle website: http://www.cl.cam.ac.uk/research/hvg/isabelle/dist/library/HOL/index.html.
+For now, let us replace {\tt imports Main} by {\tt imports Complex$\_$Main}: theory Complex$\_$Main.thy imports Main.thy together with many more theories containing, for example, all the basic properties of real and complex numbers. The definition can now be executed.
+
+As you can see, reading just a few lemmas and one definition from a randomly chosen theory, Fun.thy, gives us enough notation to create our own nontrivial definitions. If we look at this theory further, we will be able to guess the meaning of almost all new mathematical notation in Isabelle. For example, one of the next lemmas is {\tt image$\_$ident} stating that {\tt ($\%$x.~x) ` Y = Y}. We can guess that it states that image of the set Y under the identity function will be Y, whence symbol {\tt `} is an important notation of the \emph{image} of a set under a function ({\tt f ` X} is by definition the set {\tt $\{$y.~EX x:X.~y = f x $\}$}). Looking at the next few lemmas we can see that {\tt -`} is a notation for \emph{inverse image}, and the next definition introduces a useful notation for function \emph{composition} {\tt f o g} which means function "f(g(.))", or, in Isabelle notation, {\tt ($\%$x.~f (g x))}. All the important functions and notations in {\tt Main.thy} are listed in \cite{main}.
+But it is impossible to learn all the notation at once. We now know more than enough to start proving theorems, and will learn more notation in the process.
+
+\subsection{Summary}
+
+\begin{itemize}
+
+    \item All the main mathematical symbols also have ASCII notation, as a way to type them on a keyboard. For example, {\tt $\Longrightarrow$} is {\tt ==$>$}, {\tt $\longrightarrow$} is {\tt $-->$}, {\tt $\leftrightarrow$} is {\tt $<$-$>$}, {\tt $\forall$} is {\tt ALL},  $\exists$ is {\tt EX}, {\tt $\leq$} is {\tt $<$=},
+          %{\tt $\equiv$} is {\tt ==},  
+          {\tt x:P} is ASCII abbreviation for {\tt x$\in$P}, the symbol {\tt $\&$} means "and"; the symbol {\tt $|$} means "or".
+
+    \item Equality has a high priority; the priorities of the main logical binary connectives in decreasing order are {\tt $\&$}, {\tt $|$}, {\tt $-->$}, and they associate to the right. Use parentheses when you are not sure.
+
+          %\item For logical formulas, the meta-level syntax is preferable: replace {\tt !} by {\tt !!}, and {\tt $-->$} by {\tt ==$>$}.
+
+    \item {\tt bool} is the type for Boolean variables. {\tt set} is the type constructor for sets, for example {\tt nat set} is the set of natural numbers. Function types may be constructed using {\tt =$>$}, for example {\tt nat =$>$ bool}. Many standard types are defined in Isabelle, for example {\tt real} is the type of real numbers.
+
+    \item Full stop is used (1) with quantifiers, like {\tt ALL x.~f(x)=g(x)}; (2) to define functions, for example  {\tt f=($\%$x.~x+1)}; and (3) to define sets, eg. {\tt P = $\{$x.~x$>$10$\}$}. In every case, a space should follow immediately after the full stop.
+
+    \item The symbol {\tt `} is a notation of the image of a set under a function ({\tt f ` X} is by definition set {\tt $\{$y.~EX~x:X. y = f x $\}$}). Notation {\tt f~o~g} means function composition f(g(.)).
+
+    \item All the important functions and notations in {\tt Main.thy} are listed in \cite{main}.
+
+\end{itemize}
+
+\section{Automatic Proofs}
+
+The most important skill in proving mathematical theorems in Isabelle is the ability to prove simple lemmas with almost no effort. Every arbitrarily long proof can be represented as a chain of simple steps, and this representation is an interesting and fully mathematical task. But proving every simple step may be a bit problematic for new Isabelle users, as we saw on the example of lemma "2+2=4".
+
+One of the main problems here is that the user often does not know what relevant lemmas exist in the library. If you want to prove some result from a particular area of mathematics, it is useful to look at the existing theories in this area before start. However, Isabelle also provides us with several ways to search through the library.
+
+Given that we want to prove some lemma in Isabelle, the first question is what if exactly such lemma already exists in the library and we just did not know about it? For example, assume that we do not know the lemma {\tt id$\_$apply} in Fun.thy, stating that {\tt id x = x}, and want to prove exactly the same lemma with name {\tt apply$\_$id} (recall that the function {\tt id} is defined in {\tt Fun.thy}, and it is the identity function).
+
+\prog{\tt lemma apply$\_$id: "id x = x"}%
+
+If we execute this lemma statement, we see the following message in the response buffer:
+
+\prog{\tt The current goal could be solved directly with:\\
+    Fun.id$\_$apply: id ?x = ?x}%
+
+This important mechanism of lemma suggestions can prevent you from reproving results which already exist in the library. If such a message does not appear, you may be sure that your result is new\footnote{At least in theories that you have imported.}. The search tries to look on the \emph{meaning} of the lemma, not just symbol-by-symbol coincidence, for example if you change the name of the variable and write:
+\prog{\tt lemma apply$\_$id: "id y = y"}%
+Isabelle will still suggest you use lemma {\tt id$\_$apply} to solve the goal directly. To use an existing lemma in your proof you can use the {\tt using} command and write:
+
+\prog{\tt lemma apply$\_$id: "id y = y" using id$\_$apply by auto}%  
+and the lemma will be proved. But, clearly, proving this lemma again has no sense: if you wanted to prove some lemma and the system found this lemma in the library, it is better just delete your lemma and use the existing one. Notice that we can use it just by lemma name, like {\tt id$\_$apply}, writing the full name like {\tt Fun.id$\_$apply} is possible but unnecessary, and moreover will make your theory unstable. It can stop working in the future versions of Isabelle if the library is reorganized.
+
+Unfortunately, the lemma suggestion mechanism is currently very sensitive to your lemma's formulation. In particular, Isabelle regards equations as directed, and if we write
+
+\prog{\tt lemma apply$\_$id: "x = id x"}%
+no lemma is suggested. This statement is actually a combination of two lemmas: id$\_$apply and the fact that "a=b" is equivalent to "b=a". Fortunately, there is a tool in Isabelle, called Sledgehammer, which tries existing lemmas to automatically prove your goal. After executing the formulation of your lemma, choose Isabelle $>$ Commands $>$ Sledgehammer in the menu, and you will see the message
+
+\prog{\tt Try this command: apply (metis id$\_$apply)}%
+which suggest to apply lemma id$\_$apply to solve our lemma. If we click at this command in the response buffer, it will be added to the proof, and we get message {\tt goal:~No subgoals!}. So the proof is finished, we can write {\tt done} to get
+
+\prog{\tt lemma apply$\_$id: "x = id x" apply (metis id$\_$apply) done}%
+
+Method {\tt metis}, similar to {\tt auto}, tries to prove the statement automatically. The difference is that metis uses only logical reasoning, but it is very strong in proving logical statements. To prove the correct logical formula, it is often enough to write {\tt apply metis}. To prove that our statement is a logical consequence of some lemma, we need to write {\tt apply(metis $<$lemma$\_$name$>$)}, in our case {\tt apply (metis id$\_$apply)}. If we want to prove corollary from several lemmas we should write all of them, for example {\tt apply (metis id$\_$apply two$\_$two)}. But the point is that we wrote the proof above using sledgehammer having no idea about metis, and (theoretically) without knowledge that the relevant lemma "id$\_$apply" already exists in the library.
+
+Sometimes sledgehammer needs some time to find a proof, but it can work in the background, and you can continue to work on your proof in parallel. Sometimes, it gives back a message that it cannot find a proof. This may indicate that your lemma is nontrivial and new, which would be the ideal case. Unfortunately, sledgehammer is not always helpful even in simple cases, especially if lemmas involve quantifiers. For example, if we formulate the lemma
+
+\prog{\tt lemma expand: "h = t $<$-$>$ (ALL y. h y = t y)"}%
+which is just a reformulation of lemma {\tt expand$\_$fun$\_$eq} in {\tt Fun.thy}, the lemma suggestion mechanism immediately tells you that
+
+\prog{\tt The current goal could be solved directly with:\\
+    Fun.expand$\_$fun$\_$eq: (?f = ?g) = (ALL x. ?f x = ?g x)}%
+
+But now, if you replace {\tt h y = t y} by {\tt t y = h y} and write
+
+\prog{\tt lemma expand: "h = t $<$-$>$ (ALL y. t y = h y)"}% 
+no lemma is suggested automatically, and sledgehammer also gives the message {\tt External prover failed}. For this reasons it is desirable to formulate all your lemmas in the most natural way, without unnecessary changes of order in equalities, etc. Hopefully, the lemma suggestion mechanism and sledgehammer will be significantly improved in future versions of Isabelle, and all the results that are trivial consequences from the existing ones will be proved automatically, without any effort from the user.
+
+\subsection{Summary}
+
+\begin{itemize}
+
+    \item When we execute the formulation of a lemma, we may get the message {\tt The current goal could be solved directly with:...} which implies that this lemma is not new but is just an instance of an existing result in the Library.
+
+    \item  Sledgehammer is a mechanism which tries to combine two or more existing lemmas to prove the goal. After executing the formulation of your lemma, choose Isabelle $>$ Commands $>$ Sledgehammer in the menu, and, if successful, you will see the message like {\tt Try this command: ...}
+
+    \item  To use an existing lemma in your proof you can use the {\tt using} command and write {\tt using $<$lemma$\_$name$>$ apply($<$method$>$)}.
+
+    \item The proof method {\tt metis}, similarly to {\tt auto}, tries to prove statements automatically. It is very good at proving logical statements.
+
+\end{itemize}
+
+
+\section{Interactive Proof}
+
+In this section, we start writing proofs, which Isabelle cannot do completely automatically.  Let us start from a simple example: suppose we want to prove a simple formula from school algebra: {\tt $(a+b)^2=a^2+2ab+b^2$}.
+
+First, we should formulate the lemma carefully. We know from the example {\tt 2+2=4} that the type of variables should be specified explicitly. Furthermore, we cannot omit the multiplication symbol {\tt *} and write {\tt ab}, because Isabelle will understand this as a new variable. With this in mind, it is easy to formulate the lemma:
+
+\prog{\tt lemma sum$\_$square: "(a+b)\^{}2=a\^{}2+(2::real)*a*b+b\^{}2"}%
+
+If we execute this lemma statement, no suggestion appears in the response buffer. Sledgehammer also cannot help here (message {\tt Interrupted (reached timeout)} appears), so we need to prove the lemma by hand.
+
+So far, we know only two automatic proof methods {\tt auto} and {\tt metis}. To prove the lemma above, we will need a third one: {\tt simp}. This method is a powerful simplifier, which tries to simplify your expression using hundreds of lemmas and simplification rules. Actually, the lemma {\tt id$\_$apply} from {\tt Fun.thy}, considered above, is formulated as follows:
+
+\prog{\tt lemma id$\_$apply [simp]: "id x = x" by (simp add:~id$\_$def)}%
+
+The attribute {\tt [simp]} after lemma formulation states that this lemma will be automatically added to those ones which the {\tt simp} method will use. Namely, if {\tt simp} finds expression like {\tt id $<$expression$>$}, it will simplify it and rewrite as just {\tt $<$expression$>$} using this lemma. Your can easily use the {\tt [simp]} attribute to add any of your lemmas to those which are used by {\tt simp}. But this should be done very carefully: if you add lemma like {\tt a+b=b+a}, {\tt simp} may use it again and again, working forever. It is recommended to add only those lemmas which really simplify expressions, in the sense that the right-hand side is simpler that the left-hand side. If you want the simplifier to use some other lemma(s) in a particular case, you can use the {\tt add} command. For example, expression {\tt by (simp add:~id$\_$def)} in the example above proves lemma {\tt id$\_$apply} by the simp method, which uses all the lemmas with the {\tt [simp]} attribute plus the definition of the identity function {\tt id$\_$def}. In general, if we write any definition in Isabelle, the corresponding lemma with suffix {\tt $\_$def} is automatically created, and we can use this lemma in future proofs by writing commands like {\tt by (simp add:~id$\_$def)} or {\tt using id$\_$def by auto}.
+
+There are many lemmas which are not added to {\tt simp} by default, but which are very useful in some particular cases. For example, to simplify expressions involving addition and multiplication (or, more generally, any group, ring, or field equalities), it is useful to add {\tt algebra$\_$simps} to the simplifier by writing {\tt apply (simp add:~algebra$\_$simps)}.
+
+Let us return to proving our lemma {\tt sum$\_$square}. It involves addition and multiplication, but immediately writing {\tt apply (simp add:~algebra$\_$simps)} fails to prove the lemma, because it involves also operation of power. First, we should explain to Isabelle, that {\tt a\^{}2} means {\tt a*a} and so on. This fact is so simple, that it should be in the library for sure, but how to find it? One way is to use the lemma suggestion mechanism and write somewhere above
+\prog{\tt lemma "a\^{}2=(a::real)*a"}%
+execute this, and the system will suggest you that
+\prog{\tt The current goal could be solved directly with:\\
+Nat$\_$Numeral.monoid$\_$mult$\_$class.power2$\_$eq$\_$square: ?a\^{}2 = ?a * ?a}%
+
+Sometimes, however, it is hard to guess the exact lemma formulation. In this case you can use Proof$\-$General $>$ Find Theorems item in the menu, where you can search for theorems, say, by name, writing {\tt name: $<$name$\_$to$\_$find$>$} in the string below. For example, in our case, we can guess to search for {\tt name:~square} and find all the lemmas containing {\tt square} in the name. In this case we will get the following message:
+\prog{\tt found 57 theorems (40 displayed) in 0.146 secs:}%
+This message indicates that not all found lemmas are displayed. We can modify the search and state explicitly how many lemmas we want to be displayed: if we search for {\tt (100)~name:~square}, now all the lemmas containing {\tt square} in the name are displayed, including the relevant {\tt power2$\_$eq$\_$square} lemma.
+
+If we cannot guess part of lemma's name, we can also search for part of its formulation. For example, to find all the lemmas containing product of some number by itself we can (after choosing Proof$\-$General $>$ Find Theorems item in the menu) search for {\tt "?a*?a"}, and now 44 theorems are found, including the {\tt power2$\_$eq$\_$square} lemma. If too many lemmas are found, we can combine these approaches: search for {\tt name:~square~"?a*?a"} result in just 20 lemmas which have both "square" in the name and expression like "a*a" in the formulation. Another relevant attempt is the query {\tt "?b\^{}2" "?a*?a"} which searches for lemmas containing both these expressions at the same time: now only three lemmas are found.
+
+After finding lemma {\tt power2$\_$eq$\_$square}, we are almost done. First, tell the simplifier to transform squares to multiplication by writing {\tt apply (simp add: power2$\_$eq$\_$square)}
+
+\prog{\tt lemma sum$\_$square: "(a+b)\^{}2=a\^{}2+(2::real)*a*b+b\^{}2"\\
+\ind apply (simp add:~power2$\_$eq$\_$square)}%
+
+After executing this, we can see the following in the response buffer:
+
+\prog{\tt goal (1 subgoal): 1. (a + b) * (a + b) = a * a + 2 * a * b + b * b}% 
+
+This means that, after simplification, it is left to prove the statement above. Now it uses only addition and multiplication, we can write {\tt apply (simp add:algebra$\_$simps)}, execute to see message {\tt goal:~No subgoals!}, and finish the proof by command {\tt done}. The resulting proof looks like
+
+\prog{\tt lemma sum$\_$square: "(a+b)\^{}2=a\^{}2+(2::real)*a*b+b\^{}2"\\
+\ind apply (simp add:~power2$\_$eq$\_$square)\\
+\ind apply (simp add:~algebra$\_$simps)\\
+done}% 
+
+The resulting proof is called \emph{backward proof}. At every step we apply the relevant method to simplify the goal, and see what is left to prove in the response buffer. But, first, the resulting proof script is hard to understand: after reading the long sequence of {\tt apply} commands which proves hard theorem, it is hard to say what was the main idea of the proof. Second, most of the proofs in mathematical papers rarely use the argument "it is left to prove that". The typical proof usually looks like "From definition we have Statement 1. Also, from well-known lemma it follows Statement 2. Now, from these 2 statements we can conclude Statement 3, and the proof follows". This is called \emph{forward proof}, or \emph{declarative proof}, and it is also supported in Isabelle. Let us use the lemma above to prove that $x^2+6x+9\geq 0$.
+
+\prog{\tt lemma expression$\_$nonneg: "x\^{}2+(6::real)*x+9 $>$= 0"}%  
+
+As a first step of proof, we want to say that $x^2+6x+9=(x+3)^2$. For Isabelle, this will be a sublemma inside the proof of our lemma. To formulate such a sublemma, command {\tt have} is used, and to indicate that we are inside the proof of lemma {\tt expression$\_$nonneg}, we should write {\tt proof-} before {\tt have}:
+
+\prog{\tt lemma expression$\_$nonneg: "x\^{}2+(6::real)*x+9 $>$= 0"\\
+proof-\\
+\ind have aux: "x\^{}2+(6::real)*x+9 = (x+3)\^{}2"}
+
+Here {\tt aux} is the name of the sublemma which will be used for future references. To prove this, we need to substitute {\tt x} and {\tt 3} into the lemma {\tt sum$\_$square}. This can be done using the attribute {\tt of} which has format {\tt $<$lemma$\_$name$>$ [of $<$var1$>$ $<$var2$>$ ... $<$varn$>$]}:
+
+\prog{\tt have aux: "x\^{}2+(6::real)*x+9 = (x+3)\^{}2" using sum$\_$square [of x 3] by auto}% 
+
+Now we need to find a lemma stating that full square is nonnegative. It is logical to assume that such a lemma has {\tt square} as a part of name. To find it, go to Proof$\-$General $>$ Find Theorems in the menu,then write {\tt name:~square}, and in resulting list we can see the lemma we need:
+\prog{\tt Rings.linordered$\_$ring$\_$strict$\_$class.zero$\_$le$\_$square: (0::?'a) $<$= ?a * ?a}%
+In our case variable {\tt ?a} should be $x+3$. To see the result of the substitution we can use {\tt thm} command
+\prog{\tt thm zero$\_$le$\_$square [of "x+3"]}% 
+Please notice that expressions like {\tt x+3} should be in quotes when used after {\tt of}. Executing the string above, we can see in the response buffer
+\prog{\tt 0 $<$= (x + 3) * (x + 3)}%
+as expected. So we can write
+\prog{\tt have "(x+3)\^{}2 $>$= 0" using zero$\_$le$\_$square [of "x+3"] by auto}%
+and the auxiliary {\tt thm} command can now be erased.
+
+Alternatively, we can try to use Sledgehammer to prove any of our subgoals. After executing the expression after have, we can choose Isabelle $>$ Commands $>$ Sledgehammer in the menu, and for the statement  {\tt (x+3)\^{}2 $>$= 0} it works: you can see the message
+
+\prog{\tt Try this command:~apply (metis zero$\_$le$\_$power2)}%
+which also finishes the proof of the statement immediately.
+
+Now we want to say that the lemma expression$\_$nonneg follows from these two statements. The first one has name {\tt aux}, and the last one can be referred using keywords {\tt from this}. The phrase "and lemma follows" in Isabelle language looks like {\tt show ?thesis}, and we can write:
+
+\prog{\tt from this show ?thesis using aux by auto}%
+
+After executing we see that the proof is correct, and then the declarative proof should be finished by the command {\tt qed}. The resulting proof looks like:
+
+\prog{\tt lemma expression$\_$nonneg: "x\^{}2+(6::real)*x+9 $>$= 0"\\
+proof-\\
+\ind have aux: "x\^{}2+(6::real)*x+9 = (x+3)\^{}2" using sum$\_$square [of x 3] by auto \\
+\ind have "(x+3)\^{}2 $>$= 0" using zero$\_$le$\_$square [of "x+3"] by auto \\
+\ind from this show ?thesis using aux by auto\\
+qed}%
+
+In contrast to the backward proof of lemma sum$\_$square, this proof is clear for the reader. For readability of large proofs, it is important to indent the proof text between {\tt proof-} and {\tt qed}. Moreover, you can improve the language of the proof by replacing {\tt from this} by {\tt then}, {\tt from this have} by {\tt then have} or {\tt hence}, {\tt from this show} by {\tt thus}, etc. However, backward proof can sometimes be easier to write: you just formulate the goal and see how far the appropriate automated method can proceed. So, maybe the best strategy would be to combine forward and backward proof methods. For example, you may prefer to state some major sublemmas in your proof using {\tt have} and then prove these sublemmas by the backward strategy using {\tt apply}.
+
+Sometimes it is convenient to exchange the order of proving sublemmas in a forward proof. For example, if the proof of statement B has the form {\tt have A hence B}, we may prefer first to prove the second statement (namely, that A implies B) and then return to proving A. Isabelle provides you with this opportunity with the help of {\tt sorry} command, which "proves" everything. For example, if we would like to use lemma {\tt expression$\_$nonneg} first, and then return to proving it, we could temporary "prove" it in one line:
+\prog{\tt lemma expression$\_$nonneg: "x\^{}2+(6::real)*x+9 $>$= 0" sorry}% 
+However, {\tt sorry} command should be used with care, because you can "prove" a false statement with it, and then build your proof based on this statement.
+
+\subsection{Summary}
+
+\begin{itemize}
+
+    \item Method {\tt simp} is a simplification method which tries to simplify the goal automatically. It uses all the lemmas in the library marked with the {\tt [simp]} attribute. To make {\tt simp} also use another lemma, we should add it explicitly, by writing {\tt apply(simp add:~$<$lemma$\_$name$>$)}. For example, {\tt apply (simp add:~algebra$\_$simps)} is useful to simplify expressions involving addition and multiplication.
+
+    \item If you can guess a part of the name of the lemma you want to use, choose Proof$\-$General $>$ Find Theorems item in the menu, and then  write {\tt name:~$<$name$\_$to$\_$find$>$} in the string below. You can also indicate how many found lemmas to display: for example search for {\tt (100)~name:~square} will result in up to 100 lemmas with "square" as a part of the name.
+
+    \item Similarly, if you can guess a part of the lemma statement, choose Proof$\-$General $>$ Find Theorems, and then search for any expression, or several expressions, using schematic variables. For example, search for {\tt "?b\^{}2" "?a*?a"} will result in the list of lemmas containing both a square and a product of a term with itself.
+
+    \item There are two main strategies in proving results. Proof in the form {\tt apply($<$method$\_$1$>$) ... apply ($<$method$\_$n$>$) done} is called backward proof. Alternatively, you can use the forward strategy which looks like {\tt proof- have $<$statement$\_1>$ ... have $<$statement$\_n>$ qed}, where the statements after {\tt have} should, in turn, be proved using backward or forward strategies, and, perhaps, the earlier proved statements. Also, at every step you can use Sledgehammer to try to prove the statement automatically.
+
+    \item To substitute particular values for the variables in an earlier proved lemma, you can use the attribute {\tt of}, for example {\tt ...using sum$\_$square [of x 3] by auto}.
+
+    \item To use the last proven fact you can write {\tt from this have}, or {\tt then have}, or {\tt hence}.
+
+    \item At the end of forward proof, you should write {\tt show ?thesis}, finish the proof, and then write {\tt qed}.
+
+    \item To exchange the order of reasoning in a forward proof, you can temporarily "prove" any statement or lemma with command {\tt sorry}.
+
+\end{itemize}
+
+\section{Assumptions and Local Variables}
+
+In a usual human proof, the same variables and notations are used to denote, strictly speaking, different objects, and in this section we explain how this works in Isabelle. For example, let us write down the proof of a simple well-known result, that point $x$ in metric space belongs to the interior\footnote{By definition, interior of $S$ is the set of all points $x$, such that there exists an open subset of $S$ which contains $x$} of set $S$ if and only if $S$ contains a ball with center $x$.
+
+\emph{Proof:} If $x$ belongs to interior $S$, then, by definition, $x$ belongs to some open subset $T$ of $S$. Because $T$ is open, it contains a ball $B$ with center $x$, and we have $B\subseteq T\subseteq S$. Vice versa, if $S$ contains a ball with center $x$, this ball is an open subset of $S$ which contains $x$, hence, by definition, $x$ belongs to interior $S$.
+
+We can see that the proof consists of two parts, and in first part $x$ is an arbitrary point belonging to interior of $S$, while in the second one we assume that "$S$ contains a ball with center $x$", and this creates no confusion. Let us try to formalize the proof above.
+
+First, we can find if the notion of interior is defined in Isabelle. If you import {\tt Complex$\_$Main} only, searching for {\tt name:~interior$\_$def} or even {\tt name:~interior} will show no results. Fortunately, basic notions of topology was recently formalized in the context of a big project of multivariate analysis formalization in Isabelle. If you add {\tt imports~Multivariate$\_$Analysis}
+\footnote{If you get an error {\tt Could not find theory file "Multivariate$\_$Analysis.thy" in...}, please go to the folder in which you have installed Isabelle and execute the command {\tt ./build -m HOL-Multivariate$\_$Analysis HOL}} at the beginning of your theory, searching for {\tt name:~interior$\_$def} will lead you to the result:
+
+\prog{\tt interior ?S = $\{$x. EX T. open T $\&$ x:T $\&$ T $<$= ?S$\}$}%
+
+Similarly, search for {\tt name:~ball$\_$def} will result in {\tt ball~?x~?e~=~$\{$y.~dist~?x~y~$<$~?e$\}$}, so we can conclude that {\tt ball x e} is the ball with center x and radius e. Now we can formulate the lemma.
+
+\prog{\tt lemma interior$\_$ball: "x:interior S $<$-$>$ (EX e. 0 $<$ e $\&$ (ball x e) $<$= S)"}%
+
+There is no need to specify that x is an element of a metric space, and e is a real number: Isabelle understands this from string {\tt ball x e}. If we execute this lemma formulation, we will see that {\tt The current goal could be solved directly with:~Topology$\_$Euclidean$\_$Space.mem$\_$interior}, i.e. that this lemma already exists in the library, but we will ignore this and prove it by hand.
+
+The proof starts with the assumption "If $x$ belongs to interior $S$...". In Isabelle, there is a corresponding command {\tt assume}. To tell Isabelle which part of proof this assumption affects, we should enclose it in braces {\tt $\{\}$}. The general way to prove the implication {\tt A --$>$ B} is to write {\tt $\{$assume A... have B$\}$}. Also, we can write several assumptions {\tt $A_1,...,A_n$} to derive {\tt $(A_1 \& A_2 \& ...\& A_n) --> B$}.
+
+So, let us start the proof by writing
+
+\prog{\tt proof-\\
+    $\{$ assume "x:interior S"}%
+
+The next step is to define T such that $x\in T$, T is open, and $T\subseteq S$. This can be done by commands {\tt obtain} and {\tt where}:
+
+\prog{\tt from this obtain T where T$\_$def: "open T $\&$ x:T $\&$ T $<$= S" using interior$\_$def by auto}%
+
+The line above does not just introduce a new notation T, but it proves that such a T actually exists. This fact follows directly ({\tt by auto}) from the assumption ({\tt from this}) and the definition of interior ({\tt using interior$\_$def}), and we gave it a name ({\tt T$\_$def}) for future reference.
+
+Next, we want to say that "Because $T$ is open, it contains a ball $B$ with center $x$". The corresponding lemma can be easily found, say, by searching for "name: ball" and it is called {\tt open$\_$contains$\_$ball}. Thus, we can write
+
+\prog{\tt hence "EX e. e$>$0 $\&$ ball x e $<$= T" using open$\_$contains$\_$ball by auto}%
+
+Here {\tt hence} is the same as {\tt from this have}, so we have proved this statement by auto using lemma {\tt open$\_$contains$\_$ball} and the previous line stating that T is open. Now we can use the fact {\tt T $<$= S} to conclude that {\tt ball x e $<$= S}, and then finish the first part of proof
+
+\prog{\tt \ind hence "EX e. e$>$0 $\&$ ball x e $<$= S" using T$\_$def by auto \\
+    $\}$ note imp1 = this }%
+%hence imp1: "x : interior S --$>$ EX e. e$>$0 $\&$ ball x e $<$= S" by auto }%
+
+All the statements inside the block are conditional with respect to the assumption. The last statement before closing parenthesis $\}$ should not contain any local notation like T. Then we can close the block, and Isabelle automatically derives the unconditional statement of the form "assumption --$>$ last statement inside the block", which can be referred to using {\tt this}. Command {\tt note imp1 = this} gives it a name {\tt imp1} for future references.
+
+To prove the converse statement, we assume that $S$ contains a ball with center $x$, denote it $T$, and claim that this $T$ is exactly what we need to prove that {\tt x~:~interior~S} by definition.
+
+\prog{\tt $\{$ assume "EX e. e$>$0 $\&$ ball x e $<$= S"\\
+    \inds from this obtain e where e$\_$def: "e$>$0 $\&$ (ball x e) $<$= S" by auto\\
+    \inds def T == "ball x e"\\
+    \inds hence "open T $\&$ x:T $\&$ T $<$= S"}%
+
+From the assumption we "obtain" radius $e>0$ such that {\tt (ball x e) $<$= S}, and then just introduce a notation T for (ball x e) in command {\tt def}. The syntax is {\tt def $<$name$>$ == "$<$description$>$"}. In contrast to {\tt obtain}, command {\tt def} does not require any proof of existence. Now, to prove that T is open we need to find the corresponding lemma {\tt open$\_$ball} in the library, statement {\tt T $<$= S} follows from {\tt e$\_$def}, and the obvious fact {\tt x~:~T~} can be proved automatically. So, the rest of the proof is easy:
+
+\prog{\tt \ind hence "open T $\&$ x:T $\&$ T $<$= S" using open$\_$ball e$\_$def by auto\\
+    \inds hence "x:interior S" using interior$\_$def by auto\\
+    $\}$ from this show ?thesis using imp1 by auto\\
+    qed}%
+
+The last {\tt this} here refers to the fact that from assumption {\tt EX e. e$>$0 $\&$ ball x e $<$= S} the last statement of the block {\tt x:interior S} follows. This together with {\tt imp1} finishes the proof.
+
+The proof of this lemma in Isabelle library is shorter, but this proof illustrates how to use assumptions in Isabelle, which will be very useful in other proofs. For example, the general method to prove that {\tt A $<$-$>$ B} is to derive B from A using format {\tt $\{$assume A... have B$\}$}, and then derive B from A using {\tt $\{$assume B... have A$\}$}. Also, to prove that, say, two sets S and T are equal, the straightforward way is {\tt $\{$assume "x:S"... have "x:T"$\}$} to derive {\tt (x:S) --$>$ (x:T)}, then prove the opposite statement to derive {\tt (x:T) --$>$ (x:S)}, and finally use lemma {\tt expand$\_$set$\_$eq} which states that {\tt (?A = ?B) = (ALL x. (x:?A) = (x:?B))}.
+
+For example, our lemma {\tt interior$\_$ball} can be used to obtain the following equivalent characterization of the interior:
+\prog{\tt lemma interior$\_$def2: "interior S = $\{$x. EX e. e$>$0 $\&$ (ball x e) $<$= S$\}$"}%
+
+For a proof, we need to use lemma {\tt interior$\_$ball}
+%. We can type {\tt thm interior$\_$ball} to see its formulation in the response buffer.
+%\prog{\tt (?x : interior ?S) = (EX e$>$0. ball ?x e $<$= ?S)}%
+%We want to use this lemma 
+for a particular S, but for arbitrary x. This can be done using the {\tt of} attribute in the following format: {\tt interior$\_$ball[of $\_$ S]}. To derive lemma {\tt interior$\_$def2} from this statement, it is left to apply lemma {\tt expand$\_$set$\_$eq}.
+
+\prog{\tt lemma interior$\_$def2: "interior S = $\{$x. EX e. e$>$0 $\&$ (ball x e) $<$= S$\}$"\\
+    \ind using interior$\_$ball[of $\_$ S] by (simp add:~expand$\_$set$\_$eq)}%
+
+
+\subsection{Summary}
+
+\begin{itemize}
+
+    \item To use some additional assumption during the proof, one can use command {\tt assume}. In this case, we should enclose the block where this assumption applies in braces $\{\}$. The general way to prove the implication {\tt A --$>$ B} is to write {\tt $\{$assume A... have B$\}$}.
+
+    \item Command {\tt obtain $<$object$\_$name$>$ where $<$thm$\_$name$>$: ...} allows us to obtain an object with a particular properties. To finish this command, we need to prove that such an object exists, and then we can use this object as {\tt $<$object$\_$name$>$} during the proof (say, substitute it as a parameter after {\tt of} attribute), referring to its properties as to {\tt $<$thm$\_$name$>$}.
+
+    \item  Command {\tt def} with format {\tt def $<$name$>$ == "$<$description$>$"} just introduces a notation and does not require any proof of existence. We can refer to this definition using {\tt $<$name$>\_$def}.
+
+    \item All statements inside a block enclosed in braces $\{\}$ are conditional with respect to assumptions, and all variables defined inside such a block are local ones. No such variable can participate in the last statement of the block. We can use variables with the same names in different blocks.
+
+    \item  To prove that two sets S and T are equal, one can first prove that {\tt (x:S) $<$=$>$ (x:T)}, and then use lemma {\tt expand$\_$set$\_$eq} which states that {\tt (?A = ?B) = (ALL x.~(x:?A) = (x:?B))}.
+
+\end{itemize}
+
+
+\section{Introducing New Notations and Concepts}
+
+Convenient definitions and notation are crucial in proving mathematical results. For example, suppose we want to prove, that for any convex sets A, B, C, the set
+
+\prog{\tt $\{$x + y + z |x y z.~x:A $\&$ y:B $\&$ z:C$\}$}%
+is also convex. Search in Isabelle (for example, by {\tt name:~convex}, provided that you import theory Convex) results in lemma {\tt convex$\_$sums} stating that for two convex sets A and B set {\tt $\{$x + y |x y.~x:A $\&$ y:B$\}$} is convex. Now it is natural to define sum {\tt A+B} of two sets, and then argue that for convex sets A, B, C, set {\tt A+B}, and whence {\tt A+B+C = (A+B)+C} is convex by lemma {\tt convex$\_$sums}.
+
+Now, how to introduce new notation? As usual, you can read the tutorial, but it is easier to look at the existing theories. For example, our favorite theory {\tt Fun.thy} introduces a notation for function composition
+
+\prog{\tt definition\\
+    \inds comp :: "('b =$>$ 'c) =$>$ ('a =$>$ 'b) =$>$ ('a =$>$ 'c)" (infixl "o" 55)\\
+    \inds where "f o g == ($\%$x. f (g x))"}
+
+We see, that composition is actually a function {\tt comp(f g)} with two arguments: f of type {\tt ('b =$>$ 'c)} and g of type {\tt ('a =$>$ 'b)}, which returns the result of type {\tt ('a =$>$ 'c)}. String {\tt (infixl "o" 55)} introduces notation {\tt f o g} for this function. Using this example, we can try to define sum of two sets: it should be a function like {\tt set$\_$add(A B)}, where A and B are sets with elements of the same type, and we want a notation, say, {\tt A +s B}
+
+\prog{\tt definition
+    \inds set$\_$add :: "'a set => 'a set => 'a set"  (infixl "+s" 55)\\
+    \inds where "A +s B == $\{$x + y |x y.~x:A $\&$ y:B$\}$"}%
+
+But, if we try to execute this definition, we get an error
+
+\prog{\tt Type unification failed: Variable 'a::type not of sort plus }
+
+This is quite common error in Isabelle, stating that the types are not appropriate (not of correct "sort") for this context. For example, in our case Isabelle tells us that addition can not be defined for arbitrary sets, and elements of our sets should have a type with a special sort {\tt plus}. To correct this error, we can easily specify sort explicitly
+
+\prog{\tt definition
+    \inds set$\_$add :: "('a::plus) set => 'a set => 'a set"  (infixl "+s" 55)\\
+    \inds where "A +s B == $\{$x + y |x y. x:A $\&$ y:B$\}$"}%
+and now the definition executes correctly\footnote{It may be confusing that we still do not understand the meaning of string {\tt (infixl "+s" 55)}. Actually, now it is easy to use the Tutorial's Index to find {\tt infixl} there, and read that {\tt infixl} means that operation is associative to the left, and {\tt 55} indicates the priority of the operation}.
+
+Next, let us formulate and prove lemma about sum of two convex sets in the new notation. As usual, to learn the corresponding syntax, let us first look at the statement and beginning of the proof of the existing lemma {\tt convex$\_$sums} in theory {\tt Convex.thy}.
+
+\prog{\tt lemma convex$\_$sums:\\
+    \inds assumes "convex s" "convex t"\\
+    \inds shows "convex $\{$x + y |x y.~x:s $\&$ y:t$\}$"\\
+    \inds using assms unfolding convex$\_$def image$\_$iff\\
+    proof- ... }% 
+
+We can see, that assumptions of the lemma can be formulated after keyword {\tt assumes}, and then we can refer to them during the proof by writing {\tt using assms}. The statement of the lemma in this case follows the keyword {\tt shows}. Let us formulate the corresponding lemma with notation {\tt "+s"}.
+
+\prog{\tt lemma convex$\_$sums2:\\
+    \inds assumes "convex A" "convex B"\\
+    \inds shows "convex (A +s B)"}%
+
+Since it is just a reformulation of lemma {\tt convex$\_$sums}, it is natural to try to prove this lemma automatically, using the existing lemma, assumptions, and definition of {\tt "+s"}. However, an attempt
+
+\prog{\tt using set$\_$add$\_$def assms convex$\_$sums by auto}%
+does not work, so more details are required. One way is to tell Isabelle the exact parameters to substitute in {\tt set$\_$add$\_$def}, namely
+
+\prog{\tt using set$\_$add$\_$def[of A B] assms convex$\_$sums by auto}%
+
+Alternatively, we can proceed by analogy with the proof of lemma {\tt convex$\_$sums} above, and use {\tt unfolding} command:
+
+\prog{\tt lemma convex$\_$sums2:\\
+    \inds assumes "convex A" "convex B"\\
+    \inds shows "convex (A +s B)"\\
+    \inds unfolding set$\_$add$\_$def using assms convex$\_$sums by auto}%
+
+After executing the statement of the lemma we can see goal {\tt convex (A +s B)}. Then, after executing {\tt unfolding set$\_$add$\_$def} the remaining goal is {\tt convex $\{$x + y |x y.~x:A $\&$ y:B$\}$}, i.e. this command "unfolded" the definition. Next we can execute {\tt using assms convex$\_$sums by auto} and the proof is successfully finished.
+
+Now we can prove the initial lemma
+
+\prog{\tt lemma convex$\_$sums3:\\
+    \inds assumes "convex A" "convex B" "convex C"\\
+    \inds shows "convex $\{$x + y + z |x y z.~x:A $\&$ y:B $\&$ z:C$\}$"\\}%
+
+First, we want to claim that the set in question is exactly {\tt A +s B +s C} in the new notation.
+
+\prog{\tt proof-\\
+    \inds have "$\{$x + y + z |x y z.~x:A $\&$ y:B $\&$ z:C$\}$ = (A +s B +s C)"\\
+    \inds unfolding set$\_$add$\_$def by auto}% 
+
+Then we can claim that set  {\tt A +s B +s C} is convex, prove this using {\tt convex$\_$sum2}, and the lemma will follow from these two statements. To tell Isabelle that one statement follows from \emph{several} previous ones, we can use {\tt moreover} and {\tt ultimately} commands:
+
+\prog{\tt moreover have "convex (A +s B +s C)"
+    using convex$\_$sum2 assms by auto\\
+    ultimately show ?thesis by auto qed}%  
+
+In this case, convenient notation for sum of sets helped us prove the desired result easily. However, you should be very careful when introducing new definitions and notation in Isabelle. The problem is that notation for many natural concepts already exists somewhere in Isabelle, but it is often nontrivial to find it. Introducing several different notations for the same concept will often result in double work in theorem proving.
+For example, in our case, definition of sum of two sets really exists in Isabelle library, in theory {\tt SetsAndFunctions.thy}, but the formulation is slightly different
+
+\prog{\tt definition\\
+    \inds set$\_$plus :: "('a::plus) set =$>$ 'a set =$>$ 'a set"(infixl "$\oplus$" 65)\\
+    \inds where "A $\oplus$ B == $\{$c. EX a:A. EX b:B. c = a + b$\}$",}% 
+and it is nontrivial to find it there.\footnote{Well, you can guess import Library, and then search for, say, {\tt "?x + ?y" "$\{$x. ?P x$\}$"}, to find all the expressions which contains sum, and also defines a set in the form "set consists of all x such that P(x)", and in this case you would found 24 theorems including {\tt SetsAndFunctions.set$\_$plus$\_$def}. But it is a nontrivial guess to perform such a search.} For this reason, it helps to spend some time to look through the library to be aware of what concepts it offers.
+You can also ask the Isabelle mailing list, if you are going to introduce some important concept and do not see it in the library. In general, your are welcome to ask this mailing list all kinds of questions, somebody will answer you soon and in details. You can subscribe to it at http://www.cl.cam.ac.uk/research/hvg/Isabelle/community.html. At the same page, there is a useful link to Isabelle FAQ, and also links to various materials (slides, demos, and exercises) for learning Isabelle.
+
+
+\subsection{Summary}
+
+\begin{itemize}
+
+    \item Types in Isabelle have {\tt sort}, which tells us some properties of this type. For example, addition is defined for types of sort {\tt plus}. Syntax example: {\tt ('a::plus) set} is a set of arbitrary elements, for which addition is defined.
+
+    \item Assumptions of a lemma can be formulated after keyword {\tt assumes}, and then we can refer to them in the proof by writing {\tt using assms}. The statement of the lemma in this case follows the keyword {\tt shows}.
+
+    \item Command {\tt unfolding} with format {\tt unfolding $<$lemma$\_$name$>$}, where {\tt $<$lemma$\_$name$>$} is often a definition, tries to "unfold" symbol or term in the goal using {\tt $<$lemma$\_$name$>$}.
+
+    \item Isabelle mailing list is the place where you can ask any questions about Isabelle. You can subscribe at http://www.cl.cam.ac.uk/research/hvg/Isabelle/community.html
+
+\end{itemize}
+
+
+\section{Summary}
+
+This Primer is aimed for mathematicians, who want to start working with Isabelle. We have discussed only a tiny portion of Isabelle here, but it is enough to start formalization of some simple mathematical results. We have tried to concentrate on topics, which are especially useful for a beginner: main notations, search in Isabelle, sledgehammer, organization of blocks inside the proof, etc. More importantly, we have tried not just tell you "how it works", but tell you how to \emph{learn} Isabelle, looking at the existing theories. Instead of providing you with correct proofs immediately, we often start with intuitive, but incorrect versions, and describe how to correct the resulting errors.
+
+Obviously, you will often need some methods which are not described here. In this case, one general strategy is to look at the existing theories formalizing the same area of mathematics, and maybe you will find relevant methods there. Reading selected sections from Isabelle tutorial \cite{tutorial}, which corresponds to your particular formalization, is also useful. Proof by induction, as well as some other useful proof methods, is described very well in a short Isar tutorial \cite{isar}. Many basic types, functions, and notations are listed in \cite{main}. These and other useful documents are available at Documentation section of the Isabelle website http://www.cl.cam.ac.uk/research/hvg/Isabelle/documentation.html. Finally, many Isabelle users are ready to help you, if you send your question to the Isabelle mailing list.
+
+In conclusion, formalization of mathematics in Isabelle is a little bit difficult to start, but very exciting. After some time, you become comfortable with Isabelle, and then enjoy proving nontrivial theorems to the strongest opponent in the world, who would never overlook your error or non-strict argument. And maybe, after some time with Isabelle, you also begin to feel, that only formalized theorems are really \emph{proved} in mathematics. All the other proofs are just proof outlines.
+
+
+\begin{thebibliography}{99}
+
+    \bibitem{tutorial} Nipkow, T, Paulson, C., Wenzel, M., Isabelle/HOL: A proof Assistant for Higher-Order Logic, http://www.cl.cam.ac.uk/research/
+    hvg/Isabelle/documentation.html
+
+    \bibitem{isar} Nipkow, T, A tutorial Introduction to Structured Isar Proofs, http://www.cl.cam.ac.uk/research/ hvg/Isabelle/documentation.html
+
+    \bibitem{main} Nipkow, T, What's in Main, http://www.cl.cam.ac.uk/research/
+    hvg/Isabelle/documentation.html
+
+\end{thebibliography}
+
+\end{document}
+
+
