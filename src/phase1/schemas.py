@@ -9,7 +9,7 @@ class Entity(BaseModel):
     label: str = Field(..., description="Label or short descriptor for the entity")
     type: str = Field(
         ...,
-        description="Type of mathematical entity (e.g., 'axiom', 'lemma', 'conclusion')",
+        description="Type of mathematical entity (e.g., 'axiom', 'lemma', 'conclusion', 'theorem', 'step', etc.)",
     )
     start: bool = Field(..., description="Whether the entity is the start of the proof")
     end: bool = Field(..., description="Whether the entity is the end of the proof")

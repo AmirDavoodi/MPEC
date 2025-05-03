@@ -1,0 +1,92 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\title{Introduction to Addition via Recursion}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Recursive Definition}
+For non-negative integers \(a\) and \(b\):
+
+\[
+    a + b = \begin{cases}
+        a                 & \text{if } b = 0 \quad \text{(Base Case)}      \\
+        (a + (b - 1)) + 1 & \text{if } b > 0 \quad \text{(Recursive Case)}
+    \end{cases}
+\]
+
+\section{Expanded Recursion Steps}
+The recursive case systematically reduces any addition problem to successive simpler cases through these steps:
+
+\begin{enumerate}
+    \item \textbf{Initial Problem}: \(a + b\) where \(b > 0\)
+
+    \item \textbf{Recursive Decomposition}:
+          \[
+              a + b = (a + \underbrace{(b - 1)}_{\text{Simpler term}}) + 1
+          \]
+          This creates:
+          \begin{itemize}
+              \item A simpler subproblem: \(a + (b - 1)\)
+              \item A pending operation: \(+ 1\)
+          \end{itemize}
+
+    \item \textbf{Iterative Reduction}:
+          Repeat until reaching base case:
+          \[
+              \begin{aligned}
+                   & a + b                              \\
+                   & \Downarrow                         \\
+                   & (a + (b-1)) + 1                    \\
+                   & \Downarrow                         \\
+                   & ((a + (b-2)) + 1) + 1              \\
+                   & \Downarrow                         \\
+                   & \quad \vdots                       \\
+                   & \Downarrow                         \\
+                   & (\cdots((a + 0) + 1) + \cdots + 1) \\
+              \end{aligned}
+          \]
+
+    \item \textbf{Base Case Resolution}:
+          When \(b - n = 0\):
+          \[
+              \underbrace{(\cdots((a + 0)}_{\text{Base case}} \underbrace{+ 1) + \cdots + 1)}_{b \text{ times}}
+          \]
+
+    \item \textbf{Result Construction}:
+          \[
+              a + \underbrace{1 + 1 + \cdots + 1}_{b \text{ times}} = a + b
+          \]
+\end{enumerate}
+
+\section{Complete Recursion Example}
+For \(3 + 2\):
+
+\[
+    \begin{aligned}
+        3 + 2 & = (3 + 1) + 1 \quad       & \text{(First decomposition)}  \\
+              & = ((3 + 0) + 1) + 1 \quad & \text{(Second decomposition)} \\
+              & = (3 + 1) + 1 \quad       & \text{(Base case applied)}    \\
+              & = 4 + 1 \quad             & \text{(First increment)}      \\
+              & = 5 \quad                 & \text{(Final result)}
+    \end{aligned}
+\]
+
+\section*{Recursion Pattern}
+General form for \(a + b\):
+
+\[
+    \begin{aligned}
+        a + b & = (a + (b-1)) + 1                                       \\
+              & = ((a + (b-2)) + 1) + 1                                 \\
+              & \;\;\vdots                                              \\
+              & = (\cdots((a + 0) + 1) + \cdots + 1)                    \\
+              & = a + \underbrace{1 + 1 + \cdots + 1}_{b \text{ times}} \\
+              & = a + b
+    \end{aligned}
+\]
+
+\end{document}
