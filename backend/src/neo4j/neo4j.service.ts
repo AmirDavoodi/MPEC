@@ -7,7 +7,7 @@ export class Neo4jService {
 
   constructor() {
     this.driver = neo4j.driver(
-      'bolt://localhost:7687',
+      'bolt://10.10.104.116:7687',
       neo4j.auth.basic('neo4j', 'password'),
     );
   }
