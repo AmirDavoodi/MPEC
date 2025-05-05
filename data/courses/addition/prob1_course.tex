@@ -1,0 +1,62 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{enumitem}
+\begin{document}
+
+\title{Tutorial: Adding Two-Digit Numbers with Carrying}
+\author{}
+\date{}
+\maketitle
+
+\section*{Problem Statement}
+What is $47 + 58$?
+
+\section*{Step-by-Step Solution}
+
+We will use the column method and carry over when necessary.
+
+\begin{enumerate}[label=Step \arabic*:, leftmargin=*]
+    \item \textbf{Write the numbers in column format.}
+          \[
+              \begin{array}{r}
+                  47  \\
+                  +58 \\
+                  \hline
+              \end{array}
+          \]
+
+    \item \textbf{Add the ones digits:} $7 + 8 = 15$.
+
+          \begin{itemize}
+              \item Write down the \textbf{5} in the ones place.
+              \item Carry over the \textbf{1} to the tens place.
+          \end{itemize}
+
+    \item \textbf{Add the tens digits:} $4 + 5 = 9$.
+
+          \begin{itemize}
+              \item Add the carried over $1$: $9 + 1 = 10$.
+              \item Write down the \textbf{0} in the tens place and carry over \textbf{1} to the hundreds.
+          \end{itemize}
+
+    \item \textbf{Write the final result:}
+
+          \begin{itemize}
+              \item The hundreds place is just the carry-over $1$.
+              \item So, the final answer is:
+                    \[
+                        \begin{array}{r}
+                            47  \\
+                            +58 \\
+                            \hline
+                            105
+                        \end{array}
+                    \]
+          \end{itemize}
+\end{enumerate}
+
+\section*{Conclusion}
+We used the method of addition with carrying to solve $47 + 58 = 105$.
+
+\end{document}

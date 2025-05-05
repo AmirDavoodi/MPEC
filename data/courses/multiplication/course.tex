@@ -2,91 +2,89 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \title{Introduction to Multiplication via Recursion}
-\author{}
-\date{}
 
 \begin{document}
 \maketitle
 
-\section{Definition}
-Multiplication of two non-negative integers \( a \) and \( b \), denoted \( a \times b \) or \( a \cdot b \), can be defined recursively using addition:
+\section{Recursive Definition}
+For non-negative integers \(a\) and \(b\):
 
-\begin{itemize}
-    \item \textbf{Base Case}: If \( b = 0 \), then \( a \times b = 0 \).
-    \item \textbf{Recursive Case}: If \( b > 0 \), then \( a \times b = a + (a \times (b - 1)) \).
-\end{itemize}
-
-This definition reduces multiplication to repeated addition. Each recursive step decrements \( b \) until it reaches the base case \( b = 0 \).
-
-\section{Examples}
-
-\subsection{Example 1: \( 3 \times 0 \)}
-Applying the base case directly:
 \[
-3 \times 0 = 0
+    a \times b = \begin{cases}
+        0                      & \text{if } b = 0 \quad \text{(Base Case)}      \\
+        a + (a \times (b - 1)) & \text{if } b > 0 \quad \text{(Recursive Case)}
+    \end{cases}
 \]
 
-\subsection{Example 2: \( 0 \times 4 \)}
-Using the recursive definition:
+\section{Expanded Recursion Steps}
+The recursive case reduces multiplication to repeated addition through these steps:
+
+\begin{enumerate}
+    \item \textbf{Initial Problem}: \(a \times b\) where \(b > 0\)
+
+    \item \textbf{Recursive Decomposition}:
+          \[
+              a \times b = a + \underbrace{(a \times (b - 1))}_{\text{Simpler subproblem}}
+          \]
+          This creates:
+          \begin{itemize}
+              \item A simpler subproblem: \(a \times (b - 1)\)
+              \item A pending operation: \(+ a\)
+          \end{itemize}
+
+    \item \textbf{Iterative Reduction}:
+          Repeat until reaching the base case:
+          \[
+              \begin{aligned}
+                   & a \times b                                                       \\
+                   & \Downarrow                                                       \\
+                   & a + (a \times (b-1))                                             \\
+                   & \Downarrow                                                       \\
+                   & a + (a + (a \times (b-2)))                                       \\
+                   & \Downarrow                                                       \\
+                   & \quad \vdots                                                     \\
+                   & \Downarrow                                                       \\
+                   & \underbrace{a + a + \cdots + a}_{b \text{ times}} + (a \times 0) \\
+              \end{aligned}
+          \]
+
+    \item \textbf{Base Case Resolution}:
+          When \(b - n = 0\):
+          \[
+              \underbrace{a + a + \cdots + a}_{b \text{ times}} + \underbrace{0}_{\text{Base case}}
+          \]
+
+    \item \textbf{Result Construction}:
+          \[
+              \underbrace{a + a + \cdots + a}_{b \text{ times}} = a \times b
+          \]
+\end{enumerate}
+
+\section{Complete Recursion Example}
+For \(3 \times 2\):
+
 \[
-\begin{aligned}
-0 \times 4 &= 0 + (0 \times 3) \\
-&= 0 + (0 + (0 \times 2)) \\
-&= 0 + (0 + (0 + (0 \times 1))) \\
-&= 0 + (0 + (0 + (0 + (0 \times 0)))) \\
-&= 0 + (0 + (0 + (0 + 0))) \\
-&= 0 + (0 + (0 + 0)) \\
-&= 0 + (0 + 0) \\
-&= 0 + 0 \\
-&= 0
-\end{aligned}
+    \begin{aligned}
+        3 \times 2 & = 3 + (3 \times 1) \quad       & \text{(First decomposition)}  \\
+                   & = 3 + (3 + (3 \times 0)) \quad & \text{(Second decomposition)} \\
+                   & = 3 + (3 + 0) \quad            & \text{(Base case applied)}    \\
+                   & = 3 + 3 \quad                  & \text{(Simplify)}             \\
+                   & = 6 \quad                      & \text{(Final result)}
+    \end{aligned}
 \]
 
-\subsection{Example 3: \( 2 \times 3 \)}
-Breaking down the recursion step-by-step:
-\[
-\begin{aligned}
-2 \times 3 &= 2 + (2 \times 2) \\
-&= 2 + (2 + (2 \times 1)) \\
-&= 2 + (2 + (2 + (2 \times 0))) \\
-&= 2 + (2 + (2 + 0)) \\
-&= 2 + (2 + 2) \\
-&= 2 + 4 \\
-&= 6
-\end{aligned}
-\]
+\section*{Recursion Pattern}
+General form for \(a \times b\):
 
-\subsection{Example 4: \( 5 \times 2 \)}
-Applying the recursive steps:
 \[
-\begin{aligned}
-5 \times 2 &= 5 + (5 \times 1) \\
-&= 5 + (5 + (5 \times 0)) \\
-&= 5 + (5 + 0) \\
-&= 5 + 5 \\
-&= 10
-\end{aligned}
+    \begin{aligned}
+        a \times b & = a + (a \times (b-1))                                             \\
+                   & = a + (a + (a \times (b-2)))                                       \\
+                   & \;\;\vdots                                                         \\
+                   & = \underbrace{a + a + \cdots + a}_{b \text{ times}} + (a \times 0) \\
+                   & = \underbrace{a + a + \cdots + a}_{b \text{ times}}                \\
+                   & = a \times b
+    \end{aligned}
 \]
-
-\subsection{Example 5: \( 1 \times 5 \)}
-Demonstrating recursion with identity multiplication:
-\[
-\begin{aligned}
-1 \times 5 &= 1 + (1 \times 4) \\
-&= 1 + (1 + (1 \times 3)) \\
-&= 1 + (1 + (1 + (1 \times 2))) \\
-&= 1 + (1 + (1 + (1 + (1 \times 1)))) \\
-&= 1 + (1 + (1 + (1 + (1 + (1 \times 0))))) \\
-&= 1 + (1 + (1 + (1 + (1 + 0)))) \\
-&= 1 + (1 + (1 + (1 + 1))) \\
-&= 1 + (1 + (1 + 2)) \\
-&= 1 + (1 + 3) \\
-&= 1 + 4 \\
-&= 5
-\end{aligned}
-\]
-
-\section{Conclusion}
-This recursive framework demonstrates how multiplication is equivalent to repeated addition. By systematically reducing \( b \) and leveraging the base case \( b = 0 \), the definition breaks down complex operations into simpler, foundational steps. Recursion provides a clear algorithmic structure for understanding multiplication.
 
 \end{document}
