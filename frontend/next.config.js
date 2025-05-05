@@ -7,6 +7,10 @@ const nextConfig = {
     );
     return config;
   },
+  // Allow cross-origin requests from specific IP addresses during development
+  experimental: {
+    allowedDevOrigins: ['10.10.14.24'],
+  },
 };
 
-module.exports = nextConfig; 
+module.exports = nextConfig;
