@@ -9,58 +9,19 @@ Addition Via Recursion
 \section{Abstract}
 Recursion is an effective way to add numbers. Using recursion, a more complicated addition is reduced to simpler additions. Hence, through a recursive procedure, it turns into several steps of addition by $1$, where $a+1$ denotes the next number.
 \section{Procedure}
-For non-negative integers \(a\) and \(b\):
-
 \[
-    a + b = \begin{cases}
-        a                 & \text{if } b = 0 \quad \text{(Base Case)}      \\
-        (a + (b - 1)) + 1 & \text{if } b > 0 \quad \text{(Recursive Case)}
-    \end{cases}
+    \begin{aligned}
+         & a + b                              \\
+         & \Downarrow                         \\
+         & (a + (b-1)) + 1                    \\
+         & \Downarrow                         \\
+         & ((a + (b-2)) + 1) + 1              \\
+         & \Downarrow                         \\
+         & \quad \vdots                       \\
+         & \Downarrow                         \\
+         & (\cdots((a + 0) + 1) + \cdots + 1) \\
+    \end{aligned}
 \]
-
-The recursive case systematically reduces any addition problem to successive simpler cases through these steps:
-
-\begin{enumerate}
-    \item \textbf{Initial Problem}: \(a + b\) where \(b > 0\)
-
-    \item \textbf{Recursive Decomposition}:
-          \[
-              a + b = (a + \underbrace{(b - 1)}_{\text{Simpler term}}) + 1
-          \]
-          This creates:
-          \begin{itemize}
-              \item A simpler subproblem: \(a + (b - 1)\)
-              \item A pending operation: \(+ 1\)
-          \end{itemize}
-
-    \item \textbf{Iterative Reduction}:
-          Repeat until reaching base case:
-          \[
-              \begin{aligned}
-                   & a + b                              \\
-                   & \Downarrow                         \\
-                   & (a + (b-1)) + 1                    \\
-                   & \Downarrow                         \\
-                   & ((a + (b-2)) + 1) + 1              \\
-                   & \Downarrow                         \\
-                   & \quad \vdots                       \\
-                   & \Downarrow                         \\
-                   & (\cdots((a + 0) + 1) + \cdots + 1) \\
-              \end{aligned}
-          \]
-
-    \item \textbf{Base Case Resolution}:
-          When \(b - n = 0\):
-          \[
-              \underbrace{(\cdots((a + 0)}_{\text{Base case}} \underbrace{+ 1) + \cdots + 1)}_{b \text{ times}}
-          \]
-
-    \item \textbf{Result Construction}:
-          \[
-              a + \underbrace{1 + 1 + \cdots + 1}_{b \text{ times}} = a + b
-          \]
-\end{enumerate}
-
 \section{Examples}
 \subsection{Example 1}
 \subsubsection{Question}

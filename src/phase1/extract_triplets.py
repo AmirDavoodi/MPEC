@@ -24,7 +24,8 @@ def extract_triplets(
     )
 
     # Format the custom prompt with the proof content
-    formatted_custom_prompt = custom_prompt.format(proof=proof)
+    # formatted_custom_prompt = custom_prompt.format(proof=proof)
+    formatted_custom_prompt = custom_prompt
 
     # Define the prompt
     prompt = ChatPromptTemplate.from_messages(
