@@ -1,0 +1,201 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\title{Reinforcement Learning for Addition via Recursion}
+\author{Mathematical Reasoning Project}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This report presents an implementation of a Reinforcement Learning (RL) agent designed to learn and execute the recursive definition of addition. The agent learns to transform expressions like $a + b$ into $(a + (b-1)) + 1$ recursively until reaching the base case $a + 0 = a$. We demonstrate the agent's capability by solving the addition problem $5 + 8$ and visualizing the solution path as a knowledge graph in Neo4j. This implementation showcases how RL can be applied to mathematical reasoning tasks.
+\end{abstract}
+
+\section{Introduction}
+
+Addition is typically taught as a basic operation, but it can be formally defined using recursion:
+
+\begin{equation}
+a + b = 
+\begin{cases}
+a & \text{if } b = 0 \quad \text{(Base Case)} \\
+(a + (b - 1)) + 1 & \text{if } b > 0 \quad \text{(Recursive Case)}
+\end{cases}
+\end{equation}
+
+This recursive definition provides a systematic way to reduce complex addition problems to simpler ones. Our implementation uses Reinforcement Learning to teach an agent to apply this recursive definition correctly.
+
+\section{Reinforcement Learning Components}
+
+\subsection{Key RL Concepts}
+
+Reinforcement Learning is a machine learning paradigm where an agent learns to make decisions by interacting with an environment. The key components are:
+
+\begin{itemize}
+    \item \textbf{Agent}: The decision-maker that learns from experience
+    \item \textbf{Environment}: The world with which the agent interacts
+    \item \textbf{State}: The current situation in the environment
+    \item \textbf{Action}: A decision made by the agent
+    \item \textbf{Reward}: Feedback signal indicating the quality of an action
+    \item \textbf{Policy}: The agent's strategy for selecting actions
+    \item \textbf{Value Function}: Estimation of future rewards from a state
+    \item \textbf{Q-Function}: Estimation of future rewards from a state-action pair
+\end{itemize}
+
+\subsection{Q-Learning Algorithm}
+
+Our implementation uses Q-learning, a model-free RL algorithm that learns the value of an action in a particular state. The Q-function is updated using:
+
+\begin{equation}
+Q(s, a) \leftarrow Q(s, a) + \alpha \cdot [r + \gamma \cdot \max_{a'} Q(s', a') - Q(s, a)]
+\end{equation}
+
+where:
+\begin{itemize}
+    \item $Q(s, a)$ is the value of taking action $a$ in state $s$
+    \item $\alpha$ is the learning rate
+    \item $r$ is the reward received
+    \item $\gamma$ is the discount factor for future rewards
+    \item $s'$ is the next state
+    \item $\max_{a'} Q(s', a')$ is the maximum Q-value for the next state
+\end{itemize}
+
+\section{Implementation Components}
+
+\subsection{Environment}
+
+The environment (\texttt{AdditionRecursionEnv}) represents the addition problem and tracks:
+\begin{itemize}
+    \item Current mathematical expression state
+    \item Target result
+    \item Available actions
+    \item Step count and termination conditions
+\end{itemize}
+
+\subsection{State Representation}
+
+States are represented by the \texttt{MathExpressionState} class, which contains:
+\begin{itemize}
+    \item The current mathematical expression (e.g., "5 + 8", "(5 + 7) + 1")
+    \item Step count for tracking progress
+\end{itemize}
+
+\subsection{Actions}
+
+The agent can perform the following actions:
+\begin{itemize}
+    \item \texttt{decompose}: Transform "a + b" to "(a + (b-1)) + 1"
+    \item \texttt{further\_decompose}: Further decompose a nested expression
+    \item \texttt{apply\_base\_case}: Apply the rule (a + 0) = a
+    \item \texttt{increment}: Perform an increment operation (e.g., (3 + 1) to 4)
+    \item \texttt{calculate}: Calculate the final result
+    \item \texttt{finish}: Conclude the calculation
+\end{itemize}
+
+\subsection{Reward Structure}
+
+The reward structure guides the agent toward correct solutions:
+\begin{itemize}
+    \item +1.0 for correct decomposition steps
+    \item +1.0 for correctly applying the base case
+    \item +1.0 for correct increment operations
+    \item +5.0 for reaching the correct final result
+    \item -1.0 for invalid actions
+    \item -5.0 for finishing with an incorrect result
+\end{itemize}
+
+\subsection{Agent}
+
+The \texttt{QLearningAgent} implements:
+\begin{itemize}
+    \item Q-table for storing state-action values
+    \item Epsilon-greedy policy for action selection
+    \item Q-learning update rule
+    \item Exploration rate decay
+    \item Action history tracking
+\end{itemize}
+
+\subsection{Knowledge Graph Builder}
+
+The \texttt{KnowledgeGraphBuilder} constructs a graph representation of the solution:
+\begin{itemize}
+    \item Nodes represent mathematical expressions (states)
+    \item Edges represent transformations (actions) between states
+    \item The graph is exported as triplets for Neo4j storage
+\end{itemize}
+
+\section{Training Process}
+
+The training process involves:
+\begin{enumerate}
+    \item Initializing the environment with the problem "5 + 8"
+    \item Training the agent for a specified number of episodes
+    \item For each episode:
+        \begin{itemize}
+            \item Reset the environment
+            \item Agent selects actions using epsilon-greedy policy
+            \item Environment provides rewards and next states
+            \item Agent updates Q-values using the Q-learning update rule
+        \end{itemize}
+    \item Tracking the best solution found during training
+    \item Building a knowledge graph from the best solution
+    \item Storing the graph in Neo4j
+\end{enumerate}
+
+\section{Example: Solving 5 + 8}
+
+For the addition problem 5 + 8, the ideal solution path is:
+
+\begin{align}
+5 + 8 &= (5 + 7) + 1 \\
+&= ((5 + 6) + 1) + 1 \\
+&= (((5 + 5) + 1) + 1) + 1 \\
+&= ((((5 + 4) + 1) + 1) + 1) + 1 \\
+&= (((((5 + 3) + 1) + 1) + 1) + 1) + 1 \\
+&= ((((((5 + 2) + 1) + 1) + 1) + 1) + 1) + 1 \\
+&= (((((((5 + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1 \\
+&= ((((((((5 + 0) + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1 \\
+&= (((((((5 + 1) + 1) + 1) + 1) + 1) + 1) + 1) + 1 \\
+&= ((((((6 + 1) + 1) + 1) + 1) + 1) + 1) + 1 \\
+&= (((((7 + 1) + 1) + 1) + 1) + 1) + 1 \\
+&= ((((8 + 1) + 1) + 1) + 1) + 1 \\
+&= (((9 + 1) + 1) + 1) + 1 \\
+&= ((10 + 1) + 1) + 1 \\
+&= (11 + 1) + 1 \\
+&= 12 + 1 \\
+&= 13
+\end{align}
+
+\section{Knowledge Graph Representation}
+
+The solution is represented as a knowledge graph in Neo4j:
+\begin{itemize}
+    \item \textbf{Nodes}: Mathematical expressions at each step
+    \item \textbf{Edges}: Actions taken to transform expressions
+    \item \textbf{Properties}: Step information, action types, and rewards
+\end{itemize}
+
+This graph provides a visual representation of the reasoning process, showing how the agent decomposes the problem and builds up to the solution.
+
+\section{Conclusion}
+
+This implementation demonstrates how Reinforcement Learning can be applied to mathematical reasoning tasks. The agent successfully learns to apply the recursive definition of addition and solve problems like 5 + 8. The knowledge graph representation provides insight into the reasoning process and can be used for educational purposes.
+
+Future work could include:
+\begin{itemize}
+    \item Extending the approach to other mathematical operations (subtraction, multiplication)
+    \item Implementing more complex mathematical reasoning tasks
+    \item Improving the agent's learning efficiency
+    \item Developing a user interface for interactive exploration of the solution paths
+\end{itemize}
+
+\end{document}
