@@ -127,3 +127,36 @@ Content-Type: application/json
     ]
   }
 }
+
+### Test Content with Custom Prompt
+POST {{baseUrl}}/test-content
+Content-Type: application/json
+
+{
+  "testContent": "To prove that \\lim_{x \\to 3} (x^2 - 9) = 0, we need to show that for every ε > 0, there exists a δ > 0 such that if 0 < |x - 3| < δ, then |(x^2 - 9) - 0| < ε. Note that x^2 - 9 = (x - 3)(x + 3). So |x^2 - 9| = |x - 3||x + 3|. If we restrict |x - 3| < 1, then 2 < x < 4, which means 5 < x + 3 < 7, so |x + 3| < 7. Thus, if we choose δ = min(1, ε/7), then whenever 0 < |x - 3| < δ, we have |x^2 - 9| = |x - 3||x + 3| < δ·7 ≤ ε.",
+  "coursePattern": {
+    "entities": [
+      {
+        "id": "step1",
+        "name": "Assume the hypothesis",
+        "label": "Hypothesis",
+        "type": "step",
+        "start": true,
+        "end": false
+      },
+      "..."
+    ],
+    "relations": [
+      "..."
+    ]
+  },
+  "proofTriplets": {
+    "entities": [
+      "..."
+    ],
+    "relations": [
+      "..."
+    ]
+  },
+  "prompt": "Given the course pattern, proof triplets, and test content, create a detailed knowledge graph that maps each step of the test content to the corresponding pattern step, highlighting the similarities and differences between the test proof and the original proof."
+}

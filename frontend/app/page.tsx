@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { API_URL } from "../src/config";
 import GraphVisualization from "./components/GraphVisualization";
 
@@ -51,6 +51,27 @@ export default function Home() {
   const [courseTriplets, setCourseTriplets] = useState(null);
   const [proofTriplets, setProofTriplets] = useState(null);
 
+  // Load saved triplets from localStorage on component mount
+  useEffect(() => {
+    try {
+      const savedCourseTriplets = localStorage.getItem('courseTriplets');
+      if (savedCourseTriplets) {
+        const parsedTriplets = JSON.parse(savedCourseTriplets);
+        setCourseTriplets(parsedTriplets);
+        console.log("Loaded course triplets from localStorage");
+      }
+      
+      const savedProofTriplets = localStorage.getItem('proofTriplets');
+      if (savedProofTriplets) {
+        const parsedTriplets = JSON.parse(savedProofTriplets);
+        setProofTriplets(parsedTriplets);
+        console.log("Loaded proof triplets from localStorage");
+      }
+    } catch (error) {
+      console.error("Error loading triplets from localStorage:", error);
+    }
+  }, []);
+
   const handleExtractCoursePattern = async () => {
     try {
       console.log("Sending request to:", `${API_URL}/extract-course-pattern`);
@@ -74,8 +95,15 @@ export default function Home() {
 
       const data = await response.json();
       console.log("Received course pattern:", JSON.stringify(data, null, 2));
-      setGraphData(data.visualizationQueries);
+      
+      // Instead of passing visualization queries, pass the actual course pattern
+      setGraphData(data.coursePattern);
       setCourseTriplets(data.coursePattern);
+      
+      // Save course triplets to localStorage
+      localStorage.setItem('courseTriplets', JSON.stringify(data.coursePattern));
+      console.log("Course triplets saved to localStorage");
+      
     } catch (error: unknown) {
       console.error("Error extracting course pattern:", error);
       const errorMessage =
@@ -85,9 +113,26 @@ export default function Home() {
   };
 
   const handleApplyPatternToProof = async () => {
+    // First check if courseTriplets is already in state
     if (!courseTriplets) {
-      alert("Please extract course pattern first");
-      return;
+      // If not in state, try to load from localStorage
+      try {
+        const savedCourseTriplets = localStorage.getItem('courseTriplets');
+        if (savedCourseTriplets) {
+          // Parse and set the course triplets
+          const parsedTriplets = JSON.parse(savedCourseTriplets);
+          setCourseTriplets(parsedTriplets);
+          console.log("Loaded course triplets from localStorage");
+        } else {
+          // If not in localStorage either, show error
+          alert("Please extract course pattern first");
+          return;
+        }
+      } catch (error) {
+        console.error("Error loading triplets from localStorage:", error);
+        alert("Error loading course pattern. Please extract course pattern first.");
+        return;
+      }
     }
 
     try {
@@ -113,8 +158,15 @@ export default function Home() {
 
       const data = await response.json();
       console.log("Received proof triplets:", JSON.stringify(data, null, 2));
-      setGraphData(data.visualizationQueries);
+      
+      // Instead of passing visualization queries, pass the actual proof triplets
+      setGraphData(data.proofTriplets);
       setProofTriplets(data.proofTriplets);
+      
+      // Save proof triplets to localStorage
+      localStorage.setItem('proofTriplets', JSON.stringify(data.proofTriplets));
+      console.log("Proof triplets saved to localStorage");
+      
     } catch (error: unknown) {
       console.error("Error applying pattern to proof:", error);
       const errorMessage =
@@ -124,9 +176,46 @@ export default function Home() {
   };
 
   const handleTestContent = async () => {
-    if (!courseTriplets || !proofTriplets) {
-      alert("Please extract course pattern and apply to proof first");
-      return;
+    // Check if courseTriplets and proofTriplets exist in state
+    let currentCourseTriplets = courseTriplets;
+    let currentProofTriplets = proofTriplets;
+    
+    // If courseTriplets not in state, try to load from localStorage
+    if (!currentCourseTriplets) {
+      try {
+        const savedCourseTriplets = localStorage.getItem('courseTriplets');
+        if (savedCourseTriplets) {
+          currentCourseTriplets = JSON.parse(savedCourseTriplets);
+          setCourseTriplets(currentCourseTriplets);
+          console.log("Loaded course triplets from localStorage");
+        } else {
+          alert("Please extract course pattern first");
+          return;
+        }
+      } catch (error) {
+        console.error("Error loading course triplets from localStorage:", error);
+        alert("Error loading course pattern. Please extract course pattern first.");
+        return;
+      }
+    }
+    
+    // If proofTriplets not in state, try to load from localStorage
+    if (!currentProofTriplets) {
+      try {
+        const savedProofTriplets = localStorage.getItem('proofTriplets');
+        if (savedProofTriplets) {
+          currentProofTriplets = JSON.parse(savedProofTriplets);
+          setProofTriplets(currentProofTriplets);
+          console.log("Loaded proof triplets from localStorage");
+        } else {
+          alert("Please apply pattern to proof first");
+          return;
+        }
+      } catch (error) {
+        console.error("Error loading proof triplets from localStorage:", error);
+        alert("Error loading proof triplets. Please apply pattern to proof first.");
+        return;
+      }
     }
 
     try {
@@ -139,8 +228,8 @@ export default function Home() {
         },
         body: JSON.stringify({
           testContent,
-          coursePattern: courseTriplets,
-          proofTriplets: proofTriplets,
+          coursePattern: currentCourseTriplets,
+          proofTriplets: currentProofTriplets,
         }),
       });
 
@@ -153,7 +242,9 @@ export default function Home() {
 
       const data = await response.json();
       console.log("Received test triplets:", JSON.stringify(data, null, 2));
-      setGraphData(data.visualizationQueries);
+      
+      // Instead of passing visualization queries, pass the actual test triplets
+      setGraphData(data.testTriplets);
     } catch (error: unknown) {
       console.error("Error testing content:", error);
       const errorMessage =

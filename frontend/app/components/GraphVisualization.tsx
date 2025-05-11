@@ -87,11 +87,11 @@ export default function GraphVisualization({ data }: GraphVisualizationProps) {
   const graphRef = useRef<any>(null);
 
   // Transform the Neo4j response into a format that react-force-graph can use
-  const transformData = useCallback((paths: any): GraphData => {
-    console.log("Received paths:", JSON.stringify(paths, null, 2));
+  const transformData = useCallback((data: any): GraphData => {
+    console.log("Received data:", JSON.stringify(data, null, 2));
     
     // Handle case when we receive visualization queries instead of path data
-    if (!Array.isArray(paths) && paths.coursePattern) {
+    if (!Array.isArray(data) && data.coursePattern) {
       // Create a simple demo graph when we only have queries
       return {
         nodes: [
@@ -104,12 +104,35 @@ export default function GraphVisualization({ data }: GraphVisualizationProps) {
       };
     }
     
+    // Handle case when we receive triplet data directly
+    if (!Array.isArray(data) && data.entities && data.relations) {
+      const nodes = data.entities.map((entity: any) => ({
+        id: entity.id,
+        name: entity.name,
+        label: entity.label,
+        type: entity.type,
+        color: entity.color || (entity.start ? "#4CAF50" : entity.end ? "#F44336" : "#1f77b4"),
+        start: entity.start,
+        end: entity.end
+      }));
+      
+      const links = data.relations.map((relation: any) => ({
+        source: relation.source,
+        target: relation.target,
+        type: relation.type,
+        label: relation.name
+      }));
+      
+      return { nodes, links };
+    }
+    
+    // Original code for handling Neo4j path data
     const nodes = new Map<string, Node>();
     const links: Link[] = [];
 
     // Only process paths if it's an array
-    if (Array.isArray(paths)) {
-      paths.forEach((path) => {
+    if (Array.isArray(data)) {
+      data.forEach((path) => {
         const startNode = path.p.start;
         const endNode = path.p.end;
         const relationship = path.p.segments[0].relationship;
