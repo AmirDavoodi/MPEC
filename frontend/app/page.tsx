@@ -46,8 +46,10 @@ interface Neo4jPath {
 export default function Home() {
   const [courseContent, setCourseContent] = useState("");
   const [proofContent, setProofContent] = useState("");
+  const [testContent, setTestContent] = useState("");
   const [graphData, setGraphData] = useState<Neo4jPath[] | null>(null);
   const [courseTriplets, setCourseTriplets] = useState(null);
+  const [proofTriplets, setProofTriplets] = useState(null);
 
   const handleExtractCoursePattern = async () => {
     try {
@@ -112,11 +114,51 @@ export default function Home() {
       const data = await response.json();
       console.log("Received proof triplets:", JSON.stringify(data, null, 2));
       setGraphData(data.visualizationQueries);
+      setProofTriplets(data.proofTriplets);
     } catch (error: unknown) {
       console.error("Error applying pattern to proof:", error);
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred";
       alert(`Error applying pattern to proof: ${errorMessage}`);
+    }
+  };
+
+  const handleTestContent = async () => {
+    if (!courseTriplets || !proofTriplets) {
+      alert("Please extract course pattern and apply to proof first");
+      return;
+    }
+
+    try {
+      console.log("Sending request to:", `${API_URL}/test-content`);
+      
+      const response = await fetch(`${API_URL}/test-content`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          testContent,
+          coursePattern: courseTriplets,
+          proofTriplets: proofTriplets,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `HTTP error! status: ${response.status}, message: ${errorText}`
+        );
+      }
+
+      const data = await response.json();
+      console.log("Received test triplets:", JSON.stringify(data, null, 2));
+      setGraphData(data.visualizationQueries);
+    } catch (error: unknown) {
+      console.error("Error testing content:", error);
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred";
+      alert(`Error testing content: ${errorMessage}`);
     }
   };
 
@@ -126,7 +168,7 @@ export default function Home() {
         <h2>Graph Visualization</h2>
         <div className="graph-container">
           {graphData ? (
-            <GraphVisualization data={graphData} />
+            <GraphVisualization data={graphData as any} />
           ) : (
             <p>No graph data available</p>
           )}
@@ -159,6 +201,22 @@ export default function Home() {
             disabled={!courseTriplets}
           >
             Apply Pattern to Proof
+          </button>
+        </div>
+        <div>
+          <h2>Test Content (LaTeX)</h2>
+          <textarea
+            className="textarea"
+            value={testContent}
+            onChange={(e) => setTestContent(e.target.value)}
+            placeholder="Enter test content in LaTeX format..."
+          />
+          <button 
+            className="button" 
+            onClick={handleTestContent}
+            disabled={!courseTriplets || !proofTriplets}
+          >
+            Test Content
           </button>
         </div>
       </div>

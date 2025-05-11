@@ -76,7 +76,12 @@ export class AppController {
 
   @Post('apply-pattern-to-proof')
   async applyPatternToProof(
-    @Body() request: { proofContent: string; coursePattern: any },
+    @Body()
+    request: {
+      proofContent: string;
+      coursePattern: any;
+      prompt?: string;
+    },
   ) {
     try {
       // Process LaTeX content
@@ -88,6 +93,7 @@ export class AppController {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           request.coursePattern,
           processedProofContent,
+          request.prompt, // Pass the optional prompt
         );
 
       // Phase 2: Resolve triplets

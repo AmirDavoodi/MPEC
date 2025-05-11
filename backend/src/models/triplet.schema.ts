@@ -8,9 +8,11 @@ export const EntitySchema = z.object({
   id: z.string().describe('Unique identifier for the entity'),
   name: z.string().describe('Name or text representation of the entity'),
   label: z.string().describe('Label or short descriptor for the entity'),
-  type: z.string().describe(
-    'Type of mathematical entity (e.g., axiom, lemma, conclusion, theorem, step, etc.)',
-  ),
+  type: z
+    .string()
+    .describe(
+      'Type of mathematical entity (e.g., axiom, lemma, conclusion, theorem, step, etc.)',
+    ),
   start: z.boolean().describe('Whether the entity is the start of the proof'),
   end: z.boolean().describe('Whether the entity is the end of the proof'),
 });
@@ -21,9 +23,9 @@ export const EntitySchema = z.object({
 export const RelationSchema = z.object({
   source: z.string().describe('ID of the source entity'),
   target: z.string().describe('ID of the target entity'),
-  type: z.string().describe(
-    'Type of relation between entities (e.g., grounds, explains)',
-  ),
+  type: z
+    .string()
+    .describe('Type of relation between entities (e.g., grounds, explains)'),
   name: z.string().describe('Name or description of the relation'),
 });
 
@@ -32,9 +34,9 @@ export const RelationSchema = z.object({
  */
 export const TripletSchema = z.object({
   entities: z.array(EntitySchema).describe('List of extracted entities'),
-  relations: z.array(RelationSchema).describe(
-    'List of relations between entities',
-  ),
+  relations: z
+    .array(RelationSchema)
+    .describe('List of relations between entities'),
 });
 
 // Export types derived from the schemas

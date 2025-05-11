@@ -20,7 +20,7 @@ export class ResolveTripletsService {
     const typeMap = new Map<string, number>();
     let clusterCount = 0;
 
-    return entities.map(entity => {
+    return entities.map((entity) => {
       if (!typeMap.has(entity.type)) {
         typeMap.set(entity.type, clusterCount++);
       }

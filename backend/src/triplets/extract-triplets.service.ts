@@ -53,15 +53,17 @@ export class ExtractTripletsService {
    * Apply course pattern to a proof
    * @param coursePattern The course pattern
    * @param proofContent The proof content
+   * @param customPrompt Optional custom prompt
    * @returns The applied pattern
    */
   async applyPatternToProof(
     coursePattern: Triplet,
     proofContent: string,
+    customPrompt?: string,
   ): Promise<Triplet> {
     return this.openaiService.applyPatternToProof(
       TRIPLET_EXTRACTION_SYSTEM_MESSAGE,
-      PROOF_PATTERN_APPLICATION_PROMPT,
+      customPrompt || PROOF_PATTERN_APPLICATION_PROMPT,
       coursePattern,
       proofContent,
     );
