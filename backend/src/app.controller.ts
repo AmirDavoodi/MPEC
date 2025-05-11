@@ -124,6 +124,7 @@ export class AppController {
       testContent: string;
       coursePattern: any;
       proofTriplets: any;
+      prompt?: string;
     },
   ) {
     try {
@@ -137,6 +138,7 @@ export class AppController {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         request.proofTriplets,
         processedTestContent,
+        request.prompt, // Pass the optional prompt
       );
 
       // Store test triplets in Neo4j

@@ -7,6 +7,7 @@ import {
   COURSE_PATTERN_PROMPT,
   COURSE_PATTERN_SYSTEM_MESSAGE,
   PROOF_PATTERN_APPLICATION_PROMPT,
+  TEST_CONTENT_APPLICATION_PROMPT,
 } from './prompts';
 
 @Injectable()
@@ -74,16 +75,24 @@ export class ExtractTripletsService {
    * @param coursePattern The course pattern
    * @param proofTriplets The proof triplets
    * @param testContent The test content
+   * @param customPrompt Optional custom prompt
    * @returns The applied pattern
    */
   async applyPatternToTest(
     coursePattern: Triplet,
     proofTriplets: Triplet,
     testContent: string,
+    customPrompt?: string,
   ): Promise<Triplet> {
+    // Create a custom prompt that includes the course pattern and proof triplets
+    const formattedPrompt = (customPrompt || TEST_CONTENT_APPLICATION_PROMPT)
+      .replace('{coursePattern}', JSON.stringify(coursePattern, null, 2))
+      .replace('{proofTriplet}', JSON.stringify(proofTriplets, null, 2))
+      .replace('{testContent}', testContent);
+
     return this.openaiService.extractTriplets(
       TRIPLET_EXTRACTION_SYSTEM_MESSAGE,
-      PROOF_PATTERN_APPLICATION_PROMPT,
+      formattedPrompt,
       testContent,
     );
   }
