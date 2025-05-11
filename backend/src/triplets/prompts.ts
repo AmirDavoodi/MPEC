@@ -106,17 +106,41 @@ Return the resolved graph in JSON format.
 /**
  * System message for triplet extraction
  */
-export const TRIPLET_EXTRACTION_SYSTEM_MESSAGE = 
+export const TRIPLET_EXTRACTION_SYSTEM_MESSAGE =
   'You are a helpful assistant that extracts entities and relations from mathematical proofs.';
 
 /**
  * System message for course pattern extraction
  */
-export const COURSE_PATTERN_SYSTEM_MESSAGE = 
+export const COURSE_PATTERN_SYSTEM_MESSAGE =
   'You are an expert in mathematical proof analysis, specializing in extracting structured knowledge graph from mathematical texts. Your task is to identify key steps in a mathematical proof and relationships in mathematical content and represent them as knowledge graph triplets.';
 
 /**
  * System message for triplet resolution
  */
-export const RESOLUTION_SYSTEM_MESSAGE = 
+export const RESOLUTION_SYSTEM_MESSAGE =
   'You are a helpful assistant that resolves entities and relations into a DAG.';
+
+/**
+ * Test content application prompt
+ */
+export const TEST_CONTENT_APPLICATION_PROMPT = `
+Given the following:
+1. A course pattern that defines the general structure of proofs in this domain
+2. A proof triplet that shows how the pattern was applied to a specific proof
+3. A new test content in LaTeX format
+
+Your task is to analyze the test content and extract triplets that follow the same pattern as the proof triplet.
+Compare the test content with the proof triplet to identify corresponding steps and relationships.
+
+Course Pattern:
+{coursePattern}
+
+Proof Triplet:
+{proofTriplet}
+
+Test Content:
+{testContent}
+
+Return the extracted triplets in JSON format with entities and relations.
+`;

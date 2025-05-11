@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { GraphType } from './triplet.model';
 
 /**
  * Zod schema for Entity
@@ -41,10 +42,5 @@ export type Entity = z.infer<typeof EntitySchema>;
 export type Relation = z.infer<typeof RelationSchema>;
 export type Triplet = z.infer<typeof TripletSchema>;
 
-/**
- * Graph type for storing in Neo4j
- */
-export enum GraphType {
-  COURSE_PATTERN = 'course_pattern',
-  PROOF_EXAMPLE = 'proof_example',
-}
+// Export the GraphType for convenience
+export { GraphType };

@@ -10,11 +10,11 @@
 export function extractDocumentContent(latexContent: string): string {
   const beginDocIndex = latexContent.indexOf('\\begin{document}');
   const endDocIndex = latexContent.indexOf('\\end{document}');
-  
+
   if (beginDocIndex === -1 || endDocIndex === -1) {
     return latexContent; // Return original if not found
   }
-  
+
   const startPos = beginDocIndex + '\\begin{document}'.length;
   return latexContent.substring(startPos, endDocIndex).trim();
 }
@@ -27,23 +27,23 @@ export function extractDocumentContent(latexContent: string): string {
 export function convertSectionsToMarkdown(content: string): string {
   // Replace \section{...} with ## ...
   let result = content.replace(/\\section\{([^}]+)\}/g, '## $1');
-  
+
   // Replace \subsection{...} with ### ...
   result = result.replace(/\\subsection\{([^}]+)\}/g, '### $1');
-  
+
   // Replace \title{...} with # ...
   result = result.replace(/\\title\{([^}]+)\}/g, '# $1');
-  
+
   // Remove \maketitle
   result = result.replace(/\\maketitle/g, '');
-  
+
   // Replace itemize environments
   result = result.replace(/\\begin\{itemize\}/g, '');
   result = result.replace(/\\end\{itemize\}/g, '');
-  
+
   // Replace \item with -
   result = result.replace(/\\item\s+/g, '- ');
-  
+
   return result;
 }
 

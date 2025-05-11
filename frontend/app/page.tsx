@@ -47,20 +47,19 @@ export default function Home() {
   const [courseContent, setCourseContent] = useState("");
   const [proofContent, setProofContent] = useState("");
   const [graphData, setGraphData] = useState<Neo4jPath[] | null>(null);
+  const [courseTriplets, setCourseTriplets] = useState(null);
 
-  const handleProcess = async () => {
+  const handleExtractCoursePattern = async () => {
     try {
-      console.log("Sending request to:", `${API_URL}/process`);
-      console.log("Request body:", { courseContent, proofContent });
-
-      const response = await fetch(`${API_URL}/process`, {
+      console.log("Sending request to:", `${API_URL}/extract-course-pattern`);
+      
+      const response = await fetch(`${API_URL}/extract-course-pattern`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           courseContent,
-          proofContent,
         }),
       });
 
@@ -72,16 +71,52 @@ export default function Home() {
       }
 
       const data = await response.json();
-      console.log(
-        "Received response from backend:",
-        JSON.stringify(data, null, 2)
-      );
-      setGraphData(data);
+      console.log("Received course pattern:", JSON.stringify(data, null, 2));
+      setGraphData(data.visualizationQueries);
+      setCourseTriplets(data.coursePattern);
     } catch (error: unknown) {
-      console.error("Error processing content:", error);
+      console.error("Error extracting course pattern:", error);
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred";
-      alert(`Error processing content: ${errorMessage}`);
+      alert(`Error extracting course pattern: ${errorMessage}`);
+    }
+  };
+
+  const handleApplyPatternToProof = async () => {
+    if (!courseTriplets) {
+      alert("Please extract course pattern first");
+      return;
+    }
+
+    try {
+      console.log("Sending request to:", `${API_URL}/apply-pattern-to-proof`);
+      
+      const response = await fetch(`${API_URL}/apply-pattern-to-proof`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          proofContent,
+          coursePattern: courseTriplets,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `HTTP error! status: ${response.status}, message: ${errorText}`
+        );
+      }
+
+      const data = await response.json();
+      console.log("Received proof triplets:", JSON.stringify(data, null, 2));
+      setGraphData(data.visualizationQueries);
+    } catch (error: unknown) {
+      console.error("Error applying pattern to proof:", error);
+      const errorMessage =
+        error instanceof Error ? error.message : "An unknown error occurred";
+      alert(`Error applying pattern to proof: ${errorMessage}`);
     }
   };
 
@@ -106,6 +141,9 @@ export default function Home() {
             onChange={(e) => setCourseContent(e.target.value)}
             placeholder="Enter course content in LaTeX format..."
           />
+          <button className="button" onClick={handleExtractCoursePattern}>
+            Extract Course Pattern
+          </button>
         </div>
         <div>
           <h2>Proof Content (LaTeX)</h2>
@@ -115,10 +153,14 @@ export default function Home() {
             onChange={(e) => setProofContent(e.target.value)}
             placeholder="Enter proof content in LaTeX format..."
           />
+          <button 
+            className="button" 
+            onClick={handleApplyPatternToProof}
+            disabled={!courseTriplets}
+          >
+            Apply Pattern to Proof
+          </button>
         </div>
-        <button className="button" onClick={handleProcess}>
-          Process Content
-        </button>
       </div>
     </main>
   );

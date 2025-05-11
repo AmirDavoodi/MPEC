@@ -33,27 +33,34 @@ export class AppService {
       const processedProofContent = processLatexForLLM(proofContent);
 
       // Phase 1: Extract course pattern
-      const coursePattern = await this.extractTripletsService.extractCoursePattern(
-        processedCourseContent,
-      );
+      const coursePattern =
+        await this.extractTripletsService.extractCoursePattern(
+          processedCourseContent,
+        );
       console.log(courseContent);
 
       // Store course pattern in Neo4j
-      await this.neo4jService.storeTriplets(coursePattern, GraphType.COURSE_PATTERN);
+      await this.neo4jService.storeTriplets(
+        coursePattern,
+        GraphType.COURSE_PATTERN,
+      );
 
       // Phase 1: Apply pattern to proof
-      const proofTriplets = await this.extractTripletsService.applyPatternToProof(
-        coursePattern,
-        processedProofContent,
-      );
+      const proofTriplets =
+        await this.extractTripletsService.applyPatternToProof(
+          coursePattern,
+          processedProofContent,
+        );
 
       // Phase 2: Resolve triplets
-      const resolvedTriplets = await this.resolveTripletsService.resolveTriplets(
-        proofTriplets,
-      );
+      const resolvedTriplets =
+        await this.resolveTripletsService.resolveTriplets(proofTriplets);
 
       // Store proof triplets in Neo4j
-      await this.neo4jService.storeTriplets(resolvedTriplets, GraphType.PROOF_EXAMPLE);
+      await this.neo4jService.storeTriplets(
+        resolvedTriplets,
+        GraphType.PROOF_EXAMPLE,
+      );
 
       // Return visualization queries
       return {

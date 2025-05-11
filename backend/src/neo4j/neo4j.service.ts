@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import neo4j, { Driver, Session } from 'neo4j-driver';
-import { Triplet, Entity, Relation, GraphType } from '../models/triplet.schema';
+import { Triplet, Entity, Relation } from '../models/triplet.schema';
+import { GraphType } from '../models/triplet.model';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -8,9 +9,11 @@ export class Neo4jService {
   private driver: Driver;
 
   constructor(private configService: ConfigService) {
-    const neo4jUrl = this.configService.get<string>('NEO4J_URL') || 'bolt://localhost:7687';
+    const neo4jUrl =
+      this.configService.get<string>('NEO4J_URL') || 'bolt://localhost:7687';
     const neo4jUser = this.configService.get<string>('NEO4J_USER') || 'neo4j';
-    const neo4jPassword = this.configService.get<string>('NEO4J_PASSWORD') || 'password';
+    const neo4jPassword =
+      this.configService.get<string>('NEO4J_PASSWORD') || 'password';
 
     this.driver = neo4j.driver(
       neo4jUrl,
@@ -150,8 +153,10 @@ export class Neo4jService {
    */
   getVisualizationQueries() {
     return {
-      coursePattern: 'MATCH p=()-[r]->() WHERE r.graph_type = "course_pattern" RETURN p',
-      proofExample: 'MATCH p=()-[r]->() WHERE r.graph_type = "proof_example" RETURN p',
+      coursePattern:
+        'MATCH p=()-[r]->() WHERE r.graph_type = "course_pattern" RETURN p',
+      proofExample:
+        'MATCH p=()-[r]->() WHERE r.graph_type = "proof_example" RETURN p',
       bothGraphs: `
         MATCH pattern=()-[r1]->()
         WHERE r1.graph_type = "course_pattern"

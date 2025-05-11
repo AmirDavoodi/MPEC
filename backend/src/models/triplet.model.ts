@@ -34,4 +34,5 @@ export interface Triplet {
 export enum GraphType {
   COURSE_PATTERN = 'course_pattern',
   PROOF_EXAMPLE = 'proof_example',
+  TEST_EXAMPLE = 'test_example',
 }

@@ -25,18 +25,26 @@ export class ExtractTripletsService {
     customPrompt: string = TRIPLET_EXTRACTION_PROMPT,
     systemMessage: string = TRIPLET_EXTRACTION_SYSTEM_MESSAGE,
   ): Promise<Triplet> {
-    return this.openaiService.extractTriplets(systemMessage, customPrompt, proof);
+    return this.openaiService.extractTriplets(
+      systemMessage,
+      customPrompt,
+      proof,
+    );
   }
 
   /**
    * Extract course pattern from course content
    * @param courseContent The course content
+   * @param customPrompt Optional custom prompt
    * @returns The extracted course pattern
    */
-  async extractCoursePattern(courseContent: string): Promise<Triplet> {
+  async extractCoursePattern(
+    courseContent: string,
+    customPrompt?: string,
+  ): Promise<Triplet> {
     return this.openaiService.extractTriplets(
       COURSE_PATTERN_SYSTEM_MESSAGE,
-      COURSE_PATTERN_PROMPT,
+      customPrompt || COURSE_PATTERN_PROMPT,
       courseContent,
     );
   }
@@ -56,6 +64,25 @@ export class ExtractTripletsService {
       PROOF_PATTERN_APPLICATION_PROMPT,
       coursePattern,
       proofContent,
+    );
+  }
+
+  /**
+   * Apply pattern to test content
+   * @param coursePattern The course pattern
+   * @param proofTriplets The proof triplets
+   * @param testContent The test content
+   * @returns The applied pattern
+   */
+  async applyPatternToTest(
+    coursePattern: Triplet,
+    proofTriplets: Triplet,
+    testContent: string,
+  ): Promise<Triplet> {
+    return this.openaiService.extractTriplets(
+      TRIPLET_EXTRACTION_SYSTEM_MESSAGE,
+      PROOF_PATTERN_APPLICATION_PROMPT,
+      testContent,
     );
   }
 }

@@ -11,8 +11,11 @@ export class OpenAIService {
 
   constructor(private configService: ConfigService) {
     const apiKey = this.configService.get<string>('OPENAI_API_KEY');
-    const modelName = this.configService.get<string>('OPENAI_LLM_MODEL') || 'gpt-4';
-    const temperature = parseFloat(this.configService.get<string>('OPENAI_LLM_TEMPERATURE') || '0');
+    const modelName =
+      this.configService.get<string>('OPENAI_LLM_MODEL') || 'gpt-4';
+    const temperature = parseFloat(
+      this.configService.get<string>('OPENAI_LLM_TEMPERATURE') || '0',
+    );
 
     this.model = new ChatOpenAI({
       openAIApiKey: apiKey,
@@ -52,7 +55,9 @@ export class OpenAIService {
       return result;
     } catch (error) {
       console.error('Error extracting triplets:', error);
-      throw new Error(`Failed to extract triplets: ${error.message}`);
+      throw new Error(
+        `Failed to extract triplets: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   }
 
@@ -89,7 +94,9 @@ export class OpenAIService {
       return result;
     } catch (error) {
       console.error('Error resolving triplets:', error);
-      throw new Error(`Failed to resolve triplets: ${error.message}`);
+      throw new Error(
+        `Failed to resolve triplets: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   }
 
@@ -128,7 +135,9 @@ export class OpenAIService {
       return result;
     } catch (error) {
       console.error('Error applying pattern to proof:', error);
-      throw new Error(`Failed to apply pattern to proof: ${error.message}`);
+      throw new Error(
+        `Failed to apply pattern to proof: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
   }
 }
