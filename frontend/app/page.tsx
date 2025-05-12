@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import GraphVisualization from "./components/GraphVisualization";
+import { ToastContainer, showErrorToast, showSuccessToast } from './components/SimpleToast';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
@@ -150,11 +151,14 @@ export default function Home() {
       if (!showCombinedGraph) {
         setGraphData(data.coursePattern);
       }
+      
+      // Show success toast
+      showSuccessToast("Course pattern extracted successfully!");
     } catch (error: unknown) {
       console.error("Error extracting course pattern:", error);
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred";
-      alert(`Error extracting course pattern: ${errorMessage}`);
+      showErrorToast(`Error extracting course pattern: ${errorMessage}`);
     }
   };
 
@@ -170,14 +174,14 @@ export default function Home() {
           setCourseTriplets(parsedTriplets);
           console.log("Loaded course triplets from localStorage");
         } else {
-          // If not in localStorage either, show error
-          alert("Please extract course pattern first");
-          return;
+          // If not in localStorage either, show error but don't disable button
+          showErrorToast("Please extract course pattern first");
+          return; // Return early to prevent API call
         }
       } catch (error) {
         console.error("Error loading triplets from localStorage:", error);
-        alert("Error loading course pattern. Please extract course pattern first.");
-        return;
+        showErrorToast("Error loading course pattern. Please extract course pattern first.");
+        return; // Return early to prevent API call
       }
     }
 
@@ -216,11 +220,14 @@ export default function Home() {
       if (!showCombinedGraph) {
         setGraphData(data.proofTriplets);
       }
+      
+      // Show success toast
+      showSuccessToast("Pattern applied to proof successfully!");
     } catch (error: unknown) {
       console.error("Error applying pattern to proof:", error);
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred";
-      alert(`Error applying pattern to proof: ${errorMessage}`);
+      showErrorToast(`Error applying pattern to proof: ${errorMessage}`);
     }
   };
 
@@ -238,13 +245,13 @@ export default function Home() {
           setCourseTriplets(currentCourseTriplets);
           console.log("Loaded course triplets from localStorage");
         } else {
-          alert("Please extract course pattern first");
-          return;
+          showErrorToast("Please extract course pattern first");
+          return; // Return early to prevent API call
         }
       } catch (error) {
         console.error("Error loading course triplets from localStorage:", error);
-        alert("Error loading course pattern. Please extract course pattern first.");
-        return;
+        showErrorToast("Error loading course pattern. Please extract course pattern first.");
+        return; // Return early to prevent API call
       }
     }
     
@@ -257,13 +264,13 @@ export default function Home() {
           setProofTriplets(currentProofTriplets);
           console.log("Loaded proof triplets from localStorage");
         } else {
-          alert("Please apply pattern to proof first");
-          return;
+          showErrorToast("Please apply pattern to proof first");
+          return; // Return early to prevent API call
         }
       } catch (error) {
         console.error("Error loading proof triplets from localStorage:", error);
-        alert("Error loading proof triplets. Please apply pattern to proof first.");
-        return;
+        showErrorToast("Error loading proof triplets. Please apply pattern to proof first.");
+        return; // Return early to prevent API call
       }
     }
 
@@ -303,16 +310,22 @@ export default function Home() {
       if (!showCombinedGraph) {
         setGraphData(data.testTriplets);
       }
+      
+      // Show success toast
+      showSuccessToast("Test content processed successfully!");
     } catch (error: unknown) {
       console.error("Error testing content:", error);
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred";
-      alert(`Error testing content: ${errorMessage}`);
+      showErrorToast(`Error testing content: ${errorMessage}`);
     }
   };
 
   return (
     <main className="main">
+      {/* Add ToastContainer at the bottom of your component */}
+      <ToastContainer position="bottom-center" />
+      
       <div className="visualization">
         <div className="visualization-header">
           <h2>Graph Visualization</h2>
@@ -326,7 +339,7 @@ export default function Home() {
         </div>
         <div className="graph-container">
           {graphData ? (
-            <GraphVisualization data={graphData as any} />
+            <GraphVisualization data={graphData} />
           ) : (
             <p>No graph data available</p>
           )}
@@ -356,7 +369,7 @@ export default function Home() {
           <button 
             className="button" 
             onClick={handleApplyPatternToProof}
-            disabled={!courseTriplets}
+            // Remove the disabled attribute so the button is always clickable
           >
             Apply Pattern to Proof
           </button>
@@ -372,7 +385,7 @@ export default function Home() {
           <button 
             className="button" 
             onClick={handleTestContent}
-            disabled={!courseTriplets || !proofTriplets}
+            // Remove the disabled attribute so the button is always clickable
           >
             Test Content
           </button>
