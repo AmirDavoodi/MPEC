@@ -12,7 +12,6 @@ from .prompts import TRIPLET_EXTRACTION_PROMPT
 
 
 def extract_triplets(
-    proof: str,
     custom_prompt: str = TRIPLET_EXTRACTION_PROMPT,
     system_message: str = "You are a helpful assistant that extracts entities and relations from mathematical proofs.",
 ) -> Triplet:
