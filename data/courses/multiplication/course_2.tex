@@ -1,0 +1,96 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\begin{document}
+
+\section{Title}
+Multiplication Via Recursion
+
+\section{Abstract}
+Multiplication via recursion breaks down complex multiplication into simpler steps through two phases: first decomposing multiplication into repeated addition, then applying addition via recursion to compute the final result. This approach systematically reduces complex calculations to elementary operations.
+
+\section{Recursive Definition}
+For non-negative integers \(a\) and \(b\):
+
+\[
+    a \times b = \begin{cases}
+        0                      & \text{if } b = 0 \quad \text{(Base Case)}      \\
+        a + (a \times (b - 1)) & \text{if } b > 0 \quad \text{(Recursive Case)}
+    \end{cases}
+\]
+
+\section{Complete Calculation Procedure}
+The complete calculation of \(a \times b\) follows these sequential steps:
+
+\subsection{Phase 1: Multiplication Decomposition}
+\subsubsection{Start with the initial problem: \(a \times b\)}
+\subsubsection{Apply the recursive formula: \(a \times b = a + (a \times (b-1))\)}
+\subsubsection{Continue decomposing until reaching the base case:}
+\[
+    \begin{aligned}
+        a \times b & = a + (a \times (b-1))                                             \\
+                   & = a + (a + (a \times (b-2)))                                       \\
+                   & = a + a + (a \times (b-3))                                         \\
+                   & \vdots                                                             \\
+                   & = \underbrace{a + a + \cdots + a}_{b \text{ times}} + (a \times 0) \\
+                   & = \underbrace{a + a + \cdots + a}_{b \text{ times}} + 0            \\
+                   & = \underbrace{a + a + \cdots + a}_{b \text{ times}}
+    \end{aligned}
+\]
+
+\subsection{Phase 2: Addition Calculation}
+After decomposing multiplication into repeated addition, we must calculate each addition operation separately. This requires multiple applications of the addition via recursion process:
+
+\subsubsection{Identify all addition operations}
+The result of Phase 1 is an expression with \(b\) instances of \(a\) being added together:
+\[
+    \underbrace{a + a + \cdots + a}_{b \text{ times}}
+\]
+
+\subsubsection{Apply addition via recursion to each pair of terms}
+For each addition operation in the sequence, we must apply the addition via recursion pattern separately:
+
+\[
+    \begin{aligned}
+        \text{First addition:} \quad a + a & = (a + (a-1)) + 1                    \\
+                                           & = ((a + (a-2)) + 1) + 1              \\
+                                           & \vdots                               \\
+                                           & = (\cdots((a + 0) + 1) + \cdots + 1)
+    \end{aligned}
+\]
+
+\subsubsection{Process additions sequentially}
+After calculating the first addition, we must continue with the next addition operation:
+\[
+    \begin{aligned}
+        \text{Second addition:} \quad (a + a) + a & = ((a + a) + (a-1)) + 1       \\
+                                                  & = (((a + a) + (a-2)) + 1) + 1 \\
+                                                  & \vdots
+    \end{aligned}
+\]
+
+\subsubsection{Continue until all additions are resolved}
+This process continues for all \(b-1\) addition operations in the expression:
+\[
+    \begin{aligned}
+        \text{Third addition:} \quad ((a + a) + a) + a & = \ldots \\
+        \vdots
+    \end{aligned}
+\]
+
+\subsubsection{Combine all results}
+After applying addition via recursion to each addition operation, we obtain the final result:
+\[
+    \underbrace{a + a + \cdots + a}_{b \text{ times}} = a \times b
+\]
+
+\section{Summary}
+Multiplication via recursion follows a clear two-phase process:
+\begin{enumerate}
+    \item Phase 1: Decompose multiplication into repeated addition, resulting in \(b\) instances of \(a\) being added together
+    \item Phase 2: Calculate each addition operation separately using addition via recursion, requiring \(b-1\) distinct applications of the addition process
+\end{enumerate}
+
+This approach demonstrates how complex operations (multiplication) can be systematically reduced to simpler operations (multiple separate additions) and ultimately to the most basic operation (adding 1). The key insight is that each addition operation in the sequence must be calculated individually using the addition via recursion process.
+
+\end{document}
