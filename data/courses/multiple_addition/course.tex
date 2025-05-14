@@ -1,0 +1,80 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{geometry}
+
+\title{Adding Multiple Numbers}
+
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+All addition ultimately reduces to pairwise operations. This course shows how we systematically break down sums with multiple numbers into sequences of binary additions using parentheses.
+
+\section{Core Principle}
+\emph{Addition is binary:} We can only add two numbers at any given moment. For multiple numbers:
+\begin{itemize}
+    \item We need $(n-1)$ additions for $n$ numbers
+    \item Parentheses specify operation order
+    \item Different groupings yield same result (associativity)
+\end{itemize}
+
+\section{General Case Pattern}
+
+For numbers $a_1 + a_2 + \cdots + a_n$:
+
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{rl}
+    Step 1:     & $(a_1 + a_2)$                 \\
+    Step 2:     & $(\text{Result}_1 + a_3)$     \\
+    $\vdots$    &                               \\
+    Step $n-1$: & $(\text{Result}_{n-2} + a_n)$ \\
+\end{tabular}
+
+\section{Basic Examples}
+
+\subsection{Example}
+\begin{align*}
+     & 2 + 3 + 4     \\
+     & = (2 + 3) + 4 \\
+     & = 5 + 4       \\
+     & = 9
+\end{align*}
+
+Alternative grouping:
+\begin{align*}
+     & 2 + (3 + 4) \\
+     & = 2 + 7     \\
+     & = 9
+\end{align*}
+
+\subsection{Example}
+\begin{align*}
+     & 1 + 4 + 2 + 5       \\
+     & = ((1 + 4) + 2) + 5 \\
+     & = (5 + 2) + 5       \\
+     & = 7 + 5             \\
+     & = 12
+\end{align*}
+
+Alternative sequence:
+\begin{align*}
+     & 1 + (4 + (2 + 5)) \\
+     & = 1 + (4 + 7)     \\
+     & = 1 + 11          \\
+     & = 12
+\end{align*}
+
+\subsection{Example}
+Add: $3 + 1 + 4 + 2 + 5$
+
+\begin{align*}
+     & ((((3 + 1) + 4) + 2) + 5) \\
+     & = ((4 + 4) + 2) + 5       \\
+     & = (8 + 2) + 5             \\
+     & = 10 + 5                  \\
+     & = 15
+\end{align*}
+
+\end{document}
