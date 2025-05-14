@@ -1,6 +1,6 @@
 from neo4j import GraphDatabase
 from typing import Optional, Literal
-from src.phase1.schemas import Entity, Relation, Triplet
+from src.phase1.schemas import CalculationGraph, Entity, Relation, Triplet
 
 
 class Neo4JUtils:
@@ -121,6 +121,62 @@ class Neo4JUtils:
         with self.driver.session() as session:
             session.execute_write(self._set_node_colors)
 
+    def store_calculation_graph(
+        self,
+        calculation_graph: CalculationGraph,
+        graph_type: Literal["course_pattern", "proof_example"],
+    ) -> None:
+        """
+        Store a CalculationGraph object in Neo4j for visualization.
+
+        Args:
+            calculation_graph: CalculationGraph object containing steps and transitions
+            graph_type: Type of graph (course_pattern or proof_example)
+        """
+        # First pass: create all step nodes with their properties
+        for step in calculation_graph.steps:
+            # Create a properties dictionary that includes all step properties
+            props = {
+                "id": f"{graph_type}_{step.id}",
+                "name": f"{graph_type}_{step.expression}",
+                "type": "step",
+                "label": "Step",  # Add step label as property
+                "graph_type": graph_type,
+                "expression": step.expression,
+                "operation": step.operation,
+                "start": step.is_start,  # Start node flag
+                "end": step.is_end,  # End node flag
+            }
+            # Prefix the label with graph type
+            step_label = f"{graph_type}_Step"
+            with self.driver.session() as session:
+                session.execute_write(self._create_node_with_props, step_label, props)
+
+        # Second pass: create all transitions
+        for transition in calculation_graph.transitions:
+            props = {
+                "type": "transition",
+                "name": f"{graph_type}_{transition.rule}",
+                "label": transition.rule,  # Add transition label as property
+                "graph_type": graph_type,
+                "explanation": transition.explanation,
+            }
+            # Update source and target IDs to match the prefixed node IDs
+            source_id = f"{graph_type}_{transition.source}"
+            target_id = f"{graph_type}_{transition.target}"
+            with self.driver.session() as session:
+                session.execute_write(
+                    self._create_math_transition,
+                    transition,
+                    props,
+                    source_id,
+                    target_id,
+                )
+
+        # Third pass: set colors for start and end nodes
+        with self.driver.session() as session:
+            session.execute_write(self._set_node_colors)
+
     @staticmethod
     def _create_node(tx, entity: Entity, step: int) -> None:
         """
@@ -216,6 +272,27 @@ class Neo4JUtils:
         SET n.color = '#ff0000'
         """
         tx.run(query)
+
+    @staticmethod
+    def _create_math_transition(
+        tx, transition, props: dict, source_id: str, target_id: str
+    ) -> None:
+        """
+        Internal method to create a relationship from a MathTransition object.
+        """
+        # Ensure the relationship type is valid and enclosed in backticks if necessary
+        relationship_name = transition.rule.strip()
+        if not relationship_name:
+            raise ValueError("Relationship rule cannot be empty.")
+        if " " in relationship_name or not relationship_name.isalnum():
+            relationship_name = f"`{relationship_name}`"
+
+        prop_keys = ", ".join([f"{k}: ${k}" for k in props.keys()])
+        query = (
+            "MATCH (a {id: $source_id}), (b {id: $target_id}) "
+            f"CREATE (a)-[r:{relationship_name} {{{prop_keys}}}]->(b)"
+        )
+        tx.run(query, source_id=source_id, target_id=target_id, **props)
 
     def get_visualization_queries(self) -> str:
         return """

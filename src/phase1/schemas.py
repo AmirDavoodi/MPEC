@@ -3,30 +3,50 @@ from pydantic import BaseModel, Field
 from typing import List
 
 
-class Entity(BaseModel):
-    id: str = Field(..., description="Unique identifier for the entity")
-    name: str = Field(..., description="Name or text representation of the entity")
-    label: str = Field(..., description="Label or short descriptor for the entity")
-    type: str = Field(
+class MathStep(BaseModel):
+    id: str = Field(..., description="Unique identifier for the calculation step")
+    expression: str = Field(..., description="Mathematical expression at this step")
+    operation: str = Field(
         ...,
-        description="Type of mathematical entity (e.g., 'axiom', 'lemma', 'conclusion', 'theorem', 'step', etc.)",
+        description="Operation performed (e.g., 'addition', 'substitution', 'factoring')",
     )
-    start: bool = Field(..., description="Whether the entity is the start of the proof")
-    end: bool = Field(..., description="Whether the entity is the end of the proof")
+    is_start: bool = Field(..., description="Whether this is the starting expression")
+    is_end: bool = Field(..., description="Whether this is the final result")
+
+
+class MathTransition(BaseModel):
+    source: str = Field(..., description="ID of the source step")
+    target: str = Field(..., description="ID of the target step")
+    rule: str = Field(
+        ...,
+        description="Mathematical rule applied (e.g., 'distributive_property', 'substitution')",
+    )
+    explanation: str = Field(
+        ..., description="Natural language explanation of the transition"
+    )
+
+
+class CalculationGraph(BaseModel):
+    steps: List[MathStep] = Field(..., description="List of calculation steps")
+    transitions: List[MathTransition] = Field(
+        ..., description="List of transitions between steps"
+    )
+
+
+class Entity(BaseModel):
+    id: str
+    name: str
+    label: str = None
+    type: str = None
 
 
 class Relation(BaseModel):
-    source: str = Field(..., description="ID of the source entity")
-    target: str = Field(..., description="ID of the target entity")
-    type: str = Field(
-        ...,
-        description="Type of relation between entities (e.g., 'grounds', 'explains')",
-    )
-    name: str = Field(..., description="Name or description of the relation")
+    source: str
+    target: str
+    name: str
+    type: str = None
 
 
 class Triplet(BaseModel):
-    entities: List[Entity] = Field(..., description="List of extracted entities")
-    relations: List[Relation] = Field(
-        ..., description="List of relations between entities"
-    )
+    entities: List[Entity]
+    relations: List[Relation]

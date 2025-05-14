@@ -34,3 +34,14 @@ Output triplets in the form: <Source Entity, Relationship, Target Entity>
 Proof:
 {proof}
 """
+
+CALCULATION_GRAPH_EXTRACTION_PROMPT = """
+Extract a detailed step-by-step calculation graph from the following mathematical proof.
+For each step, identify the mathematical expression, the operation performed, and whether it's a starting or final step.
+For each transition between steps, identify the mathematical rule applied and provide a brief explanation.
+
+Mathematical Proof:
+{proof}
+"""
+
+CALCULATION_GRAPH_SYSTEM_MESSAGE = "You are a mathematical assistant that extracts calculation steps and transitions from mathematical proofs."

@@ -7,8 +7,12 @@ from pydantic import BaseModel, Field
 from langchain.output_parsers import PydanticOutputParser
 
 from configs.settings import OPENAI_API_KEY, OPENAI_LLM_MODEL, OPENAI_LLM_TEMPERATURE
-from .schemas import Triplet
-from .prompts import TRIPLET_EXTRACTION_PROMPT
+from .schemas import Triplet, CalculationGraph
+from .prompts import (
+    TRIPLET_EXTRACTION_PROMPT,
+    CALCULATION_GRAPH_EXTRACTION_PROMPT,
+    CALCULATION_GRAPH_SYSTEM_MESSAGE,
+)
 
 
 def extract_triplets(
@@ -46,3 +50,36 @@ def extract_triplets(
     triplet = structured_llm.invoke(formatted_prompt)
 
     return triplet
+
+
+def extract_calculation_graph(
+    custom_prompt: str = CALCULATION_GRAPH_EXTRACTION_PROMPT,
+    system_message: str = CALCULATION_GRAPH_SYSTEM_MESSAGE,
+) -> CalculationGraph:
+    # Initialize the LLM
+    llm = ChatOpenAI(
+        model_name=OPENAI_LLM_MODEL,
+        temperature=OPENAI_LLM_TEMPERATURE,
+        openai_api_key=OPENAI_API_KEY,
+    )
+
+    # Define the prompt
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            SystemMessage(content=system_message),
+            HumanMessage(content=custom_prompt),
+        ]
+    )
+
+    # Format the prompt into a list of BaseMessages
+    formatted_prompt = prompt.format_messages()
+
+    print(formatted_prompt)
+
+    # Use with_structured_output to enforce the CalculationGraph schema
+    structured_llm = llm.with_structured_output(CalculationGraph)
+
+    # Invoke the LLM with the formatted prompt
+    calculation_graph = structured_llm.invoke(formatted_prompt)
+
+    return calculation_graph
