@@ -78,7 +78,7 @@ interface Neo4jPath {
 }
 
 interface GraphVisualizationProps {
-  data: Neo4jPath[];
+  data: Neo4jPath[] | any; // Allow for different data formats
 }
 
 export default function GraphVisualization({ data }: GraphVisualizationProps) {
@@ -87,71 +87,104 @@ export default function GraphVisualization({ data }: GraphVisualizationProps) {
   const graphRef = useRef<any>(null);
 
   // Transform the Neo4j response into a format that react-force-graph can use
-  const transformData = useCallback((paths: Neo4jPath[]): GraphData => {
-    console.log("Received paths:", JSON.stringify(paths, null, 2));
+  const transformData = useCallback((data: any): GraphData => {
+    console.log("Received data:", JSON.stringify(data, null, 2));
+    
+    // Handle case when we receive visualization queries instead of path data
+    if (!Array.isArray(data) && data.coursePattern) {
+      // Create a simple demo graph when we only have queries
+      return {
+        nodes: [
+          { id: "1", name: "Start", label: "Start", type: "step", color: "#4CAF50", start: true },
+          { id: "2", name: "End", label: "End", type: "step", color: "#F44336", end: true }
+        ],
+        links: [
+          { source: "1", target: "2", type: "leads_to", label: "Leads to" }
+        ]
+      };
+    }
+    
+    // Handle case when we receive triplet data directly
+    if (!Array.isArray(data) && data.entities && data.relations) {
+      const nodes = data.entities.map((entity: any) => ({
+        id: entity.id,
+        name: entity.name,
+        label: entity.label,
+        type: entity.type,
+        color: entity.color || (entity.start ? "#4CAF50" : entity.end ? "#F44336" : "#1f77b4"),
+        start: entity.start,
+        end: entity.end
+      }));
+      
+      const links = data.relations.map((relation: any) => ({
+        source: relation.source,
+        target: relation.target,
+        type: relation.type,
+        label: relation.name
+      }));
+      
+      return { nodes, links };
+    }
+    
+    // Original code for handling Neo4j path data
     const nodes = new Map<string, Node>();
     const links: Link[] = [];
 
-    paths.forEach((path) => {
-      const startNode = path.p.start;
-      const endNode = path.p.end;
-      const relationship = path.p.segments[0].relationship;
+    // Only process paths if it's an array
+    if (Array.isArray(data)) {
+      data.forEach((path) => {
+        const startNode = path.p.start;
+        const endNode = path.p.end;
+        const relationship = path.p.segments[0].relationship;
 
-      // Convert Neo4j ID to string
-      const startId = startNode.identity.low.toString();
-      const endId = endNode.identity.low.toString();
+        // Convert Neo4j ID to string
+        const startId = typeof startNode.identity === 'string' 
+          ? startNode.identity 
+          : startNode.identity.low.toString();
+          
+        const endId = typeof endNode.identity === 'string'
+          ? endNode.identity
+          : endNode.identity.low.toString();
 
-      console.log(
-        "Processing path:",
-        JSON.stringify(
-          {
-            startNode,
-            endNode,
-            relationship,
-          },
-          null,
-          2
-        )
-      );
+        // Add start node if not already present
+        if (!nodes.has(startId)) {
+          nodes.set(startId, {
+            id: startId,
+            name: startNode.properties.name,
+            label: startNode.properties.label,
+            type: startNode.labels[0],
+            color: startNode.properties.color,
+            start: startNode.properties.start,
+            end: startNode.properties.end,
+            x: startNode.properties.x,
+            y: startNode.properties.y,
+          });
+        }
 
-      // Add start node if not already present
-      if (!nodes.has(startId)) {
-        nodes.set(startId, {
-          id: startId,
-          name: startNode.properties.name,
-          label: startNode.properties.label,
-          type: startNode.labels[0],
-          color: startNode.properties.color,
-          start: startNode.properties.start,
-          end: startNode.properties.end,
-          x: startNode.properties.x,
-          y: startNode.properties.y,
+        // Add end node if not already present
+        if (!nodes.has(endId)) {
+          nodes.set(endId, {
+            id: endId,
+            name: endNode.properties.name,
+            label: endNode.properties.label,
+            type: endNode.labels[0],
+            color: endNode.properties.color,
+            start: endNode.properties.start,
+            end: endNode.properties.end,
+            x: endNode.properties.x,
+            y: endNode.properties.y,
+          });
+        }
+
+        // Add link
+        links.push({
+          source: startId,
+          target: endId,
+          type: relationship.type,
+          label: relationship.properties.label,
         });
-      }
-
-      // Add end node if not already present
-      if (!nodes.has(endId)) {
-        nodes.set(endId, {
-          id: endId,
-          name: endNode.properties.name,
-          label: endNode.properties.label,
-          type: endNode.labels[0],
-          color: endNode.properties.color,
-          start: endNode.properties.start,
-          end: endNode.properties.end,
-          x: endNode.properties.x,
-          y: endNode.properties.y,
-        });
-      }
-
-      // Add link
-      links.push({
-        source: startId,
-        target: endId,
-        type: relationship.type,
-        label: relationship.properties.label,
       });
-    });
+    }
 
     const result = {
       nodes: Array.from(nodes.values()),

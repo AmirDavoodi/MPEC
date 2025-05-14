@@ -1,0 +1,162 @@
+@baseUrl = http://localhost:3001
+
+### Health check
+GET {{baseUrl}}
+
+### Extract Course Pattern
+POST {{baseUrl}}/extract-course-pattern
+Content-Type: application/json
+
+{
+  "courseContent": "\\documentclass{article}\n\\usepackage{amsmath}\n\\usepackage{amssymb}\n\\title{Introduction to Addition via Recursion}\n\\author{}\n\\date{}\n\n\\begin{document}\n\\maketitle\n\n\\section{Recursive Definition}\nFor non-negative integers \\(a\\) and \\(b\\):\n\n\\[\n    a + b = \\begin{cases}\n        a                 & \\text{if } b = 0 \\quad \\text{(Base Case)}      \\\\\n        (a + (b - 1)) + 1 & \\text{if } b > 0 \\quad \\text{(Recursive Case)}\n    \\end{cases}\n\\]\n\n\\section{Expanded Recursion Steps}\nThe recursive case systematically reduces any addition problem to successive simpler cases through these steps:\n\n\\begin{enumerate}\n    \\item \\textbf{Initial Problem}: \\(a + b\\) where \\(b > 0\\)\n\n    \\item \\textbf{Recursive Decomposition}:\n          \\[\n              a + b = (a + \\underbrace{(b - 1)}_{\\text{Simpler term}}) + 1\n          \\]\n          This creates:\n          \\begin{itemize}\n              \\item A simpler subproblem: \\(a + (b - 1)\\)\n              \\item A pending operation: \\(+ 1\\)\n          \\end{itemize}\n\n    \\item \\textbf{Iterative Reduction}:\n          Repeat until reaching base case:\n          \\[\n              \\begin{aligned}\n                   & a + b                              \\\\\n                   & \\Downarrow                         \\\\\n                   & (a + (b-1)) + 1                    \\\\\n                   & \\Downarrow                         \\\\\n                   & ((a + (b-2)) + 1) + 1              \\\\\n                   & \\Downarrow                         \\\\\n                   & \\quad \\vdots                       \\\\\n                   & \\Downarrow                         \\\\\n                   & (\\cdots((a + 0) + 1) + \\cdots + 1) \\\\\n              \\end{aligned}\n          \\]\n\n    \\item \\textbf{Base Case Resolution}:\n          When \\(b - n = 0\\):\n          \\[\n              \\underbrace{(\\cdots((a + 0)}_{\\text{Base case}} \\underbrace{+ 1) + \\cdots + 1)}_{b \\text{ times}}\n          \\]\n\n    \\item \\textbf{Result Construction}:\n          \\[\n              a + \\underbrace{1 + 1 + \\cdots + 1}_{b \\text{ times}} = a + b\n          \\]\n\\end{enumerate}\n\n\\section{Example}\nComplete Recursion Example, for \\(3 + 2\\):\n\n\\[\n    \\begin{aligned}\n        3 + 2 & = (3 + 1) + 1 \\quad       & \\text{(First decomposition)}  \\\\\n              & = ((3 + 0) + 1) + 1 \\quad & \\text{(Second decomposition)} \\\\\n              & = (3 + 1) + 1 \\quad       & \\text{(Base case applied)}    \\\\\n              & = 4 + 1 \\quad             & \\text{(First increment)}      \\\\\n              & = 5 \\quad                 & \\text{(Final result)}\n    \\end{aligned}\n\\]\n\n\\section*{Recursion Pattern}\nGeneral form for \\(a + b\\):\n\n\\[\n    \\begin{aligned}\n        a + b & = (a + (b-1)) + 1                                       \\\\\n              & = ((a + (b-2)) + 1) + 1                                 \\\\\n              & \\;\\;\\vdots                                              \\\\\n              & = (\\cdots((a + 0) + 1) + \\cdots + 1)                    \\\\\n              & = a + \\underbrace{1 + 1 + \\cdots + 1}_{b \\text{ times}} \\\\\n              & = a + b\n    \\end{aligned}\n\\]\n\n\\end{document}"
+}
+
+### Extract Course Pattern with Custom Prompt
+POST {{baseUrl}}/extract-course-pattern
+Content-Type: application/json
+
+{
+  "courseContent": "\\documentclass{article}\n\\usepackage{amsmath}\n\\usepackage{amssymb}\n\\title{Introduction to Addition via Recursion}\n\\author{}\n\\date{}\n\n\\begin{document}\n\\maketitle\n\n\\section{Recursive Definition}\nFor non-negative integers \\(a\\) and \\(b\\):\n\n\\[\n    a + b = \\begin{cases}\n        a                 & \\text{if } b = 0 \\quad \\text{(Base Case)}      \\\\\n        (a + (b - 1)) + 1 & \\text{if } b > 0 \\quad \\text{(Recursive Case)}\n    \\end{cases}\n\\]\n\n\\section{Expanded Recursion Steps}\nThe recursive case systematically reduces any addition problem to successive simpler cases through these steps:\n\n\\begin{enumerate}\n    \\item \\textbf{Initial Problem}: \\(a + b\\) where \\(b > 0\\)\n\n    \\item \\textbf{Recursive Decomposition}:\n          \\[\n              a + b = (a + \\underbrace{(b - 1)}_{\\text{Simpler term}}) + 1\n          \\]\n          This creates:\n          \\begin{itemize}\n              \\item A simpler subproblem: \\(a + (b - 1)\\)\n              \\item A pending operation: \\(+ 1\\)\n          \\end{itemize}\n\n    \\item \\textbf{Iterative Reduction}:\n          Repeat until reaching base case:\n          \\[\n              \\begin{aligned}\n                   & a + b                              \\\\\n                   & \\Downarrow                         \\\\\n                   & (a + (b-1)) + 1                    \\\\\n                   & \\Downarrow                         \\\\\n                   & ((a + (b-2)) + 1) + 1              \\\\\n                   & \\Downarrow                         \\\\\n                   & \\quad \\vdots                       \\\\\n                   & \\Downarrow                         \\\\\n                   & (\\cdots((a + 0) + 1) + \\cdots + 1) \\\\\n              \\end{aligned}\n          \\]\n\n    \\item \\textbf{Base Case Resolution}:\n          When \\(b - n = 0\\):\n          \\[\n              \\underbrace{(\\cdots((a + 0)}_{\\text{Base case}} \\underbrace{+ 1) + \\cdots + 1)}_{b \\text{ times}}\n          \\]\n\n    \\item \\textbf{Result Construction}:\n          \\[\n              a + \\underbrace{1 + 1 + \\cdots + 1}_{b \\text{ times}} = a + b\n          \\]\n\\end{enumerate}\n\n\\section{Example}\nComplete Recursion Example, for \\(3 + 2\\):\n\n\\[\n    \\begin{aligned}\n        3 + 2 & = (3 + 1) + 1 \\quad       & \\text{(First decomposition)}  \\\\\n              & = ((3 + 0) + 1) + 1 \\quad & \\text{(Second decomposition)} \\\\\n              & = (3 + 1) + 1 \\quad       & \\text{(Base case applied)}    \\\\\n              & = 4 + 1 \\quad             & \\text{(First increment)}      \\\\\n              & = 5 \\quad                 & \\text{(Final result)}\n    \\end{aligned}\n\\]\n\n\\section*{Recursion Pattern}\nGeneral form for \\(a + b\\):\n\n\\[\n    \\begin{aligned}\n        a + b & = (a + (b-1)) + 1                                       \\\\\n              & = ((a + (b-2)) + 1) + 1                                 \\\\\n              & \\;\\;\\vdots                                              \\\\\n              & = (\\cdots((a + 0) + 1) + \\cdots + 1)                    \\\\\n              & = a + \\underbrace{1 + 1 + \\cdots + 1}_{b \\text{ times}} \\\\\n              & = a + b\n    \\end{aligned}\n\\]\n\n\\end{document}",
+  "prompt": "Given the following mathematical course content, extract a detailed step-by-step knowledge graph that captures the key concepts, definitions, and relationships in the epsilon-delta definition of limits."
+}
+
+### Apply Pattern to Proof
+POST {{baseUrl}}/apply-pattern-to-proof
+Content-Type: application/json
+
+{
+  "proofContent": "To prove that \\lim_{x \\to 2} (x^2 - 4) = 0, we need to show that for every ε > 0, there exists a δ > 0 such that if 0 < |x - 2| < δ, then |(x^2 - 4) - 0| < ε. Note that x^2 - 4 = (x - 2)(x + 2). So |x^2 - 4| = |x - 2||x + 2|. If we restrict |x - 2| < 1, then 1 < x < 3, which means 3 < x + 2 < 5, so |x + 2| < 5. Thus, if we choose δ = min(1, ε/5), then whenever 0 < |x - 2| < δ, we have |x^2 - 4| = |x - 2||x + 2| < δ·5 ≤ ε.",
+  "coursePattern": {
+    "entities": [
+      {
+        "id": "step1",
+        "name": "Assume the hypothesis",
+        "label": "Hypothesis",
+        "type": "step",
+        "start": true,
+        "end": false
+      },
+      {
+        "id": "step2",
+        "name": "Apply the definition of the limit",
+        "label": "Definition",
+        "type": "step",
+        "start": false,
+        "end": false
+      },
+      {
+        "id": "step3",
+        "name": "Show that the limit exists",
+        "label": "Existence",
+        "type": "step",
+        "start": false,
+        "end": false
+      },
+      {
+        "id": "step4",
+        "name": "Conclude the proof",
+        "label": "Conclusion",
+        "type": "step",
+        "start": false,
+        "end": true
+      }
+    ],
+    "relations": [
+      {
+        "source": "step1",
+        "target": "step2",
+        "type": "grounds",
+        "name": "Assumption leads to definition application"
+      },
+      {
+        "source": "step2",
+        "target": "step3",
+        "type": "grounds",
+        "name": "Definition application leads to existence proof"
+      },
+      {
+        "source": "step3",
+        "target": "step4",
+        "type": "grounds",
+        "name": "Existence proof leads to conclusion"
+      }
+    ]
+  }
+}
+
+### Get Graph
+GET {{baseUrl}}/graph
+
+### Process Content (Combined Endpoint)
+POST {{baseUrl}}/process
+Content-Type: application/json
+
+{
+  "courseContent": "Let's consider the concept of limits in calculus. When we say that the limit of a function f(x) as x approaches a is L, written as \\lim_{x \\to a} f(x) = L, we mean that for every ε > 0, there exists a δ > 0 such that if 0 < |x - a| < δ, then |f(x) - L| < ε.",
+  "proofContent": "To prove that \\lim_{x \\to 2} (x^2 - 4) = 0, we need to show that for every ε > 0, there exists a δ > 0 such that if 0 < |x - 2| < δ, then |(x^2 - 4) - 0| < ε. Note that x^2 - 4 = (x - 2)(x + 2). So |x^2 - 4| = |x - 2||x + 2|. If we restrict |x - 2| < 1, then 1 < x < 3, which means 3 < x + 2 < 5, so |x + 2| < 5. Thus, if we choose δ = min(1, ε/5), then whenever 0 < |x - 2| < δ, we have |x^2 - 4| = |x - 2||x + 2| < δ·5 ≤ ε."
+}
+
+### Test Content
+POST {{baseUrl}}/test-content
+Content-Type: application/json
+
+{
+  "testContent": "To prove that \\lim_{x \\to 3} (x^2 - 9) = 0, we need to show that for every ε > 0, there exists a δ > 0 such that if 0 < |x - 3| < δ, then |(x^2 - 9) - 0| < ε. Note that x^2 - 9 = (x - 3)(x + 3). So |x^2 - 9| = |x - 3||x + 3|. If we restrict |x - 3| < 1, then 2 < x < 4, which means 5 < x + 3 < 7, so |x + 3| < 7. Thus, if we choose δ = min(1, ε/7), then whenever 0 < |x - 3| < δ, we have |x^2 - 9| = |x - 3||x + 3| < δ·7 ≤ ε.",
+  "coursePattern": {
+    "entities": [
+      {
+        "id": "step1",
+        "name": "Assume the hypothesis",
+        "label": "Hypothesis",
+        "type": "step",
+        "start": true,
+        "end": false
+      },
+      "..."
+    ],
+    "relations": [
+      "..."
+    ]
+  },
+  "proofTriplets": {
+    "entities": [
+      "..."
+    ],
+    "relations": [
+      "..."
+    ]
+  }
+}
+
+### Test Content with Custom Prompt
+POST {{baseUrl}}/test-content
+Content-Type: application/json
+
+{
+  "testContent": "To prove that \\lim_{x \\to 3} (x^2 - 9) = 0, we need to show that for every ε > 0, there exists a δ > 0 such that if 0 < |x - 3| < δ, then |(x^2 - 9) - 0| < ε. Note that x^2 - 9 = (x - 3)(x + 3). So |x^2 - 9| = |x - 3||x + 3|. If we restrict |x - 3| < 1, then 2 < x < 4, which means 5 < x + 3 < 7, so |x + 3| < 7. Thus, if we choose δ = min(1, ε/7), then whenever 0 < |x - 3| < δ, we have |x^2 - 9| = |x - 3||x + 3| < δ·7 ≤ ε.",
+  "coursePattern": {
+    "entities": [
+      {
+        "id": "step1",
+        "name": "Assume the hypothesis",
+        "label": "Hypothesis",
+        "type": "step",
+        "start": true,
+        "end": false
+      },
+      "..."
+    ],
+    "relations": [
+      "..."
+    ]
+  },
+  "proofTriplets": {
+    "entities": [
+      "..."
+    ],
+    "relations": [
+      "..."
+    ]
+  },
+  "prompt": "Given the course pattern, proof triplets, and test content, create a detailed knowledge graph that maps each step of the test content to the corresponding pattern step, highlighting the similarities and differences between the test proof and the original proof."
+}
