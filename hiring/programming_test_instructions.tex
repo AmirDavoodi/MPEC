@@ -1,0 +1,233 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{tcolorbox}
+
+% Page setup
+\geometry{margin=1in}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textbf{MPEC Programming Test}}
+\fancyhead[R]{\textbf{Fullstack TypeScript Developer}}
+\fancyfoot[C]{\thepage}
+
+% Colors
+\definecolor{primaryblue}{RGB}{0,102,204}
+\definecolor{secondaryblue}{RGB}{51,153,255}
+\definecolor{lightgray}{RGB}{245,245,245}
+
+% Custom boxes
+\newtcolorbox{infobox}[1]{
+    colback=lightgray,
+    colframe=primaryblue,
+    fonttitle=\bfseries,
+    title=#1
+}
+
+\newtcolorbox{codebox}{
+    colback=lightgray,
+    colframe=secondaryblue,
+    fonttitle=\bfseries,
+    title=Code Example
+}
+
+% Title setup
+\title{
+    \vspace{-1cm}
+    \Huge\textbf{\textcolor{primaryblue}{MPEC Programming Test}} \\
+    \Large\textcolor{secondaryblue}{Mathematical Proof Explanatory Chain} \\
+    \large Fullstack TypeScript Developer Position
+}
+\author{}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{infobox}{Welcome to the MPEC Programming Challenge}
+This is a 1-day coding challenge designed to assess your fullstack TypeScript development skills. You will be implementing a simplified version of our Mathematical Proof Explanatory Chain (MPEC) system that processes mathematical content and creates knowledge graphs.
+\end{infobox}
+
+\section{Overview}
+
+The MPEC system is an AI-assisted mathematical proof analysis tool that:
+\begin{itemize}
+    \item Processes mathematical course content in LaTeX format
+    \item Extracts knowledge graphs from mathematical proofs
+    \item Creates explanatory chains for mathematical calculations
+    \item Visualizes mathematical reasoning as interactive graphs
+\end{itemize}
+
+\section{Your Mission}
+
+You will implement a web application with the following workflow:
+
+\begin{enumerate}
+    \item \textbf{Course Pattern Extraction}: Process LaTeX mathematical course content to extract a knowledge graph pattern
+    \item \textbf{Example Analysis}: Apply the extracted pattern to a math example to create an explanatory chain
+    \item \textbf{Test Question Solving}: Use the pattern and example to solve new test questions with step-by-step explanations
+\end{enumerate}
+
+\section{Technology Requirements}
+
+\begin{infobox}{Technology Stack}
+\begin{itemize}
+    \item \textbf{Backend}: NestJS with TypeScript
+    \item \textbf{Frontend}: Next.js with TypeScript
+    \item \textbf{Database}: In-memory storage (no external database required)
+    \item \textbf{AI Integration}: Mock OpenAI responses (no API key needed)
+    \item \textbf{Visualization}: Any responsive graph library of your choice
+\end{itemize}
+\end{infobox}
+
+\section{Core Functionality}
+
+\subsection{Backend API Endpoints}
+
+Implement three REST API endpoints:
+
+\begin{enumerate}
+    \item \texttt{POST /api/extract-course-pattern}
+    \item \texttt{POST /api/apply-pattern-to-example}
+    \item \texttt{POST /api/solve-test-question}
+\end{enumerate}
+
+Each endpoint should return structured knowledge graphs with entities and relations representing mathematical concepts and their relationships.
+
+\subsection{Frontend Interface}
+
+Create a responsive web application with:
+\begin{itemize}
+    \item Input areas for LaTeX mathematical content
+    \item Processing buttons to trigger the three-step workflow
+    \item Interactive graph visualization of results
+    \item Step-by-step explanatory chains display
+    \item Error handling and loading states
+\end{itemize}
+
+\section{Sample Mathematical Content}
+
+\begin{codebox}
+\textbf{Course Content Example (LaTeX):}
+\begin{verbatim}
+\section{Recursive Definition}
+For non-negative integers \(a\) and \(b\):
+\[
+    a + b = \begin{cases}
+        a                 & \text{if } b = 0 \\
+        (a + (b - 1)) + 1 & \text{if } b > 0
+    \end{cases}
+\]
+\end{verbatim}
+\end{codebox}
+
+\begin{codebox}
+\textbf{Example Problem (LaTeX):}
+\begin{verbatim}
+\section{Example: \( 3 + 2 \)}
+\[
+    \begin{aligned}
+        3 + 2 & = (3 + 1) + 1 \\
+              & = ((3 + 0) + 1) + 1 \\
+              & = (3 + 1) + 1 \\
+              & = 4 + 1 = 5
+    \end{aligned}
+\]
+\end{verbatim}
+\end{codebox}
+
+\section{Expected Deliverables}
+
+\begin{enumerate}
+    \item \textbf{Complete Source Code}: Both backend and frontend implementations
+    \item \textbf{README.md}: Clear setup and run instructions
+    \item \textbf{Working Demo}: Application that runs locally
+    \item \textbf{Documentation}: API documentation and component descriptions
+    \item \textbf{Tests}: Unit tests for core functionality
+\end{enumerate}
+
+\section{Evaluation Criteria}
+
+Your submission will be evaluated on:
+
+\begin{itemize}
+    \item \textbf{Functionality (30\%)}: All required features work correctly
+    \item \textbf{Code Quality (25\%)}: Clean, maintainable, well-structured TypeScript code
+    \item \textbf{UI/UX Design (20\%)}: Responsive, intuitive, and visually appealing interface
+    \item \textbf{Graph Visualization (15\%)}: Creative and effective graph representation
+    \item \textbf{Technical Implementation (10\%)}: Error handling, performance, testing
+\end{itemize}
+
+\section{Time Allocation Suggestion}
+
+\begin{itemize}
+    \item Backend API Development: 3-4 hours
+    \item Frontend Implementation: 3-4 hours
+    \item Graph Visualization: 2-3 hours
+    \item Testing and Documentation: 1-2 hours
+    \item Integration and Polish: 1 hour
+\end{itemize}
+
+\section{Getting Started}
+
+\begin{enumerate}
+    \item Create a new NestJS project for the backend
+    \item Create a new Next.js project for the frontend
+    \item Review the provided mock data and examples
+    \item Implement the core functionality step by step
+    \item Focus on creating a working demo first, then polish
+\end{enumerate}
+
+\begin{infobox}{Important Notes}
+\begin{itemize}
+    \item \textbf{No OpenAI API Key Required}: Use the provided mock responses
+    \item \textbf{No Database Setup}: Use in-memory storage for simplicity
+    \item \textbf{Focus on Core Features}: Implement the main workflow first
+    \item \textbf{Be Creative}: Show your skills in graph visualization and UI design
+\end{itemize}
+\end{infobox}
+
+\section{Bonus Opportunities}
+
+Impress us with:
+\begin{itemize}
+    \item Advanced graph visualization features (animations, interactions)
+    \item Additional mathematical operations (multiplication, subtraction)
+    \item Exceptional code quality and testing
+    \item Performance optimizations
+    \item Accessibility considerations
+\end{itemize}
+
+\section{Submission Instructions}
+
+\begin{enumerate}
+    \item Create a Git repository with your complete solution
+    \item Include a comprehensive README.md with setup instructions
+    \item Ensure both backend and frontend can run simultaneously
+    \item Provide a brief explanation of your design decisions
+    \item Submit the repository link or compressed archive
+\end{enumerate}
+
+\vspace{1cm}
+
+\begin{center}
+\textcolor{primaryblue}{\textbf{\Large Good luck! We're excited to see your implementation.}}
+\end{center}
+
+\vspace{0.5cm}
+
+\begin{center}
+\textit{For questions or clarifications, please contact the hiring team.}
+\end{center}
+
+\end{document}

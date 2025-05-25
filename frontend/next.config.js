@@ -4,6 +4,7 @@ const nextConfig = {
   webpack: (config) => {
     return config;
   },
-};
+  allowedDevOrigins: ['*', '10.10.14.24'],
+}
 
-module.exports = nextConfig;
+module.exports = nextConfig

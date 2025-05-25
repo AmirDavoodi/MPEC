@@ -1,0 +1,43 @@
+Subject: MPEC Programming Test - Fullstack TypeScript Developer Position
+
+Dear [Candidate Name],
+
+Thank you for your interest in the Fullstack TypeScript Developer position. We were impressed with your background and would like to invite you to the next stage of our selection process.
+
+We have prepared a 1-day programming challenge that involves implementing a simplified version of our Mathematical Proof Explanatory Chain (MPEC) system. This test will assess your skills in backend development (NestJS), frontend development (Next.js), and graph visualization.
+
+ATTACHED: Complete test package containing:
+• Detailed instructions and requirements
+• Sample mathematical content and mock API responses
+• TypeScript interfaces and reference materials
+• All necessary files to complete the challenge
+
+KEY DETAILS:
+• Time Allocation: Approximately 8 hours (1 full day)
+• Technology Stack: NestJS backend + Next.js frontend with TypeScript
+• No External Dependencies: All mock data and interfaces provided
+• Submission Deadline: [INSERT DEADLINE - typically 3-5 days from today]
+
+SUBMISSION REQUIREMENTS:
+When complete, please provide:
+1. Complete source code (backend and frontend)
+2. README.md with setup and run instructions
+3. Brief explanation of your design decisions
+
+The test is designed to be challenging but achievable within the timeframe. Focus on core functionality first, then add polish as time permits.
+
+If you have any questions about the requirements, please don't hesitate to contact me.
+
+We look forward to reviewing your implementation.
+
+Best regards,
+
+[Your Name]
+[Your Title]
+[Company Name]
+[Email Address]
+[Phone Number]
+
+---
+
+ATTACHMENT: mpec_test_package_[candidate_name].zip

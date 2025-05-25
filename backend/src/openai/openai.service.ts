@@ -12,7 +12,7 @@ export class OpenAIService {
   constructor(private configService: ConfigService) {
     const apiKey = this.configService.get<string>('OPENAI_API_KEY');
     const modelName =
-      this.configService.get<string>('OPENAI_LLM_MODEL') || 'gpt-4';
+      this.configService.get<string>('OPENAI_LLM_MODEL') || 'gpt-4o-mini';
     const temperature = parseFloat(
       this.configService.get<string>('OPENAI_LLM_TEMPERATURE') || '0',
     );

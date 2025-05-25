@@ -1,0 +1,666 @@
+{
+  "coursePatternExtraction": {
+    "addition": {
+      "success": true,
+      "coursePattern": {
+        "entities": [
+          {
+            "id": "base_case",
+            "name": "Base Case: a + 0 = a",
+            "label": "Base Case",
+            "type": "axiom",
+            "start": true,
+            "end": false
+          },
+          {
+            "id": "recursive_def",
+            "name": "Recursive Definition: a + b = (a + (b-1)) + 1",
+            "label": "Recursive Rule",
+            "type": "definition",
+            "start": false,
+            "end": false
+          },
+          {
+            "id": "decomposition",
+            "name": "Decomposition Step",
+            "label": "Decompose Problem",
+            "type": "step",
+            "start": false,
+            "end": false
+          },
+          {
+            "id": "increment",
+            "name": "Increment Operation: +1",
+            "label": "Add One",
+            "type": "operation",
+            "start": false,
+            "end": false
+          },
+          {
+            "id": "final_result",
+            "name": "Final Addition Result",
+            "label": "Result",
+            "type": "conclusion",
+            "start": false,
+            "end": true
+          }
+        ],
+        "relations": [
+          {
+            "source": "base_case",
+            "target": "recursive_def",
+            "type": "grounds",
+            "name": "provides foundation for"
+          },
+          {
+            "source": "recursive_def",
+            "target": "decomposition",
+            "type": "enables",
+            "name": "enables decomposition"
+          },
+          {
+            "source": "decomposition",
+            "target": "increment",
+            "type": "requires",
+            "name": "requires increment"
+          },
+          {
+            "source": "increment",
+            "target": "final_result",
+            "type": "produces",
+            "name": "produces result"
+          }
+        ]
+      }
+    },
+    "multiplication": {
+      "success": true,
+      "coursePattern": {
+        "entities": [
+          {
+            "id": "mult_base_case",
+            "name": "Base Case: a × 0 = 0",
+            "label": "Multiplication Base",
+            "type": "axiom",
+            "start": true,
+            "end": false
+          },
+          {
+            "id": "mult_recursive_def",
+            "name": "Recursive Definition: a × b = a + (a × (b-1))",
+            "label": "Multiplication Rule",
+            "type": "definition",
+            "start": false,
+            "end": false
+          },
+          {
+            "id": "addition_step",
+            "name": "Addition Step: a + previous_result",
+            "label": "Add Previous",
+            "type": "operation",
+            "start": false,
+            "end": false
+          },
+          {
+            "id": "mult_result",
+            "name": "Multiplication Result",
+            "label": "Product",
+            "type": "conclusion",
+            "start": false,
+            "end": true
+          }
+        ],
+        "relations": [
+          {
+            "source": "mult_base_case",
+            "target": "mult_recursive_def",
+            "type": "grounds",
+            "name": "provides foundation for"
+          },
+          {
+            "source": "mult_recursive_def",
+            "target": "addition_step",
+            "type": "requires",
+            "name": "requires addition"
+          },
+          {
+            "source": "addition_step",
+            "target": "mult_result",
+            "type": "produces",
+            "name": "accumulates to result"
+          }
+        ]
+      }
+    }
+  },
+  "exampleAnalysis": {
+    "addition_3_plus_2": {
+      "success": true,
+      "explanatoryChain": {
+        "entities": [
+          {
+            "id": "step_1",
+            "name": "Initial Problem: 3 + 2",
+            "label": "Start",
+            "type": "problem",
+            "start": true,
+            "end": false
+          },
+          {
+            "id": "step_2",
+            "name": "First Decomposition: (3 + 1) + 1",
+            "label": "Decompose 1",
+            "type": "step",
+            "start": false,
+            "end": false
+          },
+          {
+            "id": "step_3",
+            "name": "Second Decomposition: ((3 + 0) + 1) + 1",
+            "label": "Decompose 2",
+            "type": "step",
+            "start": false,
+            "end": false
+          },
+          {
+            "id": "step_4",
+            "name": "Base Case Applied: (3 + 1) + 1",
+            "label": "Apply Base",
+            "type": "step",
+            "start": false,
+            "end": false
+          },
+          {
+            "id": "step_5",
+            "name": "Final Result: 5",
+            "label": "Answer",
+            "type": "conclusion",
+            "start": false,
+            "end": true
+          }
+        ],
+        "relations": [
+          {
+            "source": "step_1",
+            "target": "step_2",
+            "type": "decomposes_to",
+            "name": "applies recursive rule"
+          },
+          {
+            "source": "step_2",
+            "target": "step_3",
+            "type": "decomposes_to",
+            "name": "continues decomposition"
+          },
+          {
+            "source": "step_3",
+            "target": "step_4",
+            "type": "applies",
+            "name": "applies base case"
+          },
+          {
+            "source": "step_4",
+            "target": "step_5",
+            "type": "evaluates_to",
+            "name": "evaluates to result"
+          }
+        ],
+        "steps": [
+          {
+            "stepNumber": 1,
+            "description": "Start with the initial problem",
+            "calculation": "3 + 2",
+            "reasoning": "We need to add 3 and 2 using recursive definition"
+          },
+          {
+            "stepNumber": 2,
+            "description": "Apply recursive rule for b > 0",
+            "calculation": "3 + 2 = (3 + (2-1)) + 1 = (3 + 1) + 1",
+            "reasoning": "Since 2 > 0, we use the recursive case"
+          },
+          {
+            "stepNumber": 3,
+            "description": "Continue decomposition",
+            "calculation": "(3 + 1) + 1 = ((3 + (1-1)) + 1) + 1 = ((3 + 0) + 1) + 1",
+            "reasoning": "Apply recursive rule again since 1 > 0"
+          },
+          {
+            "stepNumber": 4,
+            "description": "Apply base case",
+            "calculation": "((3 + 0) + 1) + 1 = (3 + 1) + 1",
+            "reasoning": "Base case: 3 + 0 = 3"
+          },
+          {
+            "stepNumber": 5,
+            "description": "Evaluate final result",
+            "calculation": "(3 + 1) + 1 = 4 + 1 = 5",
+            "reasoning": "Perform arithmetic to get final answer"
+          }
+        ]
+      }
+    },
+    "multiplication_4_times_3": {
+      "success": true,
+      "explanatoryChain": {
+        "entities": [
+          {
+            "id": "mult_step_1",
+            "name": "Initial Problem: 4 × 3",
+            "label": "Start",
+            "type": "problem",
+            "start": true,
+            "end": false
+          },
+          {
+            "id": "mult_step_2",
+            "name": "First Decomposition: 4 + (4 × 2)",
+            "label": "Decompose 1",
+            "type": "step",
+            "start": false,
+            "end": false
+          },
+          {
+            "id": "mult_step_3",
+            "name": "Second Decomposition: 4 + (4 + (4 × 1))",
+            "label": "Decompose 2",
+            "type": "step",
+            "start": false,
+            "end": false
+          },
+          {
+            "id": "mult_step_4",
+            "name": "Third Decomposition: 4 + (4 + (4 + (4 × 0)))",
+            "label": "Decompose 3",
+            "type": "step",
+            "start": false,
+            "end": false
+          },
+          {
+            "id": "mult_step_5",
+            "name": "Base Case Applied: 4 + (4 + (4 + 0))",
+            "label": "Apply Base",
+            "type": "step",
+            "start": false,
+            "end": false
+          },
+          {
+            "id": "mult_step_6",
+            "name": "Final Result: 12",
+            "label": "Product",
+            "type": "conclusion",
+            "start": false,
+            "end": true
+          }
+        ],
+        "relations": [
+          {
+            "source": "mult_step_1",
+            "target": "mult_step_2",
+            "type": "decomposes_to",
+            "name": "applies recursive rule"
+          },
+          {
+            "source": "mult_step_2",
+            "target": "mult_step_3",
+            "type": "decomposes_to",
+            "name": "continues decomposition"
+          },
+          {
+            "source": "mult_step_3",
+            "target": "mult_step_4",
+            "type": "decomposes_to",
+            "name": "continues decomposition"
+          },
+          {
+            "source": "mult_step_4",
+            "target": "mult_step_5",
+            "type": "applies",
+            "name": "applies base case"
+          },
+          {
+            "source": "mult_step_5",
+            "target": "mult_step_6",
+            "type": "evaluates_to",
+            "name": "evaluates to result"
+          }
+        ],
+        "steps": [
+          {
+            "stepNumber": 1,
+            "description": "Start with multiplication problem",
+            "calculation": "4 × 3",
+            "reasoning": "We need to multiply 4 by 3 using recursive definition"
+          },
+          {
+            "stepNumber": 2,
+            "description": "Apply recursive rule",
+            "calculation": "4 × 3 = 4 + (4 × (3-1)) = 4 + (4 × 2)",
+            "reasoning": "Since 3 > 0, use recursive case: a × b = a + (a × (b-1))"
+          },
+          {
+            "stepNumber": 3,
+            "description": "Continue decomposition",
+            "calculation": "4 + (4 × 2) = 4 + (4 + (4 × 1))",
+            "reasoning": "Apply recursive rule to 4 × 2"
+          },
+          {
+            "stepNumber": 4,
+            "description": "Final decomposition",
+            "calculation": "4 + (4 + (4 × 1)) = 4 + (4 + (4 + (4 × 0)))",
+            "reasoning": "Apply recursive rule to 4 × 1"
+          },
+          {
+            "stepNumber": 5,
+            "description": "Apply base case",
+            "calculation": "4 + (4 + (4 + (4 × 0))) = 4 + (4 + (4 + 0))",
+            "reasoning": "Base case: 4 × 0 = 0"
+          },
+          {
+            "stepNumber": 6,
+            "description": "Evaluate result",
+            "calculation": "4 + (4 + (4 + 0)) = 4 + (4 + 4) = 4 + 8 = 12",
+            "reasoning": "Perform additions from inside out"
+          }
+        ]
+      }
+    }
+  },
+  "testQuestionSolutions": {
+    "addition_5_plus_4": {
+      "success": true,
+      "solution": {
+        "answer": "9",
+        "explanatoryChain": {
+          "entities": [
+            {
+              "id": "test_problem_5_4",
+              "name": "Test Problem: 5 + 4",
+              "label": "Test Question",
+              "type": "problem",
+              "start": true,
+              "end": false
+            },
+            {
+              "id": "test_decomp_1",
+              "name": "First Decomposition: (5 + 3) + 1",
+              "label": "Step 1",
+              "type": "step",
+              "start": false,
+              "end": false
+            },
+            {
+              "id": "test_decomp_2",
+              "name": "Second Decomposition: ((5 + 2) + 1) + 1",
+              "label": "Step 2",
+              "type": "step",
+              "start": false,
+              "end": false
+            },
+            {
+              "id": "test_decomp_3",
+              "name": "Third Decomposition: (((5 + 1) + 1) + 1) + 1",
+              "label": "Step 3",
+              "type": "step",
+              "start": false,
+              "end": false
+            },
+            {
+              "id": "test_decomp_4",
+              "name": "Fourth Decomposition: ((((5 + 0) + 1) + 1) + 1) + 1",
+              "label": "Step 4",
+              "type": "step",
+              "start": false,
+              "end": false
+            },
+            {
+              "id": "test_base_applied",
+              "name": "Base Case Applied: (((5 + 1) + 1) + 1) + 1",
+              "label": "Base Case",
+              "type": "step",
+              "start": false,
+              "end": false
+            },
+            {
+              "id": "test_final_result",
+              "name": "Final Answer: 9",
+              "label": "Solution",
+              "type": "conclusion",
+              "start": false,
+              "end": true
+            }
+          ],
+          "relations": [
+            {
+              "source": "test_problem_5_4",
+              "target": "test_decomp_1",
+              "type": "decomposes_to",
+              "name": "applies recursive rule"
+            },
+            {
+              "source": "test_decomp_1",
+              "target": "test_decomp_2",
+              "type": "decomposes_to",
+              "name": "continues decomposition"
+            },
+            {
+              "source": "test_decomp_2",
+              "target": "test_decomp_3",
+              "type": "decomposes_to",
+              "name": "continues decomposition"
+            },
+            {
+              "source": "test_decomp_3",
+              "target": "test_decomp_4",
+              "type": "decomposes_to",
+              "name": "continues decomposition"
+            },
+            {
+              "source": "test_decomp_4",
+              "target": "test_base_applied",
+              "type": "applies",
+              "name": "applies base case"
+            },
+            {
+              "source": "test_base_applied",
+              "target": "test_final_result",
+              "type": "evaluates_to",
+              "name": "evaluates to final answer"
+            }
+          ],
+          "steps": [
+            {
+              "stepNumber": 1,
+              "description": "Analyze the test question",
+              "calculation": "5 + 4",
+              "reasoning": "Following the pattern from course and example, apply recursive addition"
+            },
+            {
+              "stepNumber": 2,
+              "description": "First recursive application",
+              "calculation": "5 + 4 = (5 + 3) + 1",
+              "reasoning": "Apply a + b = (a + (b-1)) + 1 since 4 > 0"
+            },
+            {
+              "stepNumber": 3,
+              "description": "Second recursive application",
+              "calculation": "(5 + 3) + 1 = ((5 + 2) + 1) + 1",
+              "reasoning": "Continue applying recursive rule to 5 + 3"
+            },
+            {
+              "stepNumber": 4,
+              "description": "Third recursive application",
+              "calculation": "((5 + 2) + 1) + 1 = (((5 + 1) + 1) + 1) + 1",
+              "reasoning": "Continue applying recursive rule to 5 + 2"
+            },
+            {
+              "stepNumber": 5,
+              "description": "Fourth recursive application",
+              "calculation": "(((5 + 1) + 1) + 1) + 1 = ((((5 + 0) + 1) + 1) + 1) + 1",
+              "reasoning": "Continue applying recursive rule to 5 + 1"
+            },
+            {
+              "stepNumber": 6,
+              "description": "Apply base case",
+              "calculation": "((((5 + 0) + 1) + 1) + 1) + 1 = (((5 + 1) + 1) + 1) + 1",
+              "reasoning": "Base case: 5 + 0 = 5, so we can start evaluating"
+            },
+            {
+              "stepNumber": 7,
+              "description": "Evaluate step by step",
+              "calculation": "(((5 + 1) + 1) + 1) + 1 = ((6 + 1) + 1) + 1 = (7 + 1) + 1 = 8 + 1 = 9",
+              "reasoning": "Work from inside out: 5+1=6, 6+1=7, 7+1=8, 8+1=9"
+            }
+          ]
+        }
+      }
+    },
+    "multiplication_3_times_4": {
+      "success": true,
+      "solution": {
+        "answer": "12",
+        "explanatoryChain": {
+          "entities": [
+            {
+              "id": "test_mult_problem",
+              "name": "Test Problem: 3 × 4",
+              "label": "Test Question",
+              "type": "problem",
+              "start": true,
+              "end": false
+            },
+            {
+              "id": "test_mult_step_1",
+              "name": "First Decomposition: 3 + (3 × 3)",
+              "label": "Step 1",
+              "type": "step",
+              "start": false,
+              "end": false
+            },
+            {
+              "id": "test_mult_step_2",
+              "name": "Second Decomposition: 3 + (3 + (3 × 2))",
+              "label": "Step 2",
+              "type": "step",
+              "start": false,
+              "end": false
+            },
+            {
+              "id": "test_mult_step_3",
+              "name": "Third Decomposition: 3 + (3 + (3 + (3 × 1)))",
+              "label": "Step 3",
+              "type": "step",
+              "start": false,
+              "end": false
+            },
+            {
+              "id": "test_mult_step_4",
+              "name": "Fourth Decomposition: 3 + (3 + (3 + (3 + (3 × 0))))",
+              "label": "Step 4",
+              "type": "step",
+              "start": false,
+              "end": false
+            },
+            {
+              "id": "test_mult_base",
+              "name": "Base Case Applied: 3 + (3 + (3 + (3 + 0)))",
+              "label": "Base Case",
+              "type": "step",
+              "start": false,
+              "end": false
+            },
+            {
+              "id": "test_mult_result",
+              "name": "Final Answer: 12",
+              "label": "Solution",
+              "type": "conclusion",
+              "start": false,
+              "end": true
+            }
+          ],
+          "relations": [
+            {
+              "source": "test_mult_problem",
+              "target": "test_mult_step_1",
+              "type": "decomposes_to",
+              "name": "applies recursive rule"
+            },
+            {
+              "source": "test_mult_step_1",
+              "target": "test_mult_step_2",
+              "type": "decomposes_to",
+              "name": "continues decomposition"
+            },
+            {
+              "source": "test_mult_step_2",
+              "target": "test_mult_step_3",
+              "type": "decomposes_to",
+              "name": "continues decomposition"
+            },
+            {
+              "source": "test_mult_step_3",
+              "target": "test_mult_step_4",
+              "type": "decomposes_to",
+              "name": "continues decomposition"
+            },
+            {
+              "source": "test_mult_step_4",
+              "target": "test_mult_base",
+              "type": "applies",
+              "name": "applies base case"
+            },
+            {
+              "source": "test_mult_base",
+              "target": "test_mult_result",
+              "type": "evaluates_to",
+              "name": "evaluates to final answer"
+            }
+          ],
+          "steps": [
+            {
+              "stepNumber": 1,
+              "description": "Analyze the test multiplication",
+              "calculation": "3 × 4",
+              "reasoning": "Apply recursive multiplication following the learned pattern"
+            },
+            {
+              "stepNumber": 2,
+              "description": "First recursive application",
+              "calculation": "3 × 4 = 3 + (3 × 3)",
+              "reasoning": "Apply a × b = a + (a × (b-1)) since 4 > 0"
+            },
+            {
+              "stepNumber": 3,
+              "description": "Second recursive application",
+              "calculation": "3 + (3 × 3) = 3 + (3 + (3 × 2))",
+              "reasoning": "Continue applying recursive rule to 3 × 3"
+            },
+            {
+              "stepNumber": 4,
+              "description": "Third recursive application",
+              "calculation": "3 + (3 + (3 × 2)) = 3 + (3 + (3 + (3 × 1)))",
+              "reasoning": "Continue applying recursive rule to 3 × 2"
+            },
+            {
+              "stepNumber": 5,
+              "description": "Fourth recursive application",
+              "calculation": "3 + (3 + (3 + (3 × 1))) = 3 + (3 + (3 + (3 + (3 × 0))))",
+              "reasoning": "Continue applying recursive rule to 3 × 1"
+            },
+            {
+              "stepNumber": 6,
+              "description": "Apply base case",
+              "calculation": "3 + (3 + (3 + (3 + (3 × 0)))) = 3 + (3 + (3 + (3 + 0)))",
+              "reasoning": "Base case: 3 × 0 = 0"
+            },
+            {
+              "stepNumber": 7,
+              "description": "Evaluate the additions",
+              "calculation": "3 + (3 + (3 + (3 + 0))) = 3 + (3 + (3 + 3)) = 3 + (3 + 6) = 3 + 9 = 12",
+              "reasoning": "Work from inside out: 3+0=3, 3+3=6, 3+6=9, 3+9=12"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
