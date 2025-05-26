@@ -1,0 +1,11 @@
+Browse the project, I have a frontend and backend. I want to hire a fullstack developer Typescript (Backend - NestJS and Frontend NextJS).
+I did some interview and selected multiple candidate. For this next step, I want to create a short programming task for about 1 day of coding. I want them to implement same functionality for the program.
+I want them to implement backend and frontend to:
+- Receiving the "Mathematical Course Content" in latex format and then using the OpenAI to extract the Knowledge graph as the Explanatory chain pattern of the calculation considering the course content.
+- Also the simple web application should be able to consider the extracted course pattern in the formate of Knowledge graph triplet in additioin to the Math Example Content (The math example question and answer which is related to the previous mathematical course content. Considering these two (Extracted Course pattern and math example problem content), The web application should be able to extract the math example problem answer in the form of  explanatory chain which explains the reasoning\steps of the math example calculation and show the graph of the answer to the math question.
+- In the next funtionality of the web application, I the application shoud be able to use the LLM to considering the three inputs of `Math Course Pattern`, `Math example question and answer` and `Test Question` and try to answer the Math Calculation question in the formate of  Explanatory Chain.
+
+Please look at the source code and prepare a Programing test for me considering the explanation and also the source code of the project for the Frontend and backend?
+As I don't want to share the API KEY for the OPEN api please ask in the test to mock all the api requests and give  them a mock response from the OPENAI api.
+
+Also for the graph visualization, I want them to use their creativity and show me a responsive graph.
