@@ -3,6 +3,10 @@
 import { useState, useEffect } from "react";
 import GraphVisualization from "./components/GraphVisualization";
 import { ToastContainer, showErrorToast, showSuccessToast } from './components/SimpleToast';
+import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../i18n';
+import { showSuccessToast, showErrorToast } from './components/SimpleToast';
+import { showPersianSuccessToast, showPersianErrorToast } from './components/PersianToastContainer';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
@@ -58,6 +62,8 @@ const mergeTriplets = (triplets: Record<string, any>) => {
 };
 
 export default function Home() {
+  const { lang, setLang } = useLanguage();
+  const t = translations[lang];
   const [courseContent, setCourseContent] = useState("");
   const [proofContent, setProofContent] = useState("");
   const [testContent, setTestContent] = useState("");
@@ -116,6 +122,23 @@ export default function Home() {
     setShowCombinedGraph(prev => !prev);
   };
 
+  // Update the toast display based on language
+  const displaySuccessToast = (message?: string, defaultMessage: string = 'default') => {
+    if (lang === 'fa') {
+      showPersianSuccessToast({ message, defaultMessage });
+    } else {
+      showSuccessToast(message || defaultMessage);
+    }
+  };
+
+  const displayErrorToast = (message?: string, defaultMessage: string = 'default') => {
+    if (lang === 'fa') {
+      showPersianErrorToast({ message, defaultMessage });
+    } else {
+      showErrorToast(message || defaultMessage);
+    }
+  };
+
   const handleExtractCoursePattern = async () => {
     try {
       console.log("Sending request to:", `${API_URL}/extract-course-pattern`);
@@ -153,12 +176,12 @@ export default function Home() {
       }
       
       // Show success toast
-      showSuccessToast("Course pattern extracted successfully!");
+      displaySuccessToast("Course pattern extracted successfully!");
     } catch (error: unknown) {
       console.error("Error extracting course pattern:", error);
       const errorMessage =
         error instanceof Error ? error.message : "An unknown error occurred";
-      showErrorToast(`Error extracting course pattern: ${errorMessage}`);
+      displayErrorToast(`Error extracting course pattern: ${errorMessage}`);
     }
   };
 
@@ -323,71 +346,77 @@ export default function Home() {
 
   return (
     <main className="main">
-      {/* Add ToastContainer at the bottom of your component */}
+      {/* Add LanguageToggle at the top */}
+      <div className="language-toggle-container">
+        <LanguageToggle currentLang={lang} onLanguageChange={setLang} />
+      </div>
+      
+      {/* Keep the ToastContainer */}
       <ToastContainer position="bottom-center" />
       
+      {/* Visualization section - update text to use translations */}
       <div className="visualization">
         <div className="visualization-header">
-          <h2>Graph Visualization</h2>
+          <h2>{t.graphVisualization.title}</h2>
           <button 
             className={`button ${showCombinedGraph ? 'active' : ''}`} 
             onClick={toggleCombinedView}
             disabled={!courseTriplets && !proofTriplets && !testTriplets}
           >
-            {showCombinedGraph ? 'Show Individual Graphs' : 'Show Combined Graph'}
+            {showCombinedGraph ? t.graphVisualization.combinedGraphButton.showIndividual : t.graphVisualization.combinedGraphButton.showCombined}
           </button>
         </div>
         <div className="graph-container">
           {graphData ? (
             <GraphVisualization data={graphData} />
           ) : (
-            <p>No graph data available</p>
+            <p>{t.graphVisualization.noData}</p>
           )}
         </div>
       </div>
+      
+      {/* Content sections - update text to use translations */}
       <div className="content">
         <div>
-          <h2>Course Content (LaTeX)</h2>
+          <h2>{t.content.course.title}</h2>
           <textarea
             className="textarea"
             value={courseContent}
             onChange={(e) => setCourseContent(e.target.value)}
-            placeholder="Enter course content in LaTeX format..."
+            placeholder={t.content.course.placeholder}
           />
           <button className="button" onClick={handleExtractCoursePattern}>
-            Extract Course Pattern
+            {t.content.course.extractPattern}
           </button>
         </div>
         <div>
-          <h2>Proof Content (LaTeX)</h2>
+          <h2>{t.content.proof.title}</h2>
           <textarea
             className="textarea"
             value={proofContent}
             onChange={(e) => setProofContent(e.target.value)}
-            placeholder="Enter proof content in LaTeX format..."
+            placeholder={t.content.proof.placeholder}
           />
           <button 
             className="button" 
             onClick={handleApplyPatternToProof}
-            // Remove the disabled attribute so the button is always clickable
           >
-            Apply Pattern to Proof
+            {t.content.proof.applyPattern}
           </button>
         </div>
         <div>
-          <h2>Test Content (LaTeX)</h2>
+          <h2>{t.content.test.title}</h2>
           <textarea
             className="textarea"
             value={testContent}
             onChange={(e) => setTestContent(e.target.value)}
-            placeholder="Enter test content in LaTeX format..."
+            placeholder={t.content.test.placeholder}
           />
           <button 
             className="button" 
             onClick={handleTestContent}
-            // Remove the disabled attribute so the button is always clickable
           >
-            Test Content
+            {t.content.test.processTest}
           </button>
         </div>
       </div>
