@@ -1,0 +1,155 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\title{Reinforcement Learning for Multiple Addition}
+\author{Mathematical Reasoning Project}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+    This report presents an implementation of a Reinforcement Learning (RL) agent designed to learn and execute multiple addition operations. The agent learns to transform expressions like $a + b + c$ into sequences of binary additions using parentheses, following the principle that addition is associative. We demonstrate the agent's capability by solving the addition problem $2 + 3 + 4$ and visualizing the solution path as a knowledge graph in Neo4j. This implementation showcases how RL can be applied to mathematical reasoning tasks involving multiple operands.
+\end{abstract}
+
+\section{Introduction}
+
+Multiple addition can be systematically broken down into sequences of binary additions using parentheses. The key principles are:
+
+\begin{itemize}
+    \item Addition is binary - we can only add two numbers at a time
+    \item For $n$ numbers, we need $(n-1)$ additions
+    \item Parentheses specify operation order
+    \item Different groupings yield same result (associativity)
+\end{itemize}
+
+Our implementation uses Reinforcement Learning to teach an agent to apply these principles correctly.
+
+\section{Reinforcement Learning Components}
+
+\subsection{Key RL Concepts}
+
+The implementation uses the same core RL concepts as the single addition case:
+
+\begin{itemize}
+    \item \textbf{Agent}: The decision-maker that learns from experience
+    \item \textbf{Environment}: The world with which the agent interacts
+    \item \textbf{State}: The current mathematical expression
+    \item \textbf{Action}: A decision about how to group or calculate
+    \item \textbf{Reward}: Feedback signal indicating the quality of an action
+    \item \textbf{Policy}: The agent's strategy for selecting actions
+    \item \textbf{Value Function}: Estimation of future rewards from a state
+    \item \textbf{Q-Function}: Estimation of future rewards from a state-action pair
+\end{itemize}
+
+\subsection{Q-Learning Algorithm}
+
+The implementation uses Q-learning with the same update rule:
+
+\begin{equation}
+    Q(s, a) \leftarrow Q(s, a) + \alpha \cdot [r + \gamma \cdot \max_{a'} Q(s', a') - Q(s, a)]
+\end{equation}
+
+where:
+\begin{itemize}
+    \item $Q(s, a)$ is the value of taking action $a$ in state $s$
+    \item $\alpha$ is the learning rate
+    \item $r$ is the reward received
+    \item $\gamma$ is the discount factor for future rewards
+    \item $s'$ is the next state
+    \item $\max_{a'} Q(s', a')$ is the maximum Q-value for the next state
+\end{itemize}
+
+\section{Implementation Components}
+
+\subsection{Environment}
+
+The environment (\texttt{MultipleAdditionEnv}) represents the multiple addition problem and tracks:
+\begin{itemize}
+    \item Current mathematical expression state
+    \item Target result
+    \item Available actions
+    \item Step count and termination conditions
+\end{itemize}
+
+\subsection{State Representation}
+
+States are represented by the \texttt{MultipleAdditionState} class, which contains:
+\begin{itemize}
+    \item The current mathematical expression (e.g., "2 + 3 + 4", "(2 + 3) + 4")
+    \item Step count for tracking progress
+\end{itemize}
+
+\subsection{Actions}
+
+The agent can perform the following actions:
+\begin{itemize}
+    \item \texttt{group\_left}: Group from left to right (e.g., "2 + 3 + 4" to "(2 + 3) + 4")
+    \item \texttt{group\_right}: Group from right to left (e.g., "2 + 3 + 4" to "2 + (3 + 4)")
+    \item \texttt{calculate}: Calculate the result of a simple addition
+    \item \texttt{finish}: Conclude the calculation
+\end{itemize}
+
+\subsection{Reward Structure}
+
+The reward structure guides the agent toward correct solutions:
+\begin{itemize}
+    \item +1.0 for correct grouping steps
+    \item +1.0 for correct calculations
+    \item +5.0 for reaching the correct final result
+    \item -1.0 for invalid actions
+    \item -5.0 for finishing with an incorrect result
+\end{itemize}
+
+\section{Example: Solving 2 + 3 + 4}
+
+For the addition problem 2 + 3 + 4, the agent can find multiple valid solution paths:
+
+\subsection{Left-to-Right Grouping}
+\begin{align}
+    2 + 3 + 4 & = (2 + 3) + 4 \\
+              & = 5 + 4       \\
+              & = 9
+\end{align}
+
+\subsection{Right-to-Left Grouping}
+\begin{align}
+    2 + 3 + 4 & = 2 + (3 + 4) \\
+              & = 2 + 7       \\
+              & = 9
+\end{align}
+
+Both paths are valid and demonstrate the associativity of addition.
+
+\section{Knowledge Graph Representation}
+
+The solution is represented as a knowledge graph in Neo4j:
+\begin{itemize}
+    \item \textbf{Nodes}: Mathematical expressions at each step
+    \item \textbf{Edges}: Actions taken to transform expressions
+    \item \textbf{Properties}: Step information, action types, and rewards
+\end{itemize}
+
+This graph provides a visual representation of the reasoning process, showing how the agent groups the numbers and performs the calculations.
+
+\section{Conclusion}
+
+This implementation demonstrates how Reinforcement Learning can be applied to multiple addition problems. The agent successfully learns to group numbers and perform calculations in a way that respects the associativity of addition. The knowledge graph representation provides insight into the reasoning process and can be used for educational purposes.
+
+Future work could include:
+\begin{itemize}
+    \item Extending the approach to more complex mathematical expressions
+    \item Implementing other mathematical properties (commutativity, distributivity)
+    \item Improving the agent's learning efficiency
+    \item Developing a user interface for interactive exploration of the solution paths
+\end{itemize}
+
+\end{document}

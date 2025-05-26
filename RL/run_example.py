@@ -176,8 +176,8 @@ def store_graph_in_neo4j(solution: Dict[str, Any], problem_name: str) -> None:
 
 
 def main():
-    # Solve the addition problem 100 + 50
-    solution = solve_addition_problem(100, 300, num_episodes=1000)
+    # Solve the addition problem 8 + 4
+    solution = solve_addition_problem(8, 4, num_episodes=1000)
 
     # Store the solution graph in Neo4j
     store_graph_in_neo4j(solution, "addition_8_plus_9")

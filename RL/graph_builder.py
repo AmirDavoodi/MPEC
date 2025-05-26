@@ -1,6 +1,6 @@
 from typing import List, Dict, Any
 import networkx as nx
-from .environment import MathExpressionState
+from environment import MathExpressionState
 
 
 class KnowledgeGraphBuilder:
@@ -32,7 +32,7 @@ class KnowledgeGraphBuilder:
             # Get the state string representation
             state_str = str(state)
 
-            # Add the state as a node if it doesn't exist
+            # Always add the state as a node (regardless of reward)
             if not self.graph.has_node(state_str):
                 # Determine if this is a start or end node
                 is_start = i == 0
@@ -44,7 +44,11 @@ class KnowledgeGraphBuilder:
 
             # Add an edge from the previous state to the current state
             if prev_state is not None:
-                self.graph.add_edge(prev_state, state_str, type="grounds", name=action)
+                # Mark edge with success/failure based on reward
+                edge_type = "grounds" if reward >= 0 else "failed_attempt"
+                edge_label = action if reward >= 0 else f"{action} (failed)"
+
+                self.graph.add_edge(prev_state, state_str, type=edge_type, name=edge_label, reward=reward)
 
             prev_state = state_str
 

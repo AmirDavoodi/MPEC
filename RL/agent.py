@@ -3,7 +3,7 @@ import random
 from typing import Dict, List, Tuple
 from collections import defaultdict
 
-from .environment import MathExpressionState, AdditionRecursionEnv
+from environment import MathExpressionState, AdditionRecursionEnv
 
 
 class QLearningAgent:
